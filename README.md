@@ -4,6 +4,7 @@
 
 ## Example
 gifs coming soon...
+
 #### Running example
 ```bash
 git clone git@github.com:ProvataHealth/react-native-smooth-swipe-list.git
@@ -20,6 +21,7 @@ npm install --save @provata/react-native-smooth-swipe-list
 ```
 
 ## Usage
+A `SwipeList` builds a `ListView.DataSource` from its `props.rowData`. The DataSource is primarily the views provided by `rowData` wrapped by a `SwipeRow`
 ```javascript
 ...
 import SwipeList from '@provata/react-native-smooth-swipe-list';
@@ -74,9 +76,47 @@ const ListParent = React.createClass({
 ```
 
 ##API
+
 ###SwipeList Component
+
 ####Props
-####SwipeRow Component
+* `rowData` - Object with the follow properties:
+  * `key` - Key to assign to the row *(default: rowData index)*
+  * `rowView`(required) - View to use as the row face
+  * `leftSubView`- View to show on left when swiping to the right
+  * `rightSubVIew` - View to show on right when swiping to the left
+  * `rowProps` - Props to be assigned to the wrapping `SwipeRow` *(see `SwipeRow` props)*
+  * `style` - Style to apply to the row parent
+* `scrollEnabled` Whether to allow scrolling the ListVIew *(default: true)*
+* `style` - Style applied to the ListView
+
+###Methods
+* `closeRow()` - Close any open row
+
+To be implemented:
+* *`openRow(rowKey)` - Opens row*
+* *`scrollToRow(rowKey, skipAnimation)` - Scrolls to row. *Optionally skip animating*
+* *`calloutRow(rowKey)` - Performs a shake animation on row*
+
+###SwipeRow Component
+See [React Native PanResponder](https://facebook.github.io/react-native/docs/panresponder.html) for information about gesture events.
+
+####Props
+* `swipeEnabled` - Where the row should respond to gestures
+* `onSwipeStart` - Called when a gesture starts
+* `onSwipeUpdate` - Called each update of the gesture after start and before end 
+* `onSwipeEnd` - Called when the gesture ends
+* `onOpen` - Called when the row opens
+* `onClose` - Called when the row closes
+* `onCapture` - Called when a gesture capture happens
+* `leftSubView` - View to be rendered for right gestures
+* `rightSubVIew` - View to be rendered for left gestures
+* `startOpen` - Whether the row should start open
+* `blockChildEventsWhenOpen` - If true will capture gesture events before they reach the rowView *(default: true)*
+
+###Methods
+* `close(skipAnimation)` - Close row. *Optionally skip animating*
+* `open(side, skipAnimation)` - Open row on `side`. *Optionally skip animating*
 
 ## Feature Checklist
 - [x] Support left/right sub views of arbitrary size

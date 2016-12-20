@@ -206,7 +206,7 @@ const SwipeRow = React.createClass({
             {
                 toValue: { x: toValue, y: 0 },
                 velocity: vx,
-                friction: noBounce ? 7 : 4,
+                friction: noBounce ? 8 : 4,
                 tension: 22 * Math.abs(vx)
             }
         ).start(() => {
@@ -221,14 +221,34 @@ const SwipeRow = React.createClass({
     },
 
     close(skipAnimation) {
-        this.clearCloseTimeout();
-        if (skipAnimation) {
-            this.setState({ pan: new Animated.ValueXY() });
+        if (this.state.open) {
+            this.clearCloseTimeout();
+            if (skipAnimation) {
+                this.setState({ pan: new Animated.ValueXY() });
+            }
+            else {
+                this.animateOpenOrClose(0, 0.75, true);
+            }
+            this.props.onClose(this);
         }
-        else {
-            this.animateOpenOrClose(0, 0.75, true);
+    },
+
+    open(side, skipAnimation) {
+        if (!this.state.open) {
+            this.clearCloseTimeout();
+            let openPosition = side === 'left' ? this.state.leftSubViewWidth : this.state.rightSubViewWidth;
+            if (skipAnimation) {
+                this.setState({
+                    pan: new Animated.ValueXY({ x: openPosition, y: 0 }),
+                    activeSide: side,
+                    open: true
+                });
+            }
+            else {
+                this.animateOpenOrClose(openPosition, 0.75, true)
+            }
+            this.props.onOpen(this);
         }
-        this.props.onClose(this);
     },
 
     isOpen() {
