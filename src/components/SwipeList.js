@@ -18,13 +18,14 @@ const SwipeList = React.createClass({
         style: View.propTypes.style,
         rowStyle: View.propTypes.style,
         scrollEnabled: PropTypes.bool,
-        blockChildEventsWhenOpen: PropTypes.bool,
+        onScrollStateChange: PropTypes.bool,
         rowData: PropTypes.array
     },
 
     getDefaultProps() {
         return {
-            scrollEnabled: true
+            scrollEnabled: true,
+            onScrollStateChange: () => {}
         };
     },
 
@@ -54,10 +55,12 @@ const SwipeList = React.createClass({
     handleSwipeStart(row, e, g) {
         this.tryCloseOpenRow(row);
         this.listView && this.listView.setNativeProps({ scrollEnabled: false });
+        this.props.onScrollStateChange(false);
     },
 
     handleSwipeEnd(row, e, g) {
         this.listView && this.listView.setNativeProps({ scrollEnabled: true });
+        this.props.onScrollStateChange(true);
     },
 
     handleRowOpen(row) {
@@ -101,11 +104,11 @@ const SwipeList = React.createClass({
                       rightSubView={rowData.rightSubView}
                       leftSubViewOptions={rowData.leftSubViewOptions}
                       rightSubViewOptions={rowData.rightSubViewOptions}
-                      style={rowData.style}
+                      blockChildEventsWhenOpen={rowData.blockChildEventsWhenOpen}
+                      style={[this.props.rowStyle, rowData.style]}
                       onSwipeStart={this.handleSwipeStart}
                       onSwipeEnd={this.handleSwipeEnd}
-                      onOpen={this.handleRowOpen}
-                      blockChildEventsWhenOpen={this.props.blockChildEventsWhenOpen}>
+                      onOpen={this.handleRowOpen}>
                 {rowData.rowView}
             </SwipeRow>
         );

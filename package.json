@@ -1,6 +1,6 @@
 {
 	"name": "@provata/react-native-smooth-swipe-list",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"main": "index",
 	"author": "Andrew Grewell <andrew.grewell@provatahealth.com>",
 	"description": "A better swipe-able ListView",

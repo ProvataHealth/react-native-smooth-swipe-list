@@ -83,15 +83,18 @@ const ListParent = React.createClass({
 * `rowData` - Object with the follow properties:
   * `key` - Key to assign to the row *(default: rowData index)*
   * `rowView`(required) - View to use as the row face
-  * `leftSubView`- View to show on left when swiping to the right
-  * `rightSubVIew` - View to show on right when swiping to the left
-  * `rowProps` - Props to be assigned to the wrapping `SwipeRow` *(see `SwipeRow` props)*
-  * `style` - Style to apply to the row parent
+  * `[left/right]SubView` - View to show when swiping left or right
+  * `[left/right]leftSubViewOptions` - Options to customize left and right subviews
+    * `fullWidth` - Will the view span the full width of the row *(default false)*
+    * `closeOnClick` - Whether the row should close on a click if not followed by a valid gesture *(default true)*
+  * `style` - Style to apply to the row root view
 * `scrollEnabled` Whether to allow scrolling the ListVIew *(default: true)*
+* `onScrollStateChange` - Hook for responding to scroll enabled (true) or disabled (false)
+* `rowStyle` - Style to apply to all rows root views
 * `style` - Style applied to the ListView
 
 ###Methods
-* `closeRow()` - Close any open row
+* `tryCloseOpenRow()` - Close any open row
 
 To be implemented:
 * *`openRow(rowKey)` - Opens row*
@@ -109,8 +112,10 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 * `onOpen` - Called when the row opens
 * `onClose` - Called when the row closes
 * `onCapture` - Called when a gesture capture happens
-* `leftSubView` - View to be rendered for right gestures
-* `rightSubVIew` - View to be rendered for left gestures
+* `[left/right]SubView` - View to be rendered for left / right gestures
+* `[left/right]SubViewOptions` - Option for configuring left and right sub views
+    * `fullWidth` - Will the view span the full width of the row *(default false)*
+    * `closeOnClick` - Whether the row should close on a click if not followed by a valid gesture *(default true)*
 * `startOpen` - Whether the row should start open
 * `blockChildEventsWhenOpen` - If true will capture gesture events before they reach the rowView *(default: true)*
 

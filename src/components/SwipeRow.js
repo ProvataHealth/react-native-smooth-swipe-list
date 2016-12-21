@@ -25,11 +25,17 @@ import {
     MAX_OPEN_THRESHOLD
 } from '../constants';
 import HorizontalGestureResponder from './HorizontalGestureResponder';
+import isFinite from 'lodash/isFinite';
 
 const SubViewOptionsShape = {
-    fullWidth: PropTypes.bool
+    fullWidth: PropTypes.bool,
+    closeOnClick: PropTypes.bool
 };
 
+const defaultSubViewOptions = {
+    fullWidth: false,
+    closeOnClick: true
+};
 
 const SwipeRow = React.createClass({
 
@@ -55,8 +61,8 @@ const SwipeRow = React.createClass({
         return {
             swipeEnabled: true,
             blockChildEventsWhenOpen: true,
-            leftSubViewOptions: { fullWidth: false },
-            rightSubViewOptions: { fullWidth: false },
+            leftSubViewOptions: defaultSubViewOptions,
+            rightSubViewOptions: defaultSubViewOptions,
             onSwipeStart: () => {},
             onSwipeUpdate: () => {},
             onSwipeEnd: () => {},
@@ -68,7 +74,7 @@ const SwipeRow = React.createClass({
     getInitialState() {
         return {
             pan: new Animated.ValueXY(),
-            animating: false,
+            activeSide: null,
             open: false
         };
     },
@@ -84,7 +90,8 @@ const SwipeRow = React.createClass({
     onSwipeStart(e, g) {
         this.props.onSwipeStart(this, e, g);
         this.state.pan.stopAnimation();
-        this.state.pan.setOffset({ x: this.state.pan.x._value, y: this.state.pan.y._value });
+        let offsetX = this.state.pan.x._value || 0;
+        this.state.pan.setOffset({ x: offsetX, y: 0 });
         this.state.pan.setValue({ x: 0, y: 0 });
         this.clearCloseTimeout();
     },
@@ -153,7 +160,7 @@ const SwipeRow = React.createClass({
     },
 
     setPanPosition(dx) {
-        if (dx !== undefined) {
+        if (isFinite(dx)) {
             dx = applySimpleTension(dx, this.getActiveSubViewWidth());
             this.state.pan.setValue({ x: dx, y: 0 });
         }
@@ -303,7 +310,7 @@ const SwipeRow = React.createClass({
     },
 
     checkSetCloseTimeout() {
-        if (this.state.open) {
+        if (this.state.open && this.shouldCloseOnClick()) {
             // if the row is open and a gesture comes in and isn't followed by an
             // onResponderStart call we want to close the row
             if (!this.closeTimeout) {
@@ -315,6 +322,11 @@ const SwipeRow = React.createClass({
     clearCloseTimeout() {
         clearTimeout(this.closeTimeout);
         this.closeTimeout = null;
+    },
+
+    shouldCloseOnClick() {
+        let isLeft = this.state.activeSide === 'left';
+        return isLeft ? this.props.leftSubViewOptions.closeOnClick : this.props.rightSubViewOptions.closeOnClick;
     },
 
     render() {
@@ -346,11 +358,12 @@ const SwipeRow = React.createClass({
         let subView = this.getActiveSubView(isLeft);
         let onLayout = this.getActiveSubViewOnLayout(isLeft);
         let activeSideStyle = this.getActiveSideStyle(isLeft);
+        let panStyle = this.getSubViewPanStyle(isLeft);
         let wrapperStyle = this.getSubViewWrapperStyle(isLeft);
 
         if (activeSide) {
             return (
-                <Animated.View style={[styles.subViewContainer, activeSideStyle, this.getSubViewPanStyle()]}>
+                <Animated.View style={[styles.subViewContainer, activeSideStyle, panStyle]}>
                     <View style={[styles.subViewWrapper, wrapperStyle]} onLayout={onLayout}>
                         {subView}
                     </View>
@@ -370,7 +383,6 @@ const SwipeRow = React.createClass({
     getSubViewWrapperStyle(isLeft) {
         let fullWidth = isLeft ?  this.props.leftSubViewOptions.fullWidth : this.props.rightSubViewOptions.fullWidth;
         let widthKnown  = isLeft ? this.state.leftSubViewWidth : this.state.rightSubViewWidth;
-        //return fullWidth ? styles.fullSubView : null
         return {
             opacity: widthKnown ? 1 : 0,
             flex: fullWidth? 1 : 0

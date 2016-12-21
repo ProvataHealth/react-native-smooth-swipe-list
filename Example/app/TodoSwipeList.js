@@ -6,7 +6,9 @@ import find from 'lodash/find';
 import TodoCollection from './model/TodoCollection';
 import ListItem from './components/ListItem';
 import ListItemButton from './components/ListItemButton';
-import SwipeList from '../src/components/SwipeList';
+import FullWidthSubItem from './components/FullWidthSubItem';
+import SwipeList from '@provata/react-native-smooth-swipe-list';
+
 
 
 const TodoSwipeList = React.createClass({
@@ -39,7 +41,8 @@ const TodoSwipeList = React.createClass({
             rowView: this.getRowView(todo),
             leftSubView: this.getLeftView(todo),
             leftSubViewOptions: {
-                fullWidth: true
+                fullWidth: true,
+                closeOnClick: false
             },
             rightSubView: this.getRightView(todo)
         };
@@ -57,7 +60,6 @@ const TodoSwipeList = React.createClass({
         return (
             <View style={styles.swipeListContainer}>
                 <SwipeList rowData={this.rowData}
-                           blockChildEventsWhenOpen={false}
                            rowStyle={styles.row} />
             </View>
         );
@@ -81,9 +83,7 @@ const TodoSwipeList = React.createClass({
 
     getLeftView(todo) {
         return (
-            <View style={styles.fullSubView}>
-                <Text style={styles.buttonText}>{todo.getDescription()}</Text>
-            </View>
+            <FullWidthSubItem />
         );
     },
 
@@ -101,16 +101,12 @@ const styles = StyleSheet.create({
     addButton: {
         padding: 15,
         backgroundColor: 'white',
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: '#333'
+        alignItems: 'center'
     },
     row: {
         alignSelf: 'stretch',
         height: 55,
-        backgroundColor: '#eee',
-        borderBottomColor: '#aaa',
-        borderBottomWidth: 1
+        backgroundColor: '#eee'
     },
     fullSubView: {
         flex: 1,
