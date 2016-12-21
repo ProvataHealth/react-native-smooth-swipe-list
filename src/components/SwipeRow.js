@@ -26,11 +26,16 @@ import {
 } from '../constants';
 import HorizontalGestureResponder from './HorizontalGestureResponder';
 
+const SubViewOptionsShape = {
+    fullWidth: PropTypes.bool
+};
+
 
 const SwipeRow = React.createClass({
 
     propTypes: {
         style: View.propTypes.style,
+        rowViewStyle: View.propTypes.style,
         swipeEnabled: PropTypes.bool,
         onSwipeStart: PropTypes.func,
         onSwipeUpdate: PropTypes.func,
@@ -40,6 +45,8 @@ const SwipeRow = React.createClass({
         onCapture: PropTypes.func,
         leftSubView: PropTypes.element,
         rightSubView: PropTypes.element,
+        leftSubViewOptions: PropTypes.shape(SubViewOptionsShape),
+        rightSubViewOptions: PropTypes.shape(SubViewOptionsShape),
         startOpen: PropTypes.bool,
         blockChildEventsWhenOpen: PropTypes.bool
     },
@@ -48,6 +55,8 @@ const SwipeRow = React.createClass({
         return {
             swipeEnabled: true,
             blockChildEventsWhenOpen: true,
+            leftSubViewOptions: { fullWidth: false },
+            rightSubViewOptions: { fullWidth: false },
             onSwipeStart: () => {},
             onSwipeUpdate: () => {},
             onSwipeEnd: () => {},
@@ -60,7 +69,6 @@ const SwipeRow = React.createClass({
         return {
             pan: new Animated.ValueXY(),
             animating: false,
-            velocityPan: false,
             open: false
         };
     },
@@ -95,10 +103,13 @@ const SwipeRow = React.createClass({
         if (this.state.open) {
             this.checkAnimateOpenOrClose(dx, vx);
         }
+        else if (this.state.activeSide === 'left' && dx > 0 || this.state.activeSide === 'right' && dx < 0){
+            this.checkAnimateOpenOrClose(dx, vx);
+        }
         else {
-            if (this.state.activeSide === 'left' && dx > 0 || this.state.activeSide === 'right' && dx < 0) {
-                this.checkAnimateOpenOrClose(dx, vx);
-            }
+            this.setState({
+                activeSide: null
+            });
         }
     },
 
@@ -314,7 +325,7 @@ const SwipeRow = React.createClass({
                                             onResponderEnd={this.onSwipeEnd}
                                             onResponderUpdate={this.onSwipeUpdate}>
                     {this.renderSubView()}
-                    <Animated.View style={[styles.containerInner, this.state.pan.getLayout()]}
+                    <Animated.View style={[styles.containerInner, this.props.rowViewStyle, this.state.pan.getLayout()]}
                                    pointerEvents={this.getRowPointerEvents()}>
                         {this.props.children}
                     </Animated.View>
@@ -328,26 +339,39 @@ const SwipeRow = React.createClass({
     },
 
     renderSubView() {
-        let activeSubView;
-        let subViewStyle;
-        let onLayout;
-        if (this.state.activeSide === 'left' && this.props.leftSubView) {
-            activeSubView = this.props.leftSubView;
-            subViewStyle = styles.leftSubView;
-            onLayout = this.setLeftSubViewWidth;
-        }
-        else if (this.state.activeSide === 'right' && this.props.rightSubView) {
-            activeSubView = this.props.rightSubView;
-            subViewStyle = styles.rightSubView;
-            onLayout = this.setRightSubViewWidth;
-        }
+        let activeSide = this.state.activeSide;
+        let isLeft = activeSide === 'left';
+        let subView = this.getActiveSubView(isLeft);
+        let onLayout = this.getActiveSubViewOnLayout(isLeft);
+        let activeSideStyle = this.getActiveSideStyle(isLeft);
+        let fullWidthStyle = this.getFullWidthStyle(isLeft);
 
-        return (
-            <Animated.View style={[styles.subViewContainer, subViewStyle, this.getSubViewPanStyle()]}
-                           onLayout={onLayout}>
-                {this.checkRenderSubViewWithProps(activeSubView, { onLayout: onLayout })}
-            </Animated.View>
-        );
+        if (activeSide) {
+            return (
+                <Animated.View style={[styles.subViewContainer, activeSideStyle, this.getSubViewPanStyle()]}>
+                    <View style={[styles.subViewWrapper, fullWidthStyle]} onLayout={onLayout}>
+                        {subView}
+                    </View>
+                </Animated.View>
+            );
+        }
+    },
+
+    getActiveSubView(isLeft) {
+        return isLeft ? this.props.leftSubView : this.props.rightSubView;
+    },
+
+    getActiveSubViewOnLayout(isLeft) {
+        return isLeft ? this.setLeftSubViewWidth : this.setRightSubViewWidth;
+    },
+
+    getFullWidthStyle(isLeft) {
+        let fullWidth = isLeft ?  this.props.leftSubViewOptions.fullWidth : this.props.rightSubViewOptions.fullWidth;
+        return fullWidth ? styles.fullSubView : null
+    },
+
+    getActiveSideStyle(isLeft) {
+        return isLeft ? styles.leftSubView : styles.rightSubView;
     },
 
     getSubViewPanStyle() {
@@ -371,12 +395,6 @@ const SwipeRow = React.createClass({
                 }]
             };
         }
-    },
-
-    checkRenderSubViewWithProps(subView, props) {
-        if (subView) {
-            return React.cloneElement( subView, props);
-        }
     }
 });
 
@@ -395,6 +413,14 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0
+    },
+    subViewWrapper: {
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        alignSelf: 'stretch'
+    },
+    fullSubView: {
+        flex: 1
     },
     leftSubView: {
         alignItems: 'flex-start'

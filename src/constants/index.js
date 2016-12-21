@@ -1,5 +1,5 @@
 // after how many ticks will gesture validation give up
-export const GESTURE_DISTANCE_THRESHOLD = 2;
+export const GESTURE_DISTANCE_THRESHOLD = 10;
 
 // what velocity is considered 'quick'
 export const QUICK_GESTURE_VELOCITY_THRESHOLD = 0.15;
@@ -7,7 +7,7 @@ export const QUICK_GESTURE_VELOCITY_THRESHOLD = 0.15;
 // allow the gesture angle to be ± VELOCITY_THRESHOLD_ANGLE_SLOP
 // e.g. if a left swipe is within 180 ± VELOCITY_THRESHOLD_ANGLE_SLOP
 // than the threshold will be reduced by VELOCITY_THRESHOLD_SLOP_MOD
-export const VELOCITY_THRESHOLD_ANGLE_SLOP = 40;
+export const VELOCITY_THRESHOLD_ANGLE_SLOP = 5;
 
 // the amount to multiply the gesture velocity threshold by if it is within the angle slop
 export const VELOCITY_THRESHOLD_SLOP_MOD = 0.25;

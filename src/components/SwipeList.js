@@ -16,6 +16,7 @@ const SwipeList = React.createClass({
 
     propsTypes: {
         style: View.propTypes.style,
+        rowStyle: View.propTypes.style,
         scrollEnabled: PropTypes.bool,
         blockChildEventsWhenOpen: PropTypes.bool,
         rowData: PropTypes.array
@@ -98,6 +99,8 @@ const SwipeList = React.createClass({
             <SwipeRow key={rowData.key || `${sectionId}:${rowId}`}
                       leftSubView={rowData.leftSubView}
                       rightSubView={rowData.rightSubView}
+                      leftSubViewOptions={rowData.leftSubViewOptions}
+                      rightSubViewOptions={rowData.rightSubViewOptions}
                       style={rowData.style}
                       onSwipeStart={this.handleSwipeStart}
                       onSwipeEnd={this.handleSwipeEnd}

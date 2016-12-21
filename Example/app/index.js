@@ -15,8 +15,22 @@ const Main = React.createClass({
             todos: new TodoCollection([
                 {
                     id: 1,
-                    title: 'Create Todo App',
-                    description: '',
+                    title: 'List Item One',
+                    description: 'Full SubView 1',
+                    complete: false,
+                    archived: false
+                },
+                {
+                    id: 2,
+                    title: 'List Item Two',
+                    description: 'Full SubView 2',
+                    complete: false,
+                    archived: false
+                },
+                {
+                    id: 3,
+                    title: 'List Item Three',
+                    description: 'Full SubView 3',
                     complete: false,
                     archived: false
                 }

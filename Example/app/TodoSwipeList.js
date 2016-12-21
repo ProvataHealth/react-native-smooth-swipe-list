@@ -4,7 +4,9 @@ import map from 'lodash/map';
 import find from 'lodash/find';
 
 import TodoCollection from './model/TodoCollection';
-import SwipeList from '../src/components/SwipeList';
+import ListItem from './components/ListItem';
+import ListItemButton from './components/ListItemButton';
+import SwipeList from '@provata/react-native-smooth-swipe-list';
 
 
 const TodoSwipeList = React.createClass({
@@ -36,8 +38,10 @@ const TodoSwipeList = React.createClass({
             key: todo.getId(),
             rowView: this.getRowView(todo),
             leftSubView: this.getLeftView(todo),
-            rightSubView: this.getRightView(todo),
-            style: styles.row
+            leftSubViewOptions: {
+                fullWidth: true
+            },
+            rightSubView: this.getRightView(todo)
         };
     },
 
@@ -52,7 +56,9 @@ const TodoSwipeList = React.createClass({
     render() {
         return (
             <View style={styles.swipeListContainer}>
-                <SwipeList rowData={this.rowData} blockChildEventsWhenOpen={false} />
+                <SwipeList rowData={this.rowData}
+                           blockChildEventsWhenOpen={false}
+                           rowStyle={styles.row} />
             </View>
         );
     },
@@ -70,34 +76,19 @@ const TodoSwipeList = React.createClass({
     },
 
     getRowView(todo) {
-        return (
-            <TouchableHighlight onPress={this.onRowPress}>
-                <View style={styles.rowInner}>
-                    <Text>{todo.getTitle()}</Text>
-                </View>
-            </TouchableHighlight>
-        );
+        return <ListItem title={todo.getTitle()} onPress={this.onRowPress} />;
     },
 
     getLeftView(todo) {
-        if (todo.isComplete) {
-
-        }
         return (
-            <View style={styles.fullSubViewInner}>
+            <View style={styles.fullSubView}>
                 <Text style={styles.buttonText}>{todo.getDescription()}</Text>
             </View>
         );
     },
 
     getRightView(todo) {
-        return (
-            <TouchableHighlight onPress={() => this.props.archiveTodo(todo)}>
-                <View style={styles.button}>
-                    <Text style={styles.buttonText}>Archive</Text>
-                </View>
-            </TouchableHighlight>
-        );
+        return <ListItemButton onPress={() => this.props.archiveTodo(todo)} text="Archive" />;
     }
 });
 
@@ -117,32 +108,11 @@ const styles = StyleSheet.create({
     row: {
         alignSelf: 'stretch',
         height: 55,
-        backgroundColor: '#ddd',
+        backgroundColor: '#eee',
         borderBottomColor: '#aaa',
         borderBottomWidth: 1
     },
-    rowInner: {
-        alignSelf: 'stretch',
-        height: 55,
-        backgroundColor: '#fff',
-        borderBottomColor: '#eee',
-        borderBottomWidth: 1
-    },
-    button: {
-        flex: 1,
-        minWidth: 75,
-        paddingHorizontal: 15,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgb(50, 175, 200)'
-    },
     fullSubView: {
-        flex: 1,
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    fullSubViewInner: {
         flex: 1,
         alignSelf: 'stretch',
         alignItems: 'center',
