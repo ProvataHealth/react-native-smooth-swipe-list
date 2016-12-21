@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 
 const ListItemButton = (props) => (
-    <TouchableHighlight onPress={props.onPress}>
+    <TouchableOpacity onPress={props.onPress}>
         <View style={styles.container}>
             <Text style={styles.text}>
                 {props.text}
             </Text>
         </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
 );
 
 ListItemButton.propTypes = {

@@ -153,8 +153,10 @@ const SwipeRow = React.createClass({
     },
 
     setPanPosition(dx) {
-        dx = applySimpleTension(dx, this.getActiveSubViewWidth());
-        this.state.pan.setValue({ x: dx, y: 0 });
+        if (dx !== undefined) {
+            dx = applySimpleTension(dx, this.getActiveSubViewWidth());
+            this.state.pan.setValue({ x: dx, y: 0 });
+        }
     },
 
     checkAnimateOpenOrClose(dx, vx) {
@@ -344,12 +346,12 @@ const SwipeRow = React.createClass({
         let subView = this.getActiveSubView(isLeft);
         let onLayout = this.getActiveSubViewOnLayout(isLeft);
         let activeSideStyle = this.getActiveSideStyle(isLeft);
-        let fullWidthStyle = this.getFullWidthStyle(isLeft);
+        let wrapperStyle = this.getSubViewWrapperStyle(isLeft);
 
         if (activeSide) {
             return (
                 <Animated.View style={[styles.subViewContainer, activeSideStyle, this.getSubViewPanStyle()]}>
-                    <View style={[styles.subViewWrapper, fullWidthStyle]} onLayout={onLayout}>
+                    <View style={[styles.subViewWrapper, wrapperStyle]} onLayout={onLayout}>
                         {subView}
                     </View>
                 </Animated.View>
@@ -365,9 +367,14 @@ const SwipeRow = React.createClass({
         return isLeft ? this.setLeftSubViewWidth : this.setRightSubViewWidth;
     },
 
-    getFullWidthStyle(isLeft) {
+    getSubViewWrapperStyle(isLeft) {
         let fullWidth = isLeft ?  this.props.leftSubViewOptions.fullWidth : this.props.rightSubViewOptions.fullWidth;
-        return fullWidth ? styles.fullSubView : null
+        let widthKnown  = isLeft ? this.state.leftSubViewWidth : this.state.rightSubViewWidth;
+        //return fullWidth ? styles.fullSubView : null
+        return {
+            opacity: widthKnown ? 1 : 0,
+            flex: fullWidth? 1 : 0
+        }
     },
 
     getActiveSideStyle(isLeft) {

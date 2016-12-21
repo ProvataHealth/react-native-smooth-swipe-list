@@ -6,7 +6,7 @@ import find from 'lodash/find';
 import TodoCollection from './model/TodoCollection';
 import ListItem from './components/ListItem';
 import ListItemButton from './components/ListItemButton';
-import SwipeList from '@provata/react-native-smooth-swipe-list';
+import SwipeList from '../src/components/SwipeList';
 
 
 const TodoSwipeList = React.createClass({
