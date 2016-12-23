@@ -80,6 +80,7 @@ const ListParent = React.createClass({
 ###SwipeList Component
 
 ####Props
+* [ListView props...](https://facebook.github.io/react-native/docs/listview.html)
 * `rowData` - Object with the follow properties:
   * `key` - Key to assign to the row *(default: rowData index)*
   * `rowView`(required) - View to use as the row face

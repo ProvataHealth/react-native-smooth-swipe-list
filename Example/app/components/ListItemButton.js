@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
+import { COLORS } from '../constants';
 
 const ListItemButton = (props) => (
     <TouchableOpacity onPress={props.onPress}>
-        <View style={styles.container}>
+        <View style={[styles.container, getBackgroundStyle(props.color)]}>
             <Text style={styles.text}>
                 {props.text}
             </Text>
@@ -12,6 +13,9 @@ const ListItemButton = (props) => (
     </TouchableOpacity>
 );
 
+function getBackgroundStyle(color) {
+    return color ? { backgroundColor: COLORS[color] } : {};
+}
 ListItemButton.propTypes = {
     onPress: PropTypes.func
 };

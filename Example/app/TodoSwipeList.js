@@ -4,6 +4,7 @@ import map from 'lodash/map';
 import find from 'lodash/find';
 
 import TodoCollection from './model/TodoCollection';
+import { COLORS } from './constants';
 import ListItem from './components/ListItem';
 import ListItemButton from './components/ListItemButton';
 import FullWidthSubItem from './components/FullWidthSubItem';
@@ -56,12 +57,18 @@ const TodoSwipeList = React.createClass({
 
     },
 
+    loadMore() {
+        console.log('load more...');
+    },
+
     render() {
         return (
             <View style={styles.swipeListContainer}>
                 <SwipeList rowData={this.rowData}
                            gestureTensionParams={{ length: 1 }}
-                           rowStyle={styles.row} />
+                           style={styles.list}
+                           rowStyle={styles.row}
+                           renderFooter={this.renderFooter} />
             </View>
         );
     },
@@ -89,15 +96,26 @@ const TodoSwipeList = React.createClass({
     },
 
     getRightView(todo) {
-        return <ListItemButton onPress={() => this.props.archiveTodo(todo)} text="Archive" />;
+        return <ListItemButton onPress={() => this.props.archiveTodo(todo)} text="Archive" color="primary" />;
+    },
+
+    renderFooter() {
+        return (
+            <ListItem style={styles.loadButton}
+                      title="Load More"
+                      textStyle={styles.loadButtonText}
+                      onPress={this.loadMore} />
+        );
     }
 });
 
 const styles = StyleSheet.create({
     swipeListContainer: {
         flex: 1,
-        alignSelf: 'stretch',
-        backgroundColor: 'rgb(75, 75, 75)'
+        alignSelf: 'stretch'
+    },
+    list: {
+        backgroundColor: COLORS.light
     },
     addButton: {
         padding: 15,
@@ -119,6 +137,14 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         backgroundColor: 'transparent'
+    },
+    loadButton: {
+        alignItems: 'center',
+        backgroundColor: COLORS.primary
+    },
+    loadButtonText: {
+        color: COLORS.white,
+        fontWeight: 'bold'
     }
 });
 

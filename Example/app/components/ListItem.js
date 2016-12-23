@@ -2,13 +2,14 @@ import React, { PropTypes } from 'react';
 import { View, StyleSheet, Text, TouchableHighlight } from 'react-native';
 
 import {
-    LIST_ITEM_HEIGHT
-} from './constants';
+    LIST_ITEM_HEIGHT,
+    COLORS
+} from '../constants';
 
 const ListItem = (props) => (
     <TouchableHighlight onPress={props.onPress}>
         <View style={[styles.container, props.style]}>
-            <Text style={styles.text}>
+            <Text style={[styles.text, props.textStyle]}>
                 {props.title}
             </Text>
         </View>

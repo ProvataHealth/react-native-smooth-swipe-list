@@ -1,6 +1,6 @@
 {
   "name": "SmoothSwipeList",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",

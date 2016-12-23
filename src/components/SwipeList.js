@@ -92,7 +92,7 @@ const SwipeList = React.createClass({
 
     render() {
         return (
-            <ListView ref={this.setListViewRef}
+            <ListView {...this.props} ref={this.setListViewRef}
                       style={[styles.listView, this.props.style]}
                       scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}
                       onScroll={this.handleScroll}
