@@ -22,7 +22,8 @@ import {
     OPEN_POSITION_THRESHOLD_FACTOR,
     CLOSE_POSITION_THRESHOLD_FACTOR,
     OPEN_VELOCITY_THRESHOLD,
-    MAX_OPEN_THRESHOLD
+    MAX_OPEN_THRESHOLD,
+    OPEN_TENSION_LENGTH
 } from '../constants';
 import HorizontalGestureResponder from './HorizontalGestureResponder';
 import isFinite from 'lodash/isFinite';
@@ -42,6 +43,11 @@ const SwipeRow = React.createClass({
     propTypes: {
         style: View.propTypes.style,
         rowViewStyle: View.propTypes.style,
+        gestureTensionParams: PropTypes.shape({
+            length: PropTypes.number,
+            stretch: PropTypes.number,
+            resistanceStrength: PropTypes.number
+        }),
         swipeEnabled: PropTypes.bool,
         onSwipeStart: PropTypes.func,
         onSwipeUpdate: PropTypes.func,
@@ -63,6 +69,7 @@ const SwipeRow = React.createClass({
             blockChildEventsWhenOpen: true,
             leftSubViewOptions: defaultSubViewOptions,
             rightSubViewOptions: defaultSubViewOptions,
+            gestureTensionParams: {},
             onSwipeStart: () => {},
             onSwipeUpdate: () => {},
             onSwipeEnd: () => {},
@@ -149,7 +156,12 @@ const SwipeRow = React.createClass({
         let relativeDX;
         if (this.state.activeSide === 'left') {
             relativeDX = dx + this.state.leftSubViewWidth;
-            dx = relativeDX >= 0 ? dx : -this.state.leftSubViewWidth;
+            if (relativeDX >= 0) {
+                //dx = this.state.open ? dx *
+            }
+            else {
+                dx = -this.state.leftSubViewWidth;
+            }
             this.setPanPosition(dx);
         }
         else if (this.state.activeSide === 'right') {
@@ -161,7 +173,9 @@ const SwipeRow = React.createClass({
 
     setPanPosition(dx) {
         if (isFinite(dx)) {
-            dx = applySimpleTension(dx, this.getActiveSubViewWidth());
+            let tensionParams = this.props.gestureTensionParams;
+            let tensionLength = this.state.open ? OPEN_TENSION_LENGTH: tensionParams.length || this.getActiveSubViewWidth();
+            dx = applySimpleTension(dx, tensionLength, tensionParams.stretch, tensionParams.resistanceStrength);
             this.state.pan.setValue({ x: dx, y: 0 });
         }
     },

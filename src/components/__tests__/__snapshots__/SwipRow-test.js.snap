@@ -18,18 +18,6 @@ exports[`SwipeRow renders correctly 1 1`] = `
       }
     }>
     <View
-      onLayout={undefined}
-      style={
-        Object {
-          "bottom": 0,
-          "flexDirection": "row",
-          "left": 0,
-          "position": "absolute",
-          "right": 0,
-          "top": 0,
-        }
-      } />
-    <View
       pointerEvents="box-none"
       style={
         Object {

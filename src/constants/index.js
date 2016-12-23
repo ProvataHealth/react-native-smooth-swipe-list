@@ -31,11 +31,11 @@ export const RIGHT_GESTURE_ANGLE_RANGE = {
     MAX2: TOTAL_RIGHT_ANGLE2 + HORIZONTAL_ANGLE_THRESHOLD
 };
 
-// at what percentage of the sub view width should the swipe row be considered 'open'
 export const OPEN_POSITION_THRESHOLD_FACTOR = 0.4;
 export const CLOSE_POSITION_THRESHOLD_FACTOR = 0.3;
 export const MAX_OPEN_THRESHOLD = 60;
 export const OPEN_VELOCITY_THRESHOLD = 0.5;
+export const OPEN_TENSION_LENGTH = 30;
 
 export default {
     GESTURE_DISTANCE_THRESHOLD,
@@ -48,5 +48,6 @@ export default {
     OPEN_POSITION_THRESHOLD_FACTOR,
     CLOSE_POSITION_THRESHOLD_FACTOR,
     MAX_OPEN_THRESHOLD,
-    OPEN_VELOCITY_THRESHOLD
+    OPEN_VELOCITY_THRESHOLD,
+    OPEN_TENSION_LENGTH
 }

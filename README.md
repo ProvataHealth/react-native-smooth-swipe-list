@@ -88,6 +88,10 @@ const ListParent = React.createClass({
     * `fullWidth` - Will the view span the full width of the row *(default false)*
     * `closeOnClick` - Whether the row should close on a click if not followed by a valid gesture *(default true)*
   * `style` - Style to apply to the row root view
+* `gestureTensionParams` - Provide to tweak the tension of gestures
+  * `length` - The point at which tension will begin to be applied *(default subViewWidth)*
+  * `stretch` - How far past length the gesture can go *(default 1)*
+  * `resistanceStrength` The resistance of the gesture past length *(between 0-1, default 0.5)*
 * `scrollEnabled` Whether to allow scrolling the ListVIew *(default: true)*
 * `onScrollStateChange` - Hook for responding to scroll enabled (true) or disabled (false)
 * `rowStyle` - Style to apply to all rows root views
@@ -105,6 +109,10 @@ To be implemented:
 See [React Native PanResponder](https://facebook.github.io/react-native/docs/panresponder.html) for information about gesture events.
 
 ####Props
+* `gestureTensionParams` - Provide to tweak the tension of gestures
+  * `length` - The point at which tension will begin to be applied *(default subViewWidth)*
+  * `stretch` - How far past length the gesture can go *(default 1)*
+  * `resistanceStrength` The resistance of the gesture past length *(between 0-1, default 0.5)*
 * `swipeEnabled` - Where the row should respond to gestures
 * `onSwipeStart` - Called when a gesture starts
 * `onSwipeUpdate` - Called each update of the gesture after start and before end 

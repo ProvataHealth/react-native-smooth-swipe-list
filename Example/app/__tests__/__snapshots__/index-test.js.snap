@@ -1,33 +1,366 @@
 exports[`test renders Main correctly 1`] = `
-<ScrollView
-  dataSource={
-    ListViewDataSource {
-      "items": "unknown",
-    }
-  }
-  initialListSize={10}
-  onContentSizeChange={[Function]}
-  onEndReachedThreshold={1000}
-  onKeyboardDidHide={undefined}
-  onKeyboardDidShow={undefined}
-  onKeyboardWillHide={undefined}
-  onKeyboardWillShow={undefined}
-  onLayout={[Function]}
-  onScroll={[Function]}
-  pageSize={1}
-  removeClippedSubviews={true}
-  renderRow={[Function]}
-  scrollEnabled={true}
-  scrollEventThrottle={50}
-  scrollRenderAheadDistance={1000}
-  stickyHeaderIndices={Array []}
+<View
   style={
-    Array [
+    Object {
+      "alignItems": "center",
+      "bottom": 0,
+      "flexDirection": "column",
+      "justifyContent": "flex-start",
+      "left": 0,
+      "marginTop": 25,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    style={
       Object {
         "alignSelf": "stretch",
-        "backgroundColor": "rgb(111, 111, 111)",
-      },
-      undefined,
-    ]
-  } />
+        "color": "rgb(10, 110, 150)",
+        "fontSize": 22,
+        "paddingHorizontal": 25,
+        "paddingVertical": 10,
+        "textAlign": "center",
+      }
+    }>
+    Example List
+  </Text>
+  <View
+    style={
+      Object {
+        "alignSelf": "stretch",
+        "backgroundColor": "rgb(75, 75, 75)",
+        "flex": 1,
+      }
+    }>
+    <ScrollView
+      dataSource={
+        ListViewDataSource {
+          "items": 3,
+        }
+      }
+      enableEmptySections={true}
+      initialListSize={10}
+      onContentSizeChange={[Function]}
+      onEndReachedThreshold={1000}
+      onKeyboardDidHide={undefined}
+      onKeyboardDidShow={undefined}
+      onKeyboardWillHide={undefined}
+      onKeyboardWillShow={undefined}
+      onLayout={[Function]}
+      onScroll={[Function]}
+      pageSize={1}
+      removeClippedSubviews={true}
+      renderRow={[Function]}
+      scrollEnabled={true}
+      scrollEventThrottle={50}
+      scrollRenderAheadDistance={1000}
+      stickyHeaderIndices={Array []}
+      style={
+        Array [
+          Object {
+            "alignSelf": "stretch",
+            "backgroundColor": "rgb(111, 111, 111)",
+          },
+          undefined,
+        ]
+      }>
+      <View
+        style={
+          Array [
+            Object {
+              "alignSelf": "stretch",
+              "backgroundColor": "transparent",
+            },
+            Array [
+              Object {
+                "alignSelf": "stretch",
+                "backgroundColor": "#eee",
+                "height": 55,
+              },
+              undefined,
+            ],
+          ]
+        }>
+        <View
+          onMoveShouldSetResponder={[Function]}
+          onMoveShouldSetResponderCapture={[Function]}
+          onResponderEnd={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderReject={[Function]}
+          onResponderRelease={[Function]}
+          onResponderStart={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          onStartShouldSetResponderCapture={[Function]}
+          style={
+            Object {
+              "alignSelf": "stretch",
+            }
+          }>
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "alignSelf": "stretch",
+                "left": 0,
+                "top": 0,
+              }
+            }>
+            <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hitSlop={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                  },
+                  undefined,
+                ]
+              }
+              testID={undefined}>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "alignSelf": "stretch",
+                      "backgroundColor": "#fff",
+                      "borderBottomColor": "#eee",
+                      "borderBottomWidth": 1,
+                      "height": 55,
+                      "justifyContent": "center",
+                      "paddingHorizontal": 25,
+                    },
+                    undefined,
+                  ]
+                }>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  ellipsizeMode="tail"
+                  style={
+                    Object {
+                      "color": "#444",
+                    }
+                  }>
+                  List Item One
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignSelf": "stretch",
+              "backgroundColor": "transparent",
+            },
+            Array [
+              Object {
+                "alignSelf": "stretch",
+                "backgroundColor": "#eee",
+                "height": 55,
+              },
+              undefined,
+            ],
+          ]
+        }>
+        <View
+          onMoveShouldSetResponder={[Function]}
+          onMoveShouldSetResponderCapture={[Function]}
+          onResponderEnd={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderReject={[Function]}
+          onResponderRelease={[Function]}
+          onResponderStart={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          onStartShouldSetResponderCapture={[Function]}
+          style={
+            Object {
+              "alignSelf": "stretch",
+            }
+          }>
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "alignSelf": "stretch",
+                "left": 0,
+                "top": 0,
+              }
+            }>
+            <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hitSlop={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                  },
+                  undefined,
+                ]
+              }
+              testID={undefined}>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "alignSelf": "stretch",
+                      "backgroundColor": "#fff",
+                      "borderBottomColor": "#eee",
+                      "borderBottomWidth": 1,
+                      "height": 55,
+                      "justifyContent": "center",
+                      "paddingHorizontal": 25,
+                    },
+                    undefined,
+                  ]
+                }>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  ellipsizeMode="tail"
+                  style={
+                    Object {
+                      "color": "#444",
+                    }
+                  }>
+                  List Item Two
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignSelf": "stretch",
+              "backgroundColor": "transparent",
+            },
+            Array [
+              Object {
+                "alignSelf": "stretch",
+                "backgroundColor": "#eee",
+                "height": 55,
+              },
+              undefined,
+            ],
+          ]
+        }>
+        <View
+          onMoveShouldSetResponder={[Function]}
+          onMoveShouldSetResponderCapture={[Function]}
+          onResponderEnd={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderReject={[Function]}
+          onResponderRelease={[Function]}
+          onResponderStart={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          onStartShouldSetResponderCapture={[Function]}
+          style={
+            Object {
+              "alignSelf": "stretch",
+            }
+          }>
+          <View
+            pointerEvents="box-none"
+            style={
+              Object {
+                "alignSelf": "stretch",
+                "left": 0,
+                "top": 0,
+              }
+            }>
+            <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hitSlop={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                  },
+                  undefined,
+                ]
+              }
+              testID={undefined}>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "alignSelf": "stretch",
+                      "backgroundColor": "#fff",
+                      "borderBottomColor": "#eee",
+                      "borderBottomWidth": 1,
+                      "height": 55,
+                      "justifyContent": "center",
+                      "paddingHorizontal": 25,
+                    },
+                    undefined,
+                  ]
+                }>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  ellipsizeMode="tail"
+                  style={
+                    Object {
+                      "color": "#444",
+                    }
+                  }>
+                  List Item Three
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
+  </View>
+</View>
 `;

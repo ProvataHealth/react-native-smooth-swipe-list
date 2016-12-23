@@ -15,11 +15,16 @@ import {
 const SwipeList = React.createClass({
 
     propsTypes: {
+        rowData: PropTypes.array,
         style: View.propTypes.style,
         rowStyle: View.propTypes.style,
         scrollEnabled: PropTypes.bool,
         onScrollStateChange: PropTypes.bool,
-        rowData: PropTypes.array
+        gestureTensionParams: PropTypes.shape({
+            length: PropTypes.number,
+            stretch: PropTypes.number,
+            resistanceStrength: PropTypes.number
+        })
     },
 
     getDefaultProps() {
@@ -104,6 +109,7 @@ const SwipeList = React.createClass({
                       rightSubView={rowData.rightSubView}
                       leftSubViewOptions={rowData.leftSubViewOptions}
                       rightSubViewOptions={rowData.rightSubViewOptions}
+                      gestureTensionParams={this.props.gestureTensionParams}
                       blockChildEventsWhenOpen={rowData.blockChildEventsWhenOpen}
                       style={[this.props.rowStyle, rowData.style]}
                       onSwipeStart={this.handleSwipeStart}

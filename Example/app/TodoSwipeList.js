@@ -60,6 +60,7 @@ const TodoSwipeList = React.createClass({
         return (
             <View style={styles.swipeListContainer}>
                 <SwipeList rowData={this.rowData}
+                           gestureTensionParams={{ length: 1 }}
                            rowStyle={styles.row} />
             </View>
         );
