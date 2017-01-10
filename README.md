@@ -24,7 +24,7 @@ npm install --save @provata/react-native-smooth-swipe-list
 A `SwipeList` builds a `ListView.DataSource` from its `props.rowData`. The DataSource is primarily the views provided by `rowData` wrapped by a `SwipeRow`
 ```javascript
 ...
-import SwipeList from '@provata/react-native-smooth-swipe-list';
+import SwipeList from 'react-native-smooth-swipe-list';
 
 const ListParent = React.createClass({
     
