@@ -89,12 +89,14 @@ const ListParent = React.createClass({
     * `fullWidth` - Will the view span the full width of the row *(default false)*
     * `closeOnClick` - Whether the row should close on a click if not followed by a valid gesture *(default true)*
   * `style` - Style to apply to the row root view
+  * `props` - Any additional props you want to be set on the `SwipeRow`
 * `gestureTensionParams` - Provide to tweak the tension of gestures
-  * `length` - The point at which tension will begin to be applied *(default subViewWidth)*
+  * `threshold` - The point at which tension will begin to be applied *(default subViewWidth)*
   * `stretch` - How far past length the gesture can go *(default 1)*
   * `resistanceStrength` The resistance of the gesture past length *(between 0-1, default 0.5)*
 * `scrollEnabled` Whether to allow scrolling the ListVIew *(default: true)*
 * `onScrollStateChange` - Hook for responding to scroll enabled (true) or disabled (false)
+* `swipeRowProps` - Props to be set on all `SwipeRow`'s
 * `rowStyle` - Style to apply to all rows root views
 * `style` - Style applied to the ListView
 
@@ -111,22 +113,25 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 
 ####Props
 * `gestureTensionParams` - Provide to tweak the tension of gestures
-  * `length` - The point at which tension will begin to be applied *(default subViewWidth)*
+  * `threshold` - The point at which tension will begin to be applied *(default subViewWidth)*
   * `stretch` - How far past length the gesture can go *(default 1)*
   * `resistanceStrength` The resistance of the gesture past length *(between 0-1, default 0.5)*
 * `swipeEnabled` - Where the row should respond to gestures
+* `onGestureStart` - Called on initial gesture, before 'onSwipeStart'
 * `onSwipeStart` - Called when a gesture starts
 * `onSwipeUpdate` - Called each update of the gesture after start and before end 
 * `onSwipeEnd` - Called when the gesture ends
 * `onOpen` - Called when the row opens
 * `onClose` - Called when the row closes
 * `onCapture` - Called when a gesture capture happens
+* `shouldRowCaptureEvents` - Called to check whether to immediately capture gestures *(default false)*
 * `[left/right]SubView` - View to be rendered for left / right gestures
 * `[left/right]SubViewOptions` - Option for configuring left and right sub views
     * `fullWidth` - Will the view span the full width of the row *(default false)*
     * `closeOnClick` - Whether the row should close on a click if not followed by a valid gesture *(default true)*
 * `startOpen` - Whether the row should start open
 * `blockChildEventsWhenOpen` - If true will capture gesture events before they reach the rowView *(default: true)*
+* `closeOnPropUpdate` - Whether to close the row if new props come in *(default true)*
 
 ###Methods
 * `close(skipAnimation)` - Close row. *Optionally skip animating*

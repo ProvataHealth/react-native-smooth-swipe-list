@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { StyleSheet, View, ListView } from 'react-native';
+import { StyleSheet, View, ListView, TouchableWithoutFeedback } from 'react-native';
 import shallowCompare from 'react-addons-shallow-compare';
 
 import {
@@ -24,7 +24,8 @@ const SwipeList = React.createClass({
             length: PropTypes.number,
             stretch: PropTypes.number,
             resistanceStrength: PropTypes.number
-        })
+        }),
+        swipeRowProps: PropTypes.object
     },
 
     getDefaultProps() {
@@ -50,7 +51,7 @@ const SwipeList = React.createClass({
 
     componentWillReceiveProps(nextProps) {
         if (this.props.rowData !== nextProps.rowData) {
-            this.lastOpenRow = null;
+            this.openRowRef = null;
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(nextProps.rowData)
             });
@@ -58,7 +59,7 @@ const SwipeList = React.createClass({
     },
 
     handleSwipeStart(row, e, g) {
-        this.tryCloseOpenRow(row);
+        this.tryCloseLastOpenRow(row);
         this.listView && this.listView.setNativeProps({ scrollEnabled: false });
         this.props.onScrollStateChange(false);
     },
@@ -69,18 +70,23 @@ const SwipeList = React.createClass({
     },
 
     handleRowOpen(row) {
-        this.lastOpenRow = row;
+        this.openRowRef = row;
     },
 
-    tryCloseOpenRow(row) {
-        if (this.lastOpenRow !== row) {
-            this.lastOpenRow && this.lastOpenRow.close();
+    tryCloseLastOpenRow(row) {
+        if (this.openRowRef && this.openRowRef !== row) {
+            this.openRowRef.close();
+            this.openRowRef = null;
         }
     },
 
+    shouldRowCaptureEvents(row) {
+        return !!(this.openRowRef && this.openRowRef !== row);
+    },
+
     handleScroll() {
-        if (this.lastOpenRow && this.lastOpenRow.isOpen()) {
-            this.lastOpenRow.close();
+        if (this.openRowRef && this.openRowRef.isOpen()) {
+            this.openRowRef.close();
         }
     },
 
@@ -93,12 +99,12 @@ const SwipeList = React.createClass({
     render() {
         return (
             <ListView {...this.props} ref={this.setListViewRef}
-                      style={[styles.listView, this.props.style]}
-                      scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}
-                      onScroll={this.handleScroll}
-                      enableEmptySections
-                      dataSource={this.state.dataSource}
-                      renderRow={this.renderSwipeListItem} />
+                                      style={[styles.listView, this.props.style]}
+                                      scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}
+                                      onScroll={this.handleScroll}
+                                      enableEmptySections
+                                      dataSource={this.state.dataSource}
+                                      renderRow={this.renderSwipeListItem} />
         );
     },
 
@@ -111,10 +117,13 @@ const SwipeList = React.createClass({
                       rightSubViewOptions={rowData.rightSubViewOptions}
                       gestureTensionParams={this.props.gestureTensionParams}
                       blockChildEventsWhenOpen={rowData.blockChildEventsWhenOpen}
+                      shouldRowCaptureEvents={this.shouldRowCaptureEvents}
                       style={[this.props.rowStyle, rowData.style]}
                       onSwipeStart={this.handleSwipeStart}
                       onSwipeEnd={this.handleSwipeEnd}
-                      onOpen={this.handleRowOpen}>
+                      onOpen={this.handleRowOpen}
+                      {...this.props.swipeRowProps}
+                      {...rowData.props}>
                 {rowData.rowView}
             </SwipeRow>
         );
@@ -123,6 +132,9 @@ const SwipeList = React.createClass({
 
 
 const styles = StyleSheet.create({
+    container: {
+        alignSelf: 'stretch'
+    },
     listView: {
         alignSelf: 'stretch',
         backgroundColor: 'rgb(111, 111, 111)'

@@ -23,7 +23,7 @@ import {
     CLOSE_POSITION_THRESHOLD_FACTOR,
     OPEN_VELOCITY_THRESHOLD,
     MAX_OPEN_THRESHOLD,
-    OPEN_TENSION_LENGTH
+    OPEN_TENSION_THRESHOLD
 } from '../constants';
 import HorizontalGestureResponder from './HorizontalGestureResponder';
 import isFinite from 'lodash/isFinite';
@@ -44,10 +44,11 @@ const SwipeRow = React.createClass({
         style: View.propTypes.style,
         rowViewStyle: View.propTypes.style,
         gestureTensionParams: PropTypes.shape({
-            length: PropTypes.number,
+            threshold: PropTypes.number,
             stretch: PropTypes.number,
             resistanceStrength: PropTypes.number
         }),
+        onGestureStart: PropTypes.func,
         swipeEnabled: PropTypes.bool,
         onSwipeStart: PropTypes.func,
         onSwipeUpdate: PropTypes.func,
@@ -60,7 +61,9 @@ const SwipeRow = React.createClass({
         leftSubViewOptions: PropTypes.shape(SubViewOptionsShape),
         rightSubViewOptions: PropTypes.shape(SubViewOptionsShape),
         startOpen: PropTypes.bool,
-        blockChildEventsWhenOpen: PropTypes.bool
+        blockChildEventsWhenOpen: PropTypes.bool,
+        shouldRowCaptureEvents: PropTypes.func,
+        closeOnPropUpdate: PropTypes.bool
     },
 
     getDefaultProps() {
@@ -69,7 +72,10 @@ const SwipeRow = React.createClass({
             blockChildEventsWhenOpen: true,
             leftSubViewOptions: defaultSubViewOptions,
             rightSubViewOptions: defaultSubViewOptions,
+            closeOnPropUpdate: true,
             gestureTensionParams: {},
+            shouldRowCaptureEvents: () => false,
+            onGestureStart: () => {},
             onSwipeStart: () => {},
             onSwipeUpdate: () => {},
             onSwipeEnd: () => {},
@@ -87,7 +93,7 @@ const SwipeRow = React.createClass({
     },
 
     componentWillReceiveProps(nextProps) {
-        this.close();
+        this.props.closeOnPropUpdate && this.close();
     },
 
     componentWillUnmount() {
@@ -156,12 +162,7 @@ const SwipeRow = React.createClass({
         let relativeDX;
         if (this.state.activeSide === 'left') {
             relativeDX = dx + this.state.leftSubViewWidth;
-            if (relativeDX >= 0) {
-                //dx = this.state.open ? dx *
-            }
-            else {
-                dx = -this.state.leftSubViewWidth;
-            }
+            dx = relativeDX >= 0 ? dx : -this.state.leftSubViewWidth;
             this.setPanPosition(dx);
         }
         else if (this.state.activeSide === 'right') {
@@ -174,8 +175,10 @@ const SwipeRow = React.createClass({
     setPanPosition(dx) {
         if (isFinite(dx)) {
             let tensionParams = this.props.gestureTensionParams;
-            let tensionLength = this.state.open ? OPEN_TENSION_LENGTH: tensionParams.length || this.getActiveSubViewWidth();
-            dx = applySimpleTension(dx, tensionLength, tensionParams.stretch, tensionParams.resistanceStrength);
+            let tensionThreshold = this.state.open
+                ? OPEN_TENSION_THRESHOLD
+                : (tensionParams.threshold || this.getActiveSubViewWidth());
+            dx = applySimpleTension(dx, tensionThreshold, tensionParams.stretch, tensionParams.resistanceStrength);
             this.state.pan.setValue({ x: dx, y: 0 });
         }
     },
@@ -233,27 +236,6 @@ const SwipeRow = React.createClass({
         return Math.abs(dx) >= threshold;
     },
 
-    animateOpenOrClose(toValue, vx, noBounce) {
-        let isOpen = toValue !== 0;
-        Animated.spring(
-            this.state.pan,
-            {
-                toValue: { x: toValue, y: 0 },
-                velocity: vx,
-                friction: noBounce ? 8 : 4,
-                tension: 22 * Math.abs(vx)
-            }
-        ).start(() => {
-            this.setState({
-                activeSide: isOpen ? this.state.activeSide : null
-            });
-        });
-        this.setState({
-            open: isOpen
-        });
-        isOpen ? this.props.onOpen(this) : this.props.onClose(this);
-    },
-
     close(skipAnimation) {
         if (this.state.open) {
             this.clearCloseTimeout();
@@ -283,6 +265,29 @@ const SwipeRow = React.createClass({
             }
             this.props.onOpen(this);
         }
+    },
+
+    animateOpenOrClose(toValue, vx, noBounce) {
+        let isOpen = toValue !== 0;
+        Animated.spring(
+            this.state.pan,
+            {
+                toValue: { x: toValue, y: 0 },
+                velocity: vx,
+                friction: noBounce ? 8 : 4,
+                tension: 22 * Math.abs(vx)
+            }
+        ).start(() => {
+            if (this.state.pan.x._value === 0) {
+                this.setState({
+                    activeSide: isOpen ? this.state.activeSide : null
+                });
+            }
+        });
+        this.setState({
+            open: isOpen
+        });
+        isOpen ? this.props.onOpen(this) : this.props.onClose(this);
     },
 
     isOpen() {
@@ -323,7 +328,8 @@ const SwipeRow = React.createClass({
         return !!(this.props.leftSubView || this.props.rightSubView) && this.props.swipeEnabled;
     },
 
-    checkSetCloseTimeout() {
+    checkSetCloseTimeout(e, g) {
+        this.props.onGestureStart(this, e, g);
         if (this.state.open && this.shouldCloseOnClick()) {
             // if the row is open and a gesture comes in and isn't followed by an
             // onResponderStart call we want to close the row
@@ -339,8 +345,13 @@ const SwipeRow = React.createClass({
     },
 
     shouldCloseOnClick() {
-        let isLeft = this.state.activeSide === 'left';
-        return isLeft ? this.props.leftSubViewOptions.closeOnClick : this.props.rightSubViewOptions.closeOnClick;
+        return this.state.activeSide === 'left'
+            ? this.props.leftSubViewOptions.closeOnClick
+            : this.props.rightSubViewOptions.closeOnClick;
+    },
+
+    shouldCaptureEvents() {
+        return this.props.shouldRowCaptureEvents(this);
     },
 
     render() {
@@ -348,6 +359,7 @@ const SwipeRow = React.createClass({
             <View style={[styles.container, this.props.style]}>
                 <HorizontalGestureResponder style={[styles.containerInner]}
                                             enabled={this.isSwipeable()}
+                                            shouldSetResponderCapture={this.shouldCaptureEvents}
                                             onGestureStart={this.checkSetCloseTimeout}
                                             onResponderStart={this.onSwipeStart}
                                             onResponderEnd={this.onSwipeEnd}
@@ -363,7 +375,7 @@ const SwipeRow = React.createClass({
     },
 
     getRowPointerEvents() {
-        return this.state.open && this.props.blockChildEventsWhenOpen ? 'none' : 'box-none';
+        return (this.state.open && this.props.blockChildEventsWhenOpen) ? 'none' : 'box-none';
     },
 
     renderSubView() {
