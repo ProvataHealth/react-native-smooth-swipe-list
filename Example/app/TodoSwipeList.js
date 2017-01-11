@@ -8,7 +8,7 @@ import { COLORS } from './constants';
 import ListItem from './components/ListItem';
 import ListItemButton from './components/ListItemButton';
 import FullWidthSubItem from './components/FullWidthSubItem';
-import SwipeList from '@provata/react-native-smooth-swipe-list';
+import SwipeList from 'react-native-smooth-swipe-list';
 
 
 
