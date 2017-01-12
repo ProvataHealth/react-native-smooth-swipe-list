@@ -17,7 +17,8 @@ const TodoSwipeList = React.createClass({
     propTypes: {
         todos: PropTypes.instanceOf(TodoCollection).isRequired,
         toggleTodoComplete: PropTypes.func.isRequired,
-        archiveTodo: PropTypes.func.isRequired
+        archiveTodo: PropTypes.func.isRequired,
+        addTodo: PropTypes.func.isRequired
     },
 
     componentWillMount() {
@@ -51,15 +52,20 @@ const TodoSwipeList = React.createClass({
         console.log('row pressed...');
     },
 
-    addTodo() {
-        console.log('add todo');
+    tryCloseOpenRow() {
+        this.swipeList && this.swipeList.tryCloseOpenRow();
+    },
+
+    setSwipeListRef(component) {
+        this.swipeList = component;
     },
 
     render() {
         return (
             <View style={styles.swipeListContainer}>
                 {this.renderAddButton()}
-                <SwipeList rowData={this.rowData}
+                <SwipeList ref={this.setSwipeListRef}
+                           rowData={this.rowData}
                            style={styles.list}
                            rowStyle={styles.row} />
             </View>
@@ -71,7 +77,7 @@ const TodoSwipeList = React.createClass({
             <ListItem style={styles.addButton}
                       title="Add Todo"
                       textStyle={styles.addButtonText}
-                      onPress={this.addTodo} />
+                      onPress={this.props.addTodo} />
         );
     },
 

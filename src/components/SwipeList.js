@@ -111,7 +111,7 @@ const SwipeList = React.createClass({
     },
 
     handleSwipeStart(row, e, g) {
-        this.tryCloseLastOpenRow(row);
+        this.tryCloseOpenRow(row);
         this.listView && this.listView.setNativeProps({ scrollEnabled: false });
         this.props.onScrollStateChange(false);
     },
@@ -125,7 +125,7 @@ const SwipeList = React.createClass({
         this.openRowRef = row;
     },
 
-    tryCloseLastOpenRow(row) {
+    tryCloseOpenRow(row) {
         if (this.openRowRef && this.openRowRef !== row) {
             this.openRowRef.close();
             this.openRowRef = null;

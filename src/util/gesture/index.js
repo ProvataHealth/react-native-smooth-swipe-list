@@ -5,5 +5,3 @@ export { default as isValidHorizontalGestureSpeed } from './isValidHorizontalGes
 export { default as isValidGestureDistance } from './isValidGestureDistance';
 export { default as isValidHorizontalGesture } from './isValidHorizontalGesture';
 export { default as isValidVelocity } from './isValidVelocity';
-export { default as normalizeVelocity } from './normalizeVelocity';
-
