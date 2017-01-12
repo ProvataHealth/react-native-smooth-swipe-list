@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
+import { FullWidthSubItem } from '../../../components';
 
-const FullWidthSubItem = React.createClass({
+const TodoSubItem = React.createClass({
 
     onItemPress() {
         console.log('item pressed');
@@ -10,17 +11,17 @@ const FullWidthSubItem = React.createClass({
 
     render() {
         return (
-            <View style={styles.itemsContainer}>
+            <FullWidthSubItem style={styles.container}>
                 {this.renderItems()}
-            </View>
+            </FullWidthSubItem>
         );
     },
 
     renderItems() {
-        return ['One', 'Two', 'Three'].map((item) => {
+        return ['Step One', 'Step Two', 'Step Three'].map((item) => {
             return (
                 <TouchableOpacity key={item} onPress={() => this.onItemPress(item)}>
-                    <View style={styles.activityItem}>
+                    <View style={styles.item}>
                         <Text>
                             {item}
                         </Text>
@@ -33,32 +34,16 @@ const FullWidthSubItem = React.createClass({
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'stretch',
-        paddingHorizontal: 25
-    },
-    itemsContainer: {
-        flex: 1,
-        alignSelf: 'stretch',
         justifyContent: 'space-around',
         flexDirection: 'row'
     },
-    activityItem: {
+    item: {
         flex: 1,
         alignSelf: 'stretch',
         marginHorizontal: 5,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    iconContainer: {
-        marginBottom: 10
-    },
-    activityLabel: {
-        textAlign: 'center'
     }
 });
 
-export default FullWidthSubItem;
+export default TodoSubItem;

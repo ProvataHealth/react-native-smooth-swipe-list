@@ -3,8 +3,8 @@ import Immutable from 'immutable';
 
 class Todo {
 
-    constructor(data = {}) {
-        this.data = new Immutable.Map(data);
+    constructor(data) {
+        this.data = data instanceof Immutable.Map ? data : new Immutable.Map(data);
     }
 
     getId() {

@@ -1,6 +1,6 @@
 # react-native-smooth-swipe-list
 
-#### A better swipe-able ListView
+#### A swipe-able `ListView` component modeled after the list view in the iOS Mail app.
 
 ## Example
 gifs coming soon...
@@ -47,7 +47,7 @@ const ListParent = React.createClass({
     
     constructRowData(todo) {
         return {
-            key: todo.id,
+            todoId: todo.id,
             rowView: this.getRowView(todo),
             leftSubView: this.getMarkCompleteButton(), //optional
             rightSubView: this.getArchiveButton(), //optional
@@ -82,7 +82,7 @@ const ListParent = React.createClass({
 ####Props
 * [ListView props...](https://facebook.github.io/react-native/docs/listview.html)
 * `rowData` - Object with the follow properties:
-  * `key` - Key to assign to the row *(default: rowData index)*
+  * `id`(required) - Used to identify the rowData
   * `rowView`(required) - View to use as the row face
   * `[left/right]SubView` - View to show when swiping left or right
   * `[left/right]leftSubViewOptions` - Options to customize left and right subviews
@@ -112,6 +112,9 @@ To be implemented:
 See [React Native PanResponder](https://facebook.github.io/react-native/docs/panresponder.html) for information about gesture events.
 
 ####Props
+* `id` - id of the rows data
+* `style` - Style to apply to the row container
+* `rowViewStyle` - Style to apply the the inner row view
 * `gestureTensionParams` - Provide to tweak the tension of gestures
   * `threshold` - The point at which tension will begin to be applied *(default subViewWidth)*
   * `stretch` - How far past length the gesture can go *(default 1)*
@@ -132,6 +135,7 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 * `startOpen` - Whether the row should start open
 * `blockChildEventsWhenOpen` - If true will capture gesture events before they reach the rowView *(default: true)*
 * `closeOnPropUpdate` - Whether to close the row if new props come in *(default true)*
+* `animateRemoveSpeed` - Speed (ms) at which to animate the row when it is removed *(default: 150ms)*
 
 ###Methods
 * `close(skipAnimation)` - Close row. *Optionally skip animating*
@@ -141,8 +145,8 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 - [x] Support left/right sub views of arbitrary size
 - [x] Support basic inertia
 - [x] Minimize the number of renders / updates
+- [x] Animate removal of SwipeRows from SwipeList
 - [ ] Passing left/right button props instead of views for ease of use
 - [ ] Multi sub view staggered position translation
 - [ ] Passing pan information to sub views (e.g. for animating icons, bg color, etc)
-- [ ] Animate add/remove of SwipeRows from SwipeList
 - [ ] Improve gesture inertia

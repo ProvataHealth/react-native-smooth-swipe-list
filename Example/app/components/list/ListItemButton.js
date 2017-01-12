@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import { COLORS } from '../constants';
+import { color } from '../../constants';
+
 
 const ListItemButton = (props) => (
     <TouchableOpacity onPress={props.onPress}>
@@ -13,9 +14,10 @@ const ListItemButton = (props) => (
     </TouchableOpacity>
 );
 
-function getBackgroundStyle(color) {
-    return color ? { backgroundColor: COLORS[color] } : {};
+function getBackgroundStyle(colorKey) {
+    return colorKey ? { backgroundColor: color[colorKey] } : {};
 }
+
 ListItemButton.propTypes = {
     onPress: PropTypes.func
 };
@@ -32,8 +34,9 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch'
     },
     text: {
-        color: '#fff'
+        color: color.LIGHT
     }
 });
+
 
 export default ListItemButton;

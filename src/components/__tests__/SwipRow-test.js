@@ -10,7 +10,7 @@ describe('SwipeRow', () => {
 
     it('renders correctly 1', () => {
         const tree = renderer.create(
-            <SwipeRow style={{ height: 10 }}>
+            <SwipeRow style={{ height: 10 }} id={1}>
                 <Text>
                     Child Component
                 </Text>

@@ -1,14 +1,14 @@
 import Immutable from 'immutable';
 import Todo from './Todo';
-import find from 'lodash';
-import findIndex from 'lodash';
-import filter from 'lodash';
+import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
+import filter from 'lodash/filter';
 
 class TodoCollection {
 
     constructor(items = []) {
-        if (items instanceof Immutable.Collection) {
-            this.items = Immutable.List(items);
+        if (items instanceof Immutable.List) {
+            this.items = items;
         }
         else {
             this.items = new Immutable.fromJS(items.map(this._wrapItemWithTodo));
@@ -24,47 +24,47 @@ class TodoCollection {
     }
 
     getById(id) {
-        return find(this.items, item => item.get() === id);
+        return find(this.items.toArray(), item => item.get() === id);
     }
 
     putById(id, item) {
         if (!item) {
             return this;
         }
-        let index = findIndex(this.items, (item) => {
+        let index = findIndex(this.items.toArray(), (item) => {
             return item.getId() === id;
         });
-        item = (item instanceof Immutable.Map) ? item : this._wrapItemWithTodo(item);
-        return new TodoCollection(index ? this.items.set(index, item) : this.push(item));
+        item = (item instanceof Todo) ? item : this._wrapItemWithTodo(item);
+        return index >= 0 ? this.set(index, item) : this.push(item);
     }
 
     set(index, item) {
         if (!item) {
             return this;
         }
-        if (item instanceof Immutable.Map) {
+        if (item instanceof Todo) {
             return new TodoCollection(this.items.set(index, item));
         }
         return new TodoCollection(this.items.set(index, this._wrapItemWithTodo(item)));
     }
 
     filterComplete() {
-        let items = filter(this.items,(item) => item.complete) || [];
+        let items = filter(this.items.toArray(),(item) => item.complete) || [];
         return new TodoCollection(items);
     }
 
     filterIncomplete() {
-        let items = filter(this.items,(item) => !item.complete) || [];
+        let items = filter(this.items.toArray(),(item) => !item.complete) || [];
         return new TodoCollection(items);
     }
 
     filterArchived() {
-        let items = filter(this.items,(item) => item.archived) || [];
+        let items = filter(this.items.toArray(),(item) => item.archived) || [];
         return new TodoCollection(items);
     }
 
     filterBy(predicate) {
-        let items = filter(this.items, predicate);
+        let items = filter(this.items.toArray(), predicate);
         if (items) {
             new TodoCollection(items);
         }
@@ -78,7 +78,7 @@ class TodoCollection {
     }
 
     deleteBy(predicate) {
-        let index = findIndex(this.items, predicate);
+        let index = findIndex(this.items.toArray(), predicate);
         if (index) {
             return new TodoCollection(this.items.delete(index));
         }
@@ -94,7 +94,7 @@ class TodoCollection {
         if (!item) {
             return this;
         }
-        if (item instanceof Immutable.Map) {
+        if (item instanceof Todo) {
             return new TodoCollection(this.items.push(item));
         }
         return new TodoCollection(this.items.push(this._wrapItemWithTodo(item)));
