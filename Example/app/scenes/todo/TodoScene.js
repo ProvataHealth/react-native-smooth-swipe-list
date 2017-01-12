@@ -1,9 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import times from 'lodash/times';
 
 import { Todo, TodoCollection } from '../../models';
 import { TodoSwipeList, TodoDetails } from './components'
 
+const INITIAL_TODO_COUNT = 15;
+const TITLES = ['Sleep', 'Write Code', 'Eat'];
+const INITIAL_TODOS = times(INITIAL_TODO_COUNT, (i) => {
+    return {
+        id: i + 1,
+        title: TITLES[(i + 1) % 3],
+        completed: false,
+        archived: false
+    };
+});
 
 const TodoScene = React.createClass({
 
@@ -11,27 +22,8 @@ const TodoScene = React.createClass({
         // using this component's state as a store for simplicity sake
         return {
             activeTodo: null,
-            todoCount: 1,
-            todos: new TodoCollection([
-                {
-                    id: 1,
-                    title: 'Write Code',
-                    complete: false,
-                    archived: false
-                },
-                {
-                    id: 2,
-                    title: 'Make a Sandwich',
-                    complete: false,
-                    archived: false
-                },
-                {
-                    id: 3,
-                    title: 'Write More Code',
-                    complete: false,
-                    archived: false
-                }
-            ])
+            todoCount: INITIAL_TODO_COUNT,
+            todos: new TodoCollection(INITIAL_TODOS)
         };
     },
 
@@ -47,25 +39,37 @@ const TodoScene = React.createClass({
         this.setState({
             todos: this.state.todos.putById(updatedTodo.getId(), updatedTodo)
         });
+        this.tryCloseSwipeRow();
     },
 
-    createTodo(title, description) {
+    addTodo() {
         let count = this.state.todoCount + 1;
         this.setState({
             todoCount: count,
-            todos: this.state.todos.push({
+            todos: this.state.todos.unshift({
                 id: count,
-                title,
-                description,
+                title: 'A New Todo',
                 complete: false,
                 archived: false
             })
         });
+        this.tryCloseSwipeRow();
+    },
+
+    tryCloseSwipeRow() {
+        this.swipeList && this.swipeList.tryCloseOpenRow();
+    },
+
+    setSwipeListRef(component) {
+        this.swipeList = component;
     },
 
     render() {
         return (
             <View style={styles.container}>
+                <Text style={styles.header}>
+                    Swipe List Example
+                </Text>
                 {this.renderActiveView()}
             </View>
         );
@@ -76,7 +80,9 @@ const TodoScene = React.createClass({
             return <TodoDetails todo={this.state.activeTodo} />;
         }
         return (
-            <TodoSwipeList todos={this.state.todos}
+            <TodoSwipeList ref={this.setSwipeListRef}
+                           todos={this.state.todos}
+                           addTodo={this.addTodo}
                            archiveTodo={this.archiveTodo}
                            toggleTodoComplete={this.toggleTodoComplete} />
         );
@@ -92,8 +98,12 @@ const styles = StyleSheet.create({
         left: 0,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        marginTop: 25
+        justifyContent: 'flex-start'
+    },
+    header: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 15
     }
 });
 

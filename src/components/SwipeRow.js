@@ -9,7 +9,6 @@ import {
 
 import {
     applySimpleTension,
-    normalizeVelocity,
     isValidHorizontalGestureAngle,
     isValidHorizontalGesture
 } from '../util/gesture';
@@ -166,7 +165,6 @@ const SwipeRow = React.createClass({
         let { dx, vx } = g;
         this.props.onSwipeEnd(this, e, g);
         this.state.pan.flattenOffset();
-        vx = normalizeVelocity(vx);
         if (this.state.open) {
             this.checkAnimateOpenOrClose(dx, vx);
         }

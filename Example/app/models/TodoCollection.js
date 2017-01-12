@@ -100,6 +100,16 @@ class TodoCollection {
         return new TodoCollection(this.items.push(this._wrapItemWithTodo(item)));
     }
 
+    unshift(item) {
+        if (!item) {
+            return this;
+        }
+        if (item instanceof Todo) {
+            return new TodoCollection(this.items.unshift(item));
+        }
+        return new TodoCollection(this.items.unshift(this._wrapItemWithTodo(item)));
+    }
+
     _wrapItemWithTodo(item) {
         return new Todo(item);
     }
