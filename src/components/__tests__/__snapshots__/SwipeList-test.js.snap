@@ -15,6 +15,7 @@ exports[`SwipeList renders correctly 1 1`] = `
   onKeyboardWillShow={undefined}
   onLayout={[Function]}
   onScroll={[Function]}
+  onScrollStateChange={[Function]}
   pageSize={1}
   removeClippedSubviews={true}
   renderRow={[Function]}

@@ -1,15 +1,12 @@
 exports[`SwipeRow renders correctly 1 1`] = `
 <View
+  onLayout={[Function]}
   style={
-    Array [
-      Object {
-        "alignSelf": "stretch",
-        "backgroundColor": "transparent",
-      },
-      Object {
-        "height": 10,
-      },
-    ]
+    Object {
+      "alignSelf": "stretch",
+      "backgroundColor": "transparent",
+      "height": 10,
+    }
   }>
   <View
     style={
