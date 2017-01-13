@@ -1,7 +1,6 @@
 import isValidVelocity from '../isValidVelocity';
 
 jest.unmock('../isValidVelocity');
-jest.mock('../normalizeVelocity');
 
 describe('isValidVelocity', () => {
     it('returns true if over threshold', () => {

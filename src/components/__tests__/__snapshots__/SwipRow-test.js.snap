@@ -1,6 +1,7 @@
 exports[`SwipeRow renders correctly 1 1`] = `
 <View
   onLayout={[Function]}
+  onStartShouldSetResponderCapture={[Function]}
   style={
     Object {
       "alignSelf": "stretch",

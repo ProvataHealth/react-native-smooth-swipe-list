@@ -9,8 +9,7 @@ import { TodoCollection } from '../../../models';
 import { color } from '../../../constants';
 import { ListItem, ListItemButton } from '../../../components';
 import TodoSubItem from './TodoSubItem';
-//import SwipeList from 'react-native-smooth-swipe-list';
-import SwipeList from '../../../../src/components/SwipeList';
+import SwipeList from 'react-native-smooth-swipe-list';
 
 
 const TodoSwipeList = React.createClass({
