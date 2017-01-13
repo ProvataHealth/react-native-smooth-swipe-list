@@ -3,7 +3,7 @@
 #### A swipe-able ListView component modeled after the list view in the iOS Mail app.
 
 ## Example
-gifs coming soon...
+![example gif](https://github.com/ProvataHealth/react-native-smooth-swipe-list/blob/master/Example/assets/capture.gif)
 
 #### Running example
 ```bash
@@ -15,7 +15,6 @@ react-native run-ios #or react-native run-android
 ```
 
 ## Installation
-*note: you must be logged into an npmuser with proper permissions to access @provata*
 ```bash
 npm install --save react-native-smooth-swipe-list
 ```
