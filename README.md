@@ -1,6 +1,6 @@
 # react-native-smooth-swipe-list
 
-#### A swipe-able `ListView` component modeled after the list view in the iOS Mail app.
+#### A swipe-able ListView component modeled after the list view in the iOS Mail app.
 
 ## Example
 gifs coming soon...
@@ -17,7 +17,7 @@ react-native run-ios #or react-native run-android
 ## Installation
 *note: you must be logged into an npmuser with proper permissions to access @provata*
 ```bash
-npm install --save @provata/react-native-smooth-swipe-list
+npm install --save react-native-smooth-swipe-list
 ```
 
 ## Usage
@@ -47,7 +47,7 @@ const ListParent = React.createClass({
     
     constructRowData(todo) {
         return {
-            todoId: todo.id,
+            id: todo.id,
             rowView: this.getRowView(todo),
             leftSubView: this.getMarkCompleteButton(), //optional
             rightSubView: this.getArchiveButton(), //optional
@@ -127,7 +127,6 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 * `onOpen` - Called when the row opens
 * `onClose` - Called when the row closes
 * `onCapture` - Called when a gesture capture happens
-* `shouldRowCaptureEvents` - Called to check whether to immediately capture gestures *(default false)*
 * `[left/right]SubView` - View to be rendered for left / right gestures
 * `[left/right]SubViewOptions` - Option for configuring left and right sub views
     * `fullWidth` - Will the view span the full width of the row *(default false)*
@@ -146,6 +145,7 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 - [x] Support basic inertia
 - [x] Minimize the number of renders / updates
 - [x] Animate removal of SwipeRows from SwipeList
+- [x] Animate adding of SwipeRows to SwipeList
 - [ ] Passing left/right button props instead of views for ease of use
 - [ ] Multi sub view staggered position translation
 - [ ] Passing pan information to sub views (e.g. for animating icons, bg color, etc)

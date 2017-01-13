@@ -3,6 +3,7 @@ import { StyleSheet, View, ListView, TouchableWithoutFeedback } from 'react-nati
 import shallowCompare from 'react-addons-shallow-compare';
 import reduce from 'lodash/reduce';
 import every from 'lodash/every';
+import some from 'lodash/some';
 import map from 'lodash/map';
 
 import {
@@ -74,33 +75,51 @@ const SwipeList = React.createClass({
         if (this.props.rowData !== nextProps.rowData) {
             this.openRowRef = null;
             this.checkAnimateRemoveRow(nextProps.rowData);
+            this.checkAnimateAddRow(nextProps.rowData);
         }
     },
 
-    checkAnimateRemoveRow(nextRowData) {
-        let numRemoved = 0;
-        let indexesToRemove = reduce(this.props.rowData, (result, data, i) => {
-            let nextData = nextRowData[i - numRemoved];
-            let shouldRemove = !nextData || nextData.id !== data.id;
-            if (shouldRemove) {
-                numRemoved += 1;
-                return result.concat([i]);
-            }
-            return result;
-        }, []);
-        let rowRefs = map(indexesToRemove, (index) => {
-            let secId = this.state.dataSource.getSectionIDForFlatIndex(index);
-            let rowId = this.state.dataSource.getRowIDForFlatIndex(index);
-            return getRefKeyForRow(secId, rowId);
-        });
-        if (rowRefs.length) {
-            rowRefs.forEach(ref => {
-                let component = this.rowRefs[ref];
-                component && component.animateOut(() => this.updateDataSource(nextRowData));
+    checkAnimateRemoveRow(nextRowData = []) {
+        if (this.props.rowData && (nextRowData.length < this.props.rowData.length)) {
+            let numRemoved = 0;
+            let indexesToRemove = reduce(this.props.rowData, (result, data, i) => {
+                let nextData = nextRowData[i - numRemoved];
+                let shouldRemove = !nextData || nextData.id !== data.id;
+                if (shouldRemove) {
+                    numRemoved += 1;
+                    return result.concat([i]);
+                }
+                return result;
+            }, []);
+            let rowRefs = map(indexesToRemove, (index) => {
+                let secId = this.state.dataSource.getSectionIDForFlatIndex(index);
+                let rowId = this.state.dataSource.getRowIDForFlatIndex(index);
+                return getRefKeyForRow(secId, rowId);
             });
+            if (rowRefs.length) {
+                rowRefs.forEach(ref => {
+                    let component = this.rowRefs[ref];
+                    component && component.animateOut(() => this.updateDataSource(nextRowData));
+                });
+            }
         }
         else {
             this.updateDataSource(nextRowData);
+        }
+    },
+
+    checkAnimateAddRow(nextRowData = []) {
+        let rowsAdded = this.props.rowData ? nextRowData.length - this.props.rowData.length : nextRowData.length;
+        if (rowsAdded > 0) {
+            nextRowData.forEach((nextData) => {
+                let existing = some(this.props.rowData, (prevData) => {
+                    return prevData.id === nextData.id;
+                });
+
+                if (!existing) {
+                    nextData.isNew = true;
+                }
+            })
         }
     },
 
@@ -125,6 +144,10 @@ const SwipeList = React.createClass({
         this.openRowRef = row;
     },
 
+    handleRowClose() {
+        this.openRowRef = null;
+    },
+
     tryCloseOpenRow(row) {
         if (this.openRowRef && this.openRowRef !== row) {
             this.openRowRef.close();
@@ -132,13 +155,14 @@ const SwipeList = React.createClass({
         }
     },
 
-    shouldRowCaptureEvents(row) {
+    isAnotherRowOpen(row) {
         return !!(this.openRowRef && this.openRowRef !== row);
     },
 
     handleScroll() {
         if (this.openRowRef && this.openRowRef.isOpen()) {
             this.openRowRef.close();
+            this.openRowRef = null;
         }
     },
 
@@ -169,17 +193,20 @@ const SwipeList = React.createClass({
         return (
             <SwipeRow ref={(component) => this.setRowRef(component, sectionId, rowId)}
                       id={rowData.id}
+                      animateAdd={rowData.isNew}
                       leftSubView={rowData.leftSubView}
                       rightSubView={rowData.rightSubView}
                       leftSubViewOptions={rowData.leftSubViewOptions}
                       rightSubViewOptions={rowData.rightSubViewOptions}
                       gestureTensionParams={this.props.gestureTensionParams}
                       blockChildEventsWhenOpen={rowData.blockChildEventsWhenOpen}
-                      shouldRowCaptureEvents={this.shouldRowCaptureEvents}
+                      isAnotherRowOpen={this.isAnotherRowOpen}
+                      tryCloseOpenRow={this.tryCloseOpenRow}
                       style={[this.props.rowStyle, rowData.style]}
                       onSwipeStart={this.handleSwipeStart}
                       onSwipeEnd={this.handleSwipeEnd}
                       onOpen={this.handleRowOpen}
+                      onClose={this.handleRowClose}
                       {...this.props.swipeRowProps}
                       {...rowData.props}>
                 {rowData.rowView}
