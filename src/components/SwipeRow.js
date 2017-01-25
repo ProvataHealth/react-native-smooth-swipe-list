@@ -120,12 +120,6 @@ const SwipeRow = React.createClass({
             this.clearCloseTimeout();
             this.resetState();
         }
-        else {
-            //this.setState({
-            //    leftSubViewWidth: null,
-            //    rightSubViewWidth: null
-            //});
-        }
         this.props.closeOnPropUpdate && this.close();
     },
 

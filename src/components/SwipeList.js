@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { StyleSheet, View, ListView, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, ListView, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import shallowCompare from 'react-addons-shallow-compare';
 import reduce from 'lodash/reduce';
 import every from 'lodash/every';
@@ -43,6 +43,7 @@ const SwipeList = React.createClass({
             stretch: PropTypes.number,
             resistanceStrength: PropTypes.number
         }),
+        isScrollView: PropTypes.bool,
         swipeRowProps: PropTypes.object
     },
 
@@ -54,8 +55,14 @@ const SwipeList = React.createClass({
     },
 
     getInitialState() {
-        let ds = new ListView.DataSource({ rowHasChanged: (prevData, nextData) => prevData !== nextData });
-        ds = this.props.rowData ? ds.cloneWithRows(this.props.rowData) : ds;
+        let ds;
+        if (!this.props.isScrollView) {
+            ds = new ListView.DataSource({ rowHasChanged: (prevData, nextData) => prevData !== nextData });
+            ds = this.props.rowData ? ds.cloneWithRows(this.props.rowData) : ds;
+        }
+        else {
+            ds = this.props.rowData;
+        }
 
         return {
             scrollEnabled: this.props.scrollEnabled,
@@ -92,6 +99,10 @@ const SwipeList = React.createClass({
                 return result;
             }, []);
             let rowRefs = map(indexesToRemove, (index) => {
+                if (this.props.isScrollView) {
+                    let rowData = this.state.dataSource[index];
+                    return getRefKeyForRow('s1', rowData.id);
+                }
                 let secId = this.state.dataSource.getSectionIDForFlatIndex(index);
                 let rowId = this.state.dataSource.getRowIDForFlatIndex(index);
                 return getRefKeyForRow(secId, rowId);
@@ -124,8 +135,9 @@ const SwipeList = React.createClass({
     },
 
     updateDataSource(nextRowData) {
+        let ds = this.props.isScrollView ? nextRowData : this.state.dataSource.cloneWithRows(nextRowData);
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(nextRowData)
+            dataSource: ds
         });
     },
 
@@ -177,6 +189,17 @@ const SwipeList = React.createClass({
     },
 
     render() {
+        if (this.props.isScrollView) {
+            return (
+                <ScrollView {...this.props}
+                            ref={this.setListViewRef}
+                            style={[styles.listView, this.props.style]}
+                            scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}
+                            onScroll={this.handleScroll}>
+                    {map(this.state.dataSource, (data) => this.renderSwipeListItem(data))}
+                </ScrollView>
+            );
+        }
         return (
             <ListView {...this.props}
                       ref={this.setListViewRef}
@@ -189,10 +212,18 @@ const SwipeList = React.createClass({
         );
     },
 
+    renderScrollViewRows() {
+        return map(this.state.dataSource, (data, i) => {
+            return this.renderSwipeListItem(data);
+        });
+    },
+
     renderSwipeListItem(rowData, sectionId, rowId) {
+        let ref = this.getRowRefProvider(rowData, sectionId, rowId);
         return (
-            <SwipeRow ref={(component) => this.setRowRef(component, sectionId, rowId)}
+            <SwipeRow ref={ref}
                       id={rowData.id}
+                      key={rowData.id}
                       animateAdd={rowData.isNew}
                       leftSubView={rowData.leftSubView}
                       rightSubView={rowData.rightSubView}
@@ -212,6 +243,14 @@ const SwipeList = React.createClass({
                 {rowData.rowView}
             </SwipeRow>
         );
+    },
+
+    getRowRefProvider(rowData, sectionId, rowId) {
+        if (this.props.isScrollView) {
+            return (component) => this.setRowRef(component, 's1', rowData.id);
+        }
+
+        return (component) => this.setRowRef(component, sectionId, rowId);
     }
 });
 
