@@ -446,9 +446,8 @@ const SwipeRow = React.createClass({
     },
 
     shouldCloseOnClick() {
-        let closeOnClick = this.state.activeSide === 'left'
-            ? this.props.leftSubViewOptions.closeOnClick
-            : this.props.rightSubViewOptions.closeOnClick;
+        let options = this.state.activeSide === 'left' ? this.props.leftSubViewOptions : this.props.rightSubViewOptions;
+        let closeOnClick = options.fullWidth ? false : options.closeOnClick;
         return isDefined(closeOnClick) ? closeOnClick: defaultSubViewOptions.closeOnClick;
     },
 
