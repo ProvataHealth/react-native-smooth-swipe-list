@@ -80,7 +80,6 @@ const SwipeList = React.createClass({
 
     componentWillReceiveProps(nextProps) {
         if (this.props.rowData !== nextProps.rowData) {
-            this.openRowRef = null;
             this.checkAnimateRemoveRow(nextProps.rowData);
             this.checkAnimateAddRow(nextProps.rowData);
         }

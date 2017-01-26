@@ -27,6 +27,9 @@ import {
 } from '../constants';
 import HorizontalGestureResponder from './HorizontalGestureResponder';
 import isFinite from 'lodash/isFinite';
+function isDefined(value) {
+    return (value !== null || value !== undefined);
+}
 
 const SubViewOptionsShape = {
     fullWidth: PropTypes.bool,
@@ -100,6 +103,10 @@ const SwipeRow = React.createClass({
         };
     },
 
+    componentDidMount() {
+        this.mounted = true;
+    },
+
     componentWillReceiveProps(nextProps) {
         if (!this.props.animateAdd && nextProps.animateAdd) {
             this.setState({
@@ -128,11 +135,14 @@ const SwipeRow = React.createClass({
     },
 
     componentWillUnmount() {
+        this.mounted = false;
         this.clearCloseTimeout();
     },
 
     resetState() {
-        this.setState(this.getInitialState());
+        if (this.mounted) {
+            this.setState(this.getInitialState());
+        }
     },
 
     checkHandleSubViewWidthUpdate(nextState) {
@@ -352,6 +362,9 @@ const SwipeRow = React.createClass({
     },
 
     animateOpenOrClose(toValue, vx, noBounce) {
+        if (!this.mounted) {
+            return;
+        }
         let isOpen = toValue !== 0;
         Animated.spring(
             this.state.pan,
@@ -362,10 +375,12 @@ const SwipeRow = React.createClass({
                 tension: 22 * Math.abs(vx)
             }
         ).start(() => {
-            if (this.state.pan.x._value === 0) {
-                this.setState({
-                    activeSide: isOpen ? this.state.activeSide : null
-                });
+            if (this.mounted) {
+                if (this.state.pan.x._value === 0) {
+                    this.setState({
+                        activeSide: isOpen ? this.state.activeSide : null
+                    });
+                }
             }
         });
         this.setState({
@@ -431,9 +446,10 @@ const SwipeRow = React.createClass({
     },
 
     shouldCloseOnClick() {
-        return this.state.activeSide === 'left'
+        let closeOnClick = this.state.activeSide === 'left'
             ? this.props.leftSubViewOptions.closeOnClick
             : this.props.rightSubViewOptions.closeOnClick;
+        return isDefined(closeOnClick) ? closeOnClick: defaultSubViewOptions.closeOnClick;
     },
 
     checkCloseOpenRow(e) {
@@ -507,8 +523,12 @@ const SwipeRow = React.createClass({
     },
 
     getSubViewWrapperStyle(isLeft) {
-        let fullWidth = isLeft ?  this.props.leftSubViewOptions.fullWidth : this.props.rightSubViewOptions.fullWidth;
         let widthKnown  = isLeft ? this.state.leftSubViewWidth : this.state.rightSubViewWidth;
+        let fullWidth = isLeft
+            ? this.props.leftSubViewOptions.fullWidth
+            : this.props.rightSubViewOptions.fullWidth;
+
+        fullWidth = isDefined(fullWidth) ? fullWidth: defaultSubViewOptions.fullWidth;
         return {
             opacity: widthKnown ? 1 : 0,
             flex: fullWidth ? 1 : 0
