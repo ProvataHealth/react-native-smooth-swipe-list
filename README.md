@@ -97,6 +97,7 @@ const ListParent = React.createClass({
 * `onScrollStateChange` - Hook for responding to scroll enabled (true) or disabled (false)
 * `swipeRowProps` - Props to be set on all `SwipeRow`'s
 * `rowStyle` - Style to apply to all rows root views
+* `onSwipeStateChange` - callback for receiving updates about swipe state
 * `style` - Style applied to the ListView
 
 ###Methods

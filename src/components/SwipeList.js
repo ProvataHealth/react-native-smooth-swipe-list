@@ -15,6 +15,13 @@ import {
     getHeight
 } from '../util/layout';
 
+const SWIPE_STATE = {
+    SWIPE_START: 'swipeStart',
+    SWIPE_END: 'swipeEnd',
+    ROW_OPEN: 'rowOpen',
+    ROW_CLOSE: 'rowClose'
+};
+
 
 const SwipeList = React.createClass({
 
@@ -44,12 +51,14 @@ const SwipeList = React.createClass({
             resistanceStrength: PropTypes.number
         }),
         isScrollView: PropTypes.bool,
-        swipeRowProps: PropTypes.object
+        swipeRowProps: PropTypes.object,
+        onSwipeStateChange: PropTypes.func
     },
 
     getDefaultProps() {
         return {
             scrollEnabled: true,
+            onSwipeStateChange: () => {},
             onScrollStateChange: () => {}
         };
     },
@@ -129,7 +138,7 @@ const SwipeList = React.createClass({
                 if (!existing) {
                     nextData.isNew = true;
                 }
-            })
+            });
         }
     },
 
@@ -144,23 +153,27 @@ const SwipeList = React.createClass({
         this.tryCloseOpenRow(row);
         this.listView && this.listView.setNativeProps({ scrollEnabled: false });
         this.props.onScrollStateChange(false);
+        this.props.onSwipeStateChange(SWIPE_STATE.SWIPE_START);
     },
 
     handleSwipeEnd(row, e, g) {
         this.listView && this.listView.setNativeProps({ scrollEnabled: true });
         this.props.onScrollStateChange(true);
+        this.props.onSwipeStateChange(SWIPE_STATE.SWIPE_END);
     },
 
     handleRowOpen(row) {
         this.openRowRef = row;
+        this.props.onSwipeStateChange(SWIPE_STATE.ROW_OPEN);
     },
 
     handleRowClose() {
         this.openRowRef = null;
+        this.props.onSwipeStateChange(SWIPE_STATE.ROW_CLOSE);
     },
 
     tryCloseOpenRow(row) {
-        if (this.openRowRef && this.openRowRef !== row) {
+        if (this.openRowRef && this.openRowRef !== row && this.openRowRef.isOpen()) {
             this.openRowRef.close();
             this.openRowRef = null;
         }
@@ -168,13 +181,6 @@ const SwipeList = React.createClass({
 
     isAnotherRowOpen(row) {
         return !!(this.openRowRef && this.openRowRef !== row);
-    },
-
-    handleScroll() {
-        if (this.openRowRef && this.openRowRef.isOpen()) {
-            this.openRowRef.close();
-            this.openRowRef = null;
-        }
     },
 
     setListViewRef(component) {
@@ -193,8 +199,7 @@ const SwipeList = React.createClass({
                 <ScrollView {...this.props}
                             ref={this.setListViewRef}
                             style={[styles.listView, this.props.style]}
-                            scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}
-                            onScroll={this.handleScroll}>
+                            scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}>
                     {map(this.state.dataSource, (data) => this.renderSwipeListItem(data))}
                 </ScrollView>
             );
@@ -204,7 +209,6 @@ const SwipeList = React.createClass({
                       ref={this.setListViewRef}
                       style={[styles.listView, this.props.style]}
                       scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}
-                      onScroll={this.handleScroll}
                       enableEmptySections
                       dataSource={this.state.dataSource}
                       renderRow={this.renderSwipeListItem} />
@@ -212,9 +216,7 @@ const SwipeList = React.createClass({
     },
 
     renderScrollViewRows() {
-        return map(this.state.dataSource, (data, i) => {
-            return this.renderSwipeListItem(data);
-        });
+        return map(this.state.dataSource, data => this.renderSwipeListItem);
     },
 
     renderSwipeListItem(rowData, sectionId, rowId) {
@@ -268,5 +270,6 @@ const styles = StyleSheet.create({
     }
 });
 
+SwipeList.SwipeState = SWIPE_STATE;
 
-export default SwipeList
+export default SwipeList;

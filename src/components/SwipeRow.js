@@ -13,7 +13,6 @@ import {
     isValidHorizontalGesture
 } from '../util/gesture';
 import {
-    getLayout,
     getWidth,
     getHeight
 } from '../util/layout';
@@ -111,7 +110,6 @@ const SwipeRow = React.createClass({
         if (!this.props.animateAdd && nextProps.animateAdd) {
             this.setState({
                 heightAnimating: true
-
             });
             this.state.heightAnim.setValue(0);
             Animated.timing(
@@ -355,7 +353,7 @@ const SwipeRow = React.createClass({
                 });
             }
             else {
-                this.animateOpenOrClose(openPosition, 0.75, true)
+                this.animateOpenOrClose(openPosition, 0.75, true);
             }
             this.props.onOpen(this);
         }
@@ -366,6 +364,7 @@ const SwipeRow = React.createClass({
             return;
         }
         let isOpen = toValue !== 0;
+        this.transitioning = true;
         Animated.spring(
             this.state.pan,
             {
@@ -375,6 +374,7 @@ const SwipeRow = React.createClass({
                 tension: 22 * Math.abs(vx)
             }
         ).start(() => {
+            this.transitioning = false;
             if (this.mounted) {
                 if (this.state.pan.x._value === 0) {
                     this.setState({
@@ -522,16 +522,16 @@ const SwipeRow = React.createClass({
     },
 
     getSubViewWrapperStyle(isLeft) {
-        let widthKnown  = isLeft ? this.state.leftSubViewWidth : this.state.rightSubViewWidth;
+        let widthKnown = isLeft ? this.state.leftSubViewWidth : this.state.rightSubViewWidth;
         let fullWidth = isLeft
             ? this.props.leftSubViewOptions.fullWidth
             : this.props.rightSubViewOptions.fullWidth;
 
-        fullWidth = isDefined(fullWidth) ? fullWidth: defaultSubViewOptions.fullWidth;
+        fullWidth = isDefined(fullWidth) ? fullWidth : defaultSubViewOptions.fullWidth;
         return {
             opacity: widthKnown ? 1 : 0,
             flex: fullWidth ? 1 : 0
-        }
+        };
     },
 
     getActiveSideStyle(isLeft) {
