@@ -1,19 +1,12 @@
 import React, { PropTypes } from 'react';
-import { StyleSheet, View, ListView, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, ListView, ScrollView } from 'react-native';
 import shallowCompare from 'react-addons-shallow-compare';
 import reduce from 'lodash/reduce';
 import every from 'lodash/every';
 import some from 'lodash/some';
 import map from 'lodash/map';
 
-import {
-    OPEN_POSITION_THRESHOLD_FACTOR
-} from '../constants';
 import SwipeRow from './SwipeRow';
-import {
-    getWidth,
-    getHeight
-} from '../util/layout';
 
 const SWIPE_STATE = {
     SWIPE_START: 'swipeStart',
@@ -80,7 +73,12 @@ const SwipeList = React.createClass({
     },
 
     componentWillMount() {
+        this.closeTimeout = null;
         this.rowRefs = {};
+    },
+
+    componentWillUnmount() {
+        this.clearCloseTimeout();
     },
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -179,6 +177,16 @@ const SwipeList = React.createClass({
         }
     },
 
+    onRowPressCheckSetCloseTimeout(row) {
+        clearTimeout(this.closeTimeout);
+        this.closeTimeout = setTimeout(() => this.tryCloseOpenRow(row), 250);
+    },
+
+    clearCloseTimeout() {
+        clearTimeout(this.closeTimeout);
+        this.closeTimeout = null;
+    },
+
     isAnotherRowOpen(row) {
         return !!(this.openRowRef && this.openRowRef !== row);
     },
@@ -193,25 +201,40 @@ const SwipeList = React.createClass({
         this.rowRefs[getRefKeyForRow(sectionId, rowId)] = component;
     },
 
+    onListViewPress() {
+        // give a little more time in the non row case
+        // if a row is clicked the set timeout will be over written by the row calling
+        // checkSetCloseTimeout an providing the row context.
+        // this prevents a click on a row sub item from causing a close
+        clearTimeout(this.closeTimeout);
+        this.closeTimeout = setTimeout(this.tryCloseOpenRow, 450);
+    },
+
     render() {
         if (this.props.isScrollView) {
             return (
-                <ScrollView {...this.props}
-                            ref={this.setListViewRef}
-                            style={[styles.listView, this.props.style]}
-                            scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}>
-                    {map(this.state.dataSource, (data) => this.renderSwipeListItem(data))}
-                </ScrollView>
+                <View style={[styles.listView, this.props.style]}
+                      onStartShouldSetResponderCapture={this.onListViewPress}>
+                    <ScrollView {...this.props}
+                                ref={this.setListViewRef}
+                                style={[styles.listView, this.props.style]}
+                                scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}>
+                        {map(this.state.dataSource, (data) => this.renderSwipeListItem(data))}
+                    </ScrollView>
+                </View>
             );
         }
         return (
-            <ListView {...this.props}
-                      ref={this.setListViewRef}
-                      style={[styles.listView, this.props.style]}
-                      scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}
-                      enableEmptySections
-                      dataSource={this.state.dataSource}
-                      renderRow={this.renderSwipeListItem} />
+            <View style={[styles.listView, this.props.style]}
+                  onStartShouldSetResponderCapture={this.onListViewPress}>
+                <ListView {...this.props}
+                          ref={this.setListViewRef}
+                          style={[styles.listView, this.props.style]}
+                          scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}
+                          enableEmptySections
+                          dataSource={this.state.dataSource}
+                          renderRow={this.renderSwipeListItem} />
+            </View>
         );
     },
 
@@ -235,6 +258,8 @@ const SwipeList = React.createClass({
                       isAnotherRowOpen={this.isAnotherRowOpen}
                       tryCloseOpenRow={this.tryCloseOpenRow}
                       style={[this.props.rowStyle, rowData.style]}
+                      startCloseTimeout={this.onRowPressCheckSetCloseTimeout}
+                      clearCloseTimeout={this.clearCloseTimeout}
                       onSwipeStart={this.handleSwipeStart}
                       onSwipeEnd={this.handleSwipeEnd}
                       onOpen={this.handleRowOpen}

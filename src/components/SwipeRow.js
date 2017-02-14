@@ -2,15 +2,12 @@ import React, { PropTypes } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableHighlight,
     Animated,
     Easing
 } from 'react-native';
 
 import {
-    applySimpleTension,
-    isValidHorizontalGestureAngle,
-    isValidHorizontalGesture
+    applySimpleTension
 } from '../util/gesture';
 import {
     getWidth,
@@ -20,7 +17,6 @@ import {
     GESTURE_DISTANCE_THRESHOLD,
     OPEN_POSITION_THRESHOLD_FACTOR,
     CLOSE_POSITION_THRESHOLD_FACTOR,
-    OPEN_VELOCITY_THRESHOLD,
     MAX_OPEN_THRESHOLD,
     OPEN_TENSION_THRESHOLD
 } from '../constants';
@@ -70,7 +66,9 @@ const SwipeRow = React.createClass({
         blockChildEventsWhenOpen: PropTypes.bool,
         isAnotherRowOpen: PropTypes.func,
         closeOnPropUpdate: PropTypes.bool,
-        animateRemoveSpeed: PropTypes.number
+        animateRemoveSpeed: PropTypes.number,
+        startCloseTimeout: PropTypes.func.isRequired,
+        clearCloseTimeout: PropTypes.func.isRequired
     },
 
     getDefaultProps() {
@@ -431,40 +429,23 @@ const SwipeRow = React.createClass({
 
     checkSetCloseTimeout(e, g) {
         this.props.onGestureStart(this, e, g);
-        if (this.state.open && this.shouldCloseOnClick()) {
-            // if the row is open and a gesture comes in and isn't followed by an
-            // onResponderStart call we want to close the row
-            if (!this.closeTimeout) {
-                this.closeTimeout = setTimeout(this.close, 250);
-            }
-        }
+        this.props.startCloseTimeout(this);
     },
 
     clearCloseTimeout() {
-        clearTimeout(this.closeTimeout);
-        this.closeTimeout = null;
+        this.props.clearCloseTimeout();
     },
 
     shouldCloseOnClick() {
         let options = this.state.activeSide === 'left' ? this.props.leftSubViewOptions : this.props.rightSubViewOptions;
         let closeOnClick = options.fullWidth ? false : options.closeOnClick;
-        return isDefined(closeOnClick) ? closeOnClick: defaultSubViewOptions.closeOnClick;
-    },
-
-    checkCloseOpenRow(e) {
-        let shouldCloseRow = this.props.isAnotherRowOpen(this);
-        if (shouldCloseRow) {
-            e.stopPropagation();
-            this.props.tryCloseOpenRow();
-        }
-        return false;
+        return isDefined(closeOnClick) ? closeOnClick : defaultSubViewOptions.closeOnClick;
     },
 
     render() {
         return (
             <Animated.View style={[styles.container, this.props.style, this.getHeightStyle()]}
-                           onLayout={this.setRowHeight}
-                           onStartShouldSetResponderCapture={this.checkCloseOpenRow}>
+                           onLayout={this.setRowHeight}>
                 <HorizontalGestureResponder style={[styles.containerInner]}
                                             enabled={this.isSwipeable()}
                                             onGestureStart={this.checkSetCloseTimeout}
