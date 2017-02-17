@@ -1,5 +1,5 @@
-// after how many ticks will gesture validation give up
-export const GESTURE_DISTANCE_THRESHOLD = 10;
+// after distance a gesture must move before being considered for validation
+export const GESTURE_DISTANCE_THRESHOLD = 3;
 
 // what velocity is considered 'quick'
 export const QUICK_GESTURE_VELOCITY_THRESHOLD = 0.15;
@@ -10,7 +10,7 @@ export const QUICK_GESTURE_VELOCITY_THRESHOLD = 0.15;
 export const VELOCITY_THRESHOLD_ANGLE_SLOP = 5;
 
 // the amount to multiply the gesture velocity threshold by if it is within the angle slop
-export const VELOCITY_THRESHOLD_SLOP_MOD = 0.25;
+export const VELOCITY_THRESHOLD_SLOP_MOD = 0.1;
 
 // velocity comes back different on android, so this value will normalize it with iOS
 export const ANDROID_TO_IO_VELOCITY_MOD = 220000;
