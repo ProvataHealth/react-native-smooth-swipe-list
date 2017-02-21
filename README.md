@@ -97,7 +97,7 @@ const ListParent = React.createClass({
 * `onScrollStateChange` - Hook for responding to scroll enabled (true) or disabled (false)
 * `swipeRowProps` - Props to be set on all `SwipeRow`'s
 * `rowStyle` - Style to apply to all rows root views
-* `onSwipeStateChange` - callback for receiving updates about swipe state
+* `onSwipeStateChange` - callback for receiving updates about swipe state (SWIPE_START, SWIPE_END, OPEN_ROW_START, OPEN_ROW_END, CLOSE_ROW_START, CLOSE_ROW_END)
 * `style` - Style applied to the ListView
 
 ###Methods
@@ -124,8 +124,10 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 * `onSwipeStart` - Called when a gesture starts
 * `onSwipeUpdate` - Called each update of the gesture after start and before end 
 * `onSwipeEnd` - Called when the gesture ends
-* `onOpen` - Called when the row opens
-* `onClose` - Called when the row closes
+* `onOpenStart` - Called when the row open animation begins
+* `onOpenEnd` - Called when the row animation ends
+* `onCloseStart` - Called when the row close animation begins
+* `onCloseEnd` - Called when the row close ends
 * `onCapture` - Called when a gesture capture happens
 * `[left/right]SubView` - View to be rendered for left / right gestures
 * `[left/right]SubViewOptions` - Option for configuring left and right sub views

@@ -6,7 +6,7 @@ import { color } from '../../constants';
 
 const ListItemButton = (props) => (
     <TouchableOpacity onPress={props.onPress}>
-        <View style={[styles.container, getBackgroundStyle(props.color)]}>
+        <View style={[styles.container, getBackgroundStyle(props)]}>
             <Text style={styles.text}>
                 {props.text}
             </Text>
@@ -14,8 +14,9 @@ const ListItemButton = (props) => (
     </TouchableOpacity>
 );
 
-function getBackgroundStyle(colorKey) {
-    return colorKey ? { backgroundColor: color[colorKey] } : {};
+function getBackgroundStyle(props) {
+    let backgroundColor = props.open ? 'rgb(200, 0, 100)' : color[props.color];
+    return color ? { backgroundColor } : {};
 }
 
 ListItemButton.propTypes = {

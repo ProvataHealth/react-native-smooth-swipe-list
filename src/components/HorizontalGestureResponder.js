@@ -64,11 +64,11 @@ const HorizontalGestureResponder = React.createClass({
     },
 
     handleOnStartShouldSetPanResponderCapture(e, g) {
+        this.props.onGestureStart(e, g);
         return this.props.enabled && this.props.shouldSetResponderCapture(e, g);
     },
 
     handleOnStartShouldSetPanResponder(e, g) {
-        this.props.onGestureStart(e, g);
         return this.props.enabled && this.props.shouldSetResponderOnStart(e, g);
     },
 

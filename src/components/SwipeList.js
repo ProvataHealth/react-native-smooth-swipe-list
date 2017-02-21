@@ -11,8 +11,10 @@ import SwipeRow from './SwipeRow';
 const SWIPE_STATE = {
     SWIPE_START: 'swipeStart',
     SWIPE_END: 'swipeEnd',
-    ROW_OPEN: 'rowOpen',
-    ROW_CLOSE: 'rowClose'
+    ROW_OPEN_START: 'rowOpenStart',
+    ROW_OPEN_END: 'rowOpenEnd',
+    ROW_CLOSE_START: 'rowCloseStart',
+    ROW_CLOSE_END: 'rowCloseEnd'
 };
 
 
@@ -160,26 +162,40 @@ const SwipeList = React.createClass({
         this.props.onSwipeStateChange(SWIPE_STATE.SWIPE_END);
     },
 
-    handleRowOpen(row) {
+    handleRowOpenStart(row) {
         this.openRowRef = row;
-        this.props.onSwipeStateChange(SWIPE_STATE.ROW_OPEN);
+        this.props.onSwipeStateChange(SWIPE_STATE.ROW_OPEN_START);
     },
 
-    handleRowClose() {
+    handleRowOpenEnd(finished) {
+        this.props.onSwipeStateChange(SWIPE_STATE.ROW_OPEN_END, finished);
+    },
+
+    handleRowCloseStart() {
         this.openRowRef = null;
-        this.props.onSwipeStateChange(SWIPE_STATE.ROW_CLOSE);
+        this.props.onSwipeStateChange(SWIPE_STATE.ROW_CLOSE_START);
+    },
+
+    handleRowCloseEnd(finished) {
+        this.props.onSwipeStateChange(SWIPE_STATE.ROW_CLOSE_END, finished);
     },
 
     tryCloseOpenRow(row) {
-        if (this.openRowRef && this.openRowRef !== row && this.openRowRef.isOpen()) {
+        if (this.openRowRef && this.openRowRef !== row) {
+            this.closeOpenRow();
+        }
+    },
+
+    closeOpenRow() {
+        if (this.openRowRef && this.openRowRef.isOpen()) {
             this.openRowRef.close();
             this.openRowRef = null;
         }
     },
 
-    onRowPressCheckSetCloseTimeout(row) {
+    onRowPressCheckSetCloseTimeout() {
         clearTimeout(this.closeTimeout);
-        this.closeTimeout = setTimeout(() => this.tryCloseOpenRow(row), 250);
+        this.closeTimeout = setTimeout( this.closeOpenRow, 250);
     },
 
     clearCloseTimeout() {
@@ -201,20 +217,10 @@ const SwipeList = React.createClass({
         this.rowRefs[getRefKeyForRow(sectionId, rowId)] = component;
     },
 
-    onListViewPress() {
-        // give a little more time in the non row case
-        // if a row is clicked the set timeout will be over written by the row calling
-        // checkSetCloseTimeout an providing the row context.
-        // this prevents a click on a row sub item from causing a close
-        clearTimeout(this.closeTimeout);
-        this.closeTimeout = setTimeout(this.tryCloseOpenRow, 450);
-    },
-
     render() {
         if (this.props.isScrollView) {
             return (
-                <View style={[styles.listView, this.props.style]}
-                      onStartShouldSetResponderCapture={this.onListViewPress}>
+                <View style={[styles.listView, this.props.style]}>
                     <ScrollView {...this.props}
                                 ref={this.setListViewRef}
                                 style={[styles.listView, this.props.style]}
@@ -225,8 +231,7 @@ const SwipeList = React.createClass({
             );
         }
         return (
-            <View style={[styles.listView, this.props.style]}
-                  onStartShouldSetResponderCapture={this.onListViewPress}>
+            <View style={[styles.listView, this.props.style]}>
                 <ListView {...this.props}
                           ref={this.setListViewRef}
                           style={[styles.listView, this.props.style]}
@@ -262,8 +267,10 @@ const SwipeList = React.createClass({
                       clearCloseTimeout={this.clearCloseTimeout}
                       onSwipeStart={this.handleSwipeStart}
                       onSwipeEnd={this.handleSwipeEnd}
-                      onOpen={this.handleRowOpen}
-                      onClose={this.handleRowClose}
+                      onOpenStart={this.handleRowOpenStart}
+                      onOpenEnd={this.handleRowOpenEnd}
+                      onCloseStart={this.handleRowCloseStart}
+                      onCloseEnd={this.handleRowCloseEnd}
                       {...this.props.swipeRowProps}
                       {...rowData.props}>
                 {rowData.rowView}

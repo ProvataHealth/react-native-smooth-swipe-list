@@ -55,8 +55,10 @@ const SwipeRow = React.createClass({
         onSwipeStart: PropTypes.func,
         onSwipeUpdate: PropTypes.func,
         onSwipeEnd: PropTypes.func,
-        onOpen: PropTypes.func,
-        onClose: PropTypes.func,
+        onOpenStart: PropTypes.func,
+        onOpenEnd: PropTypes.func,
+        onCloseStart: PropTypes.func,
+        onCloseEnd: PropTypes.func,
         onCapture: PropTypes.func,
         leftSubView: PropTypes.element,
         rightSubView: PropTypes.element,
@@ -85,8 +87,10 @@ const SwipeRow = React.createClass({
             onSwipeStart: () => {},
             onSwipeUpdate: () => {},
             onSwipeEnd: () => {},
-            onOpen: () => {},
-            onClose: () => {}
+            onOpenStart: () => {},
+            onOpenEnd: () => {},
+            onCloseStart: () => {},
+            onCloseEnd: () => {}
         };
     },
 
@@ -331,11 +335,12 @@ const SwipeRow = React.createClass({
             this.clearCloseTimeout();
             if (skipAnimation) {
                 this.setState({ pan: new Animated.ValueXY() });
+                this.props.onCloseStart();
+                this.props.onCloseEnd(true);
             }
             else {
                 this.animateOpenOrClose(0, 1.75, true);
             }
-            this.props.onClose(this);
         }
     },
 
@@ -349,11 +354,12 @@ const SwipeRow = React.createClass({
                     activeSide: side,
                     open: true
                 });
+                this.props.onOpenStart(this);
+                this.props.onOpenEnd(true);
             }
             else {
                 this.animateOpenOrClose(openPosition, 0.75, true);
             }
-            this.props.onOpen(this);
         }
     },
 
@@ -362,7 +368,6 @@ const SwipeRow = React.createClass({
             return;
         }
         let isOpen = toValue !== 0;
-        this.transitioning = true;
         Animated.spring(
             this.state.pan,
             {
@@ -371,9 +376,9 @@ const SwipeRow = React.createClass({
                 friction: noBounce ? 8 : 4,
                 tension: 22 * Math.abs(vx)
             }
-        ).start(() => {
-            this.transitioning = false;
+        ).start(({ finished }) => {
             if (this.mounted) {
+                isOpen ? this.props.onOpenEnd(finished) : this.props.onCloseEnd(finished);
                 if (this.state.pan.x._value === 0) {
                     this.setState({
                         activeSide: isOpen ? this.state.activeSide : null
@@ -381,10 +386,10 @@ const SwipeRow = React.createClass({
                 }
             }
         });
+        isOpen ? this.props.onOpenStart(this) : this.props.onCloseStart();
         this.setState({
             open: isOpen
         });
-        isOpen ? this.props.onOpen(this) : this.props.onClose(this);
     },
 
     isOpen() {
@@ -429,7 +434,8 @@ const SwipeRow = React.createClass({
 
     checkSetCloseTimeout(e, g) {
         this.props.onGestureStart(this, e, g);
-        this.props.startCloseTimeout(this);
+        this.props.startCloseTimeout();
+        return this.props.isAnotherRowOpen(this);
     },
 
     clearCloseTimeout() {
@@ -448,7 +454,7 @@ const SwipeRow = React.createClass({
                            onLayout={this.setRowHeight}>
                 <HorizontalGestureResponder style={[styles.containerInner]}
                                             enabled={this.isSwipeable()}
-                                            onGestureStart={this.checkSetCloseTimeout}
+                                            shouldSetResponderCapture={this.checkSetCloseTimeout}
                                             onResponderStart={this.onSwipeStart}
                                             onResponderEnd={this.onSwipeEnd}
                                             onResponderUpdate={this.onSwipeUpdate}>
@@ -487,7 +493,7 @@ const SwipeRow = React.createClass({
             return (
                 <Animated.View style={[styles.subViewContainer, activeSideStyle, panStyle]}>
                     <View style={[styles.subViewWrapper, wrapperStyle]} onLayout={onLayout}>
-                        {subView}
+                        {React.cloneElement(subView, { open: this.state.open })}
                     </View>
                 </Animated.View>
             );
