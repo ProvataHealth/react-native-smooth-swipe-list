@@ -33,7 +33,7 @@ const SubViewOptionsShape = {
 
 const defaultSubViewOptions = {
     fullWidth: false,
-    closeOnClick: true
+    closeOnPress: true
 };
 
 const SwipeRow = React.createClass({
@@ -444,8 +444,8 @@ const SwipeRow = React.createClass({
 
     shouldCloseOnClick() {
         let options = this.state.activeSide === 'left' ? this.props.leftSubViewOptions : this.props.rightSubViewOptions;
-        let closeOnClick = options.fullWidth ? false : options.closeOnClick;
-        return isDefined(closeOnClick) ? closeOnClick : defaultSubViewOptions.closeOnClick;
+        let closeOnPress = options.fullWidth ? false : options.closeOnPress;
+        return isDefined(closeOnPress) ? closeOnPress : defaultSubViewOptions.closeOnPress;
     },
 
     render() {
@@ -491,13 +491,21 @@ const SwipeRow = React.createClass({
         let wrapperStyle = this.getSubViewWrapperStyle(isLeft);
         if (activeSide) {
             return (
-                <Animated.View style={[styles.subViewContainer, activeSideStyle, panStyle]}>
+                <Animated.View style={[styles.subViewContainer, activeSideStyle, panStyle]} {...this.checkGetBlockCloseTimeout(isLeft)}>
                     <View style={[styles.subViewWrapper, wrapperStyle]} onLayout={onLayout}>
                         {React.cloneElement(subView, { open: this.state.open })}
                     </View>
                 </Animated.View>
             );
         }
+    },
+
+    checkGetBlockCloseTimeout(isLeft) {
+        let opts = isLeft ? this.props.leftSubViewOptions : this.props.rightSubViewOptions;
+        if (!opts.fullWidth) {
+            return;
+        }
+        return { onStartShouldSetResponderCapture: this.props.clearCloseTimeout };
     },
 
     getActiveSubView(isLeft) {

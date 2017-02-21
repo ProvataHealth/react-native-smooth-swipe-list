@@ -86,7 +86,7 @@ const ListParent = React.createClass({
   * `[left/right]SubView` - View to show when swiping left or right
   * `[left/right]leftSubViewOptions` - Options to customize left and right subviews
     * `fullWidth` - Will the view span the full width of the row *(default false)*
-    * `closeOnClick` - Whether the row should close on a click if not followed by a valid gesture *(default true)*
+    * `closeOnPress` - Whether the row should close on a press if not followed by a valid gesture *(default true)*
   * `style` - Style to apply to the row root view
   * `props` - Any additional props you want to be set on the `SwipeRow`
 * `gestureTensionParams` - Provide to tweak the tension of gestures
@@ -132,7 +132,7 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 * `[left/right]SubView` - View to be rendered for left / right gestures
 * `[left/right]SubViewOptions` - Option for configuring left and right sub views
     * `fullWidth` - Will the view span the full width of the row *(default false)*
-    * `closeOnClick` - Whether the row should close on a click if not followed by a valid gesture *(default true)*
+    * `closeOnPress` - Whether the row should close on a press if not followed by a valid gesture *(default true)*
 * `startOpen` - Whether the row should start open
 * `blockChildEventsWhenOpen` - If true will capture gesture events before they reach the rowView *(default: true)*
 * `closeOnPropUpdate` - Whether to close the row if new props come in *(default true)*
