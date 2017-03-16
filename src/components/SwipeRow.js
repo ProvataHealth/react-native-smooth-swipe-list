@@ -195,16 +195,15 @@ const SwipeRow = React.createClass({
         let { dx, vx } = g;
         this.props.onSwipeEnd(this, e, g);
         this.state.pan.flattenOffset();
+
         if (this.state.open) {
             this.checkAnimateOpenOrClose(dx, vx);
         }
-        else if (this.state.activeSide === 'left' && dx > 0 || this.state.activeSide === 'right' && dx < 0){
+        else if (this.state.activeSide === 'left' && dx > 0 || this.state.activeSide === 'right' && dx < 0) {
             this.checkAnimateOpenOrClose(dx, vx);
         }
         else {
-            this.setState({
-                activeSide: null
-            });
+            return this.checkAnimateOpenOrClose(0, vx);
         }
     },
 
@@ -368,28 +367,33 @@ const SwipeRow = React.createClass({
             return;
         }
         let isOpen = toValue !== 0;
+
         Animated.spring(
             this.state.pan,
             {
                 toValue: { x: toValue, y: 0 },
                 velocity: vx,
-                friction: noBounce ? 8 : 4,
+                friction: noBounce ? 10 : 5,
                 tension: 22 * Math.abs(vx)
             }
-        ).start(({ finished }) => {
-            if (this.mounted) {
-                isOpen ? this.props.onOpenEnd(finished) : this.props.onCloseEnd(finished);
-                if (this.state.pan.x._value === 0) {
-                    this.setState({
-                        activeSide: isOpen ? this.state.activeSide : null
-                    });
-                }
-            }
-        });
+        ).start(({ finished }) => this.onAnimateFinish(finished, isOpen));
+
+        // don't wait for the animation to change the open state
         isOpen ? this.props.onOpenStart(this) : this.props.onCloseStart();
         this.setState({
             open: isOpen
         });
+    },
+
+    onAnimateFinish(finished, isOpen) {
+        if (this.mounted) {
+            isOpen ? this.props.onOpenEnd(finished) : this.props.onCloseEnd(finished);
+            if (this.state.pan.x._value === 0) {
+                this.setState({
+                    activeSide: isOpen ? this.state.activeSide : null
+                });
+            }
+        }
     },
 
     isOpen() {

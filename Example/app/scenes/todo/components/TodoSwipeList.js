@@ -9,7 +9,8 @@ import { TodoCollection } from '../../../models';
 import { color } from '../../../constants';
 import { ListItem, ListItemButton } from '../../../components';
 import TodoSubItem from './TodoSubItem';
-import SwipeList from 'react-native-smooth-swipe-list';
+//import SwipeList from 'react-native-smooth-swipe-list';
+import SwipeList from './src/components/SwipeList';
 
 
 const TodoSwipeList = React.createClass({
@@ -43,9 +44,9 @@ const TodoSwipeList = React.createClass({
         return {
             id: todo.getId(),
             rowView: this.getRowView(todo),
-            leftSubView: this.getToggleButton(todo),
-            rightSubView: this.getArchiveButton(todo),
-            rightSubViewOptions: {
+            rightSubView: this.getToggleButton(todo),
+            leftSubView: this.getArchiveButton(todo),
+            leftSubViewOptions: {
                 fullWidth: true,
                 closeOnPress: false
             }

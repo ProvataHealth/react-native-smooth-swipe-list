@@ -12,7 +12,7 @@ const TodoSubItem = React.createClass({
     render() {
         return (
             <FullWidthSubItem style={styles.container}>
-                {this.renderItems()}
+
             </FullWidthSubItem>
         );
     },
