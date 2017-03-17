@@ -4,11 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 
 import {
     isValidHorizontalGesture,
-    isValidHorizontalGestureAngle
 } from '../util/gesture';
-import {
-    GESTURE_DISTANCE_THRESHOLD
-} from '../constants';
 
 
 const HorizontalGestureResponder = React.createClass({
@@ -54,8 +50,7 @@ const HorizontalGestureResponder = React.createClass({
             onPanResponderMove: this.handlePanResponderMove,
             onPanResponderRelease: this.handlePanResponderEnd,
             onPanResponderTerminationRequest: () => this.props.allowTermination,
-            onPanResponderTerminate: this.handlePanResponderEnd,
-            onShouldBlockNativeResponder: () => false
+            onPanResponderTerminate: this.handlePanResponderEnd
         });
     },
 

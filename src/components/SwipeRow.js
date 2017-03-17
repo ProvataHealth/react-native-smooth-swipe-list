@@ -171,12 +171,7 @@ const SwipeRow = React.createClass({
     },
 
     onSwipeStart(e, g) {
-        // Allow quicker left/right gestures by resetting the active side
-        if (Math.abs(this.state.pan.x._value) < 0.5) {
-            this.setState({
-                activeSide: null
-            });
-        }
+        this.gestureActive = true;
         this.props.onSwipeStart(this, e, g);
         this.state.pan.stopAnimation();
         let offsetX = this.state.pan.x._value || 0;
@@ -192,6 +187,7 @@ const SwipeRow = React.createClass({
     },
 
     onSwipeEnd(e, g) {
+        this.gestureActive = false;
         let { dx, vx } = g;
         this.props.onSwipeEnd(this, e, g);
         this.state.pan.flattenOffset();
@@ -224,7 +220,6 @@ const SwipeRow = React.createClass({
             }
             this.updatePanPosition(dx);
         }
-
     },
 
     updatePanPosition(dx) {
@@ -330,7 +325,8 @@ const SwipeRow = React.createClass({
     },
 
     close(skipAnimation) {
-        if (this.state.open) {
+        // don't allow a manual close if the gesture is active
+        if (this.state.open && !this.gestureActive) {
             this.clearCloseTimeout();
             if (skipAnimation) {
                 this.setState({ pan: new Animated.ValueXY() });
@@ -458,6 +454,7 @@ const SwipeRow = React.createClass({
                            onLayout={this.setRowHeight}>
                 <HorizontalGestureResponder style={[styles.containerInner]}
                                             enabled={this.isSwipeable()}
+                                            allowTermination={false}
                                             shouldSetResponderCapture={this.checkSetCloseTimeout}
                                             onResponderStart={this.onSwipeStart}
                                             onResponderEnd={this.onSwipeEnd}
