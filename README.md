@@ -102,9 +102,9 @@ const ListParent = React.createClass({
 
 ###Methods
 * `tryCloseOpenRow()` - Close any open row
+* `openAndCloseRow(rowId, sectionId, amount)` - Open the row at `sectionId` `rowId` by `amount`
 
 To be implemented:
-* *`openRow(rowKey)` - Opens row*
 * *`scrollToRow(rowKey, skipAnimation)` - Scrolls to row. *Optionally skip animating*
 * *`calloutRow(rowKey)` - Performs a shake animation on row*
 

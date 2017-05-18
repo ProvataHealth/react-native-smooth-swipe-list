@@ -139,6 +139,33 @@ const SwipeRow = React.createClass({
         this.clearCloseTimeout();
     },
 
+    openAndCloseRow(openPosition) {
+        return new Promise((resolve, reject) => {
+            this.resolveCallout = resolve;
+            this.onSwipeStart();
+            this.runOpenAndClose(0, openPosition, openPosition / 25);
+        })
+    },
+
+    runOpenAndClose(currentPosition, endPosition, speed) {
+        requestAnimationFrame((timestamp) => {
+            currentPosition += speed;
+            let absCurrent = Math.abs(currentPosition);
+            let absEnd = Math.abs(endPosition);
+
+            if (absCurrent >= (absEnd + 75)) {
+                this.onSwipeEnd(null, { dx: 0, vx: 1 });
+                return this.resolveCallout && this.resolveCallout();
+            }
+
+            if (absCurrent < absEnd) {
+                this.onSwipeUpdate(null, { dx: currentPosition });
+            }
+
+            this.runOpenAndClose(currentPosition, endPosition, speed);
+        })
+    },
+
     resetState() {
         if (this.mounted) {
             this.setState(this.getInitialState());
@@ -172,7 +199,7 @@ const SwipeRow = React.createClass({
 
     onSwipeStart(e, g) {
         this.gestureActive = true;
-        this.props.onSwipeStart(this, e, g);
+        e && this.props.onSwipeStart(this, e, g); // support this being called manually for the callouts
         this.state.pan.stopAnimation();
         let offsetX = this.state.pan.x._value || 0;
         this.state.pan.setOffset({ x: offsetX, y: 0 });
@@ -182,7 +209,7 @@ const SwipeRow = React.createClass({
 
     onSwipeUpdate(e, g) {
         let { dx } = g;
-        this.props.onSwipeUpdate(this, e, g);
+        e && this.props.onSwipeUpdate(this, e, g);
         this.state.open ? this.updatePanPosition(dx) : this.handleSwipeWhenClosed(dx);
     },
 

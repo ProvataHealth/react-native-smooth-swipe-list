@@ -83,15 +83,9 @@ const SwipeList = React.createClass({
         this.clearCloseTimeout();
     },
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
-    },
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.rowData !== nextProps.rowData) {
-            this.checkAnimateRemoveRow(nextProps.rowData);
-            this.checkAnimateAddRow(nextProps.rowData);
-        }
+    openAndCloseRow(rowId, sectionId, amount) {
+        let row = this.getRowRef(rowId, sectionId);
+        return row.openAndCloseRow(amount);
     },
 
     checkAnimateRemoveRow(nextRowData = []) {
@@ -211,6 +205,11 @@ const SwipeList = React.createClass({
         if (component) {
             this.listView = component;
         }
+    },
+
+    getRowRef(rowId, sectionId) {
+        sectionId = sectionId || 's1';
+        return this.rowRefs[getRefKeyForRow(sectionId, rowId)]
     },
 
     setRowRef(component, sectionId, rowId) {

@@ -47,7 +47,6 @@ const TodoSwipeList = React.createClass({
             rightSubView: this.getToggleButton(todo),
             leftSubView: this.getArchiveButton(todo),
             leftSubViewOptions: {
-                fullWidth: true,
                 closeOnPress: false
             }
 
@@ -103,7 +102,9 @@ const TodoSwipeList = React.createClass({
 
     getArchiveButton(todo) {
         return (
-            <TodoSubItem />
+            <ListItemButton onPress={() => this.props.archiveTodo(todo)}
+                            text="Archive"
+                            color="RED" />
         );
     }
 });
