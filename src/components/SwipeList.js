@@ -85,7 +85,7 @@ const SwipeList = React.createClass({
 
     calloutRow(rowId, sectionId, amount) {
         let row = this.getRowRef(rowId, sectionId);
-        return row.calloutRow(amount);
+        return row && row.calloutRow(amount);
     },
 
     checkAnimateRemoveRow(nextRowData = []) {
@@ -224,7 +224,7 @@ const SwipeList = React.createClass({
                                 ref={this.setListViewRef}
                                 style={[styles.listView, this.props.style]}
                                 scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}>
-                        {map(this.state.dataSource, (data) => this.renderSwipeListItem(data))}
+                        {map(this.state.dataSource, (data, i) => this.renderSwipeListItem(data, 's1', i + 1))}
                     </ScrollView>
                 </View>
             );
@@ -247,7 +247,7 @@ const SwipeList = React.createClass({
     },
 
     renderSwipeListItem(rowData, sectionId, rowId) {
-        let ref = this.getRowRefProvider(rowData, sectionId, rowId);
+        let ref = this.getRowRefProvider(sectionId, rowId);
         return (
             <SwipeRow ref={ref}
                       id={rowData.id}
@@ -277,11 +277,7 @@ const SwipeList = React.createClass({
         );
     },
 
-    getRowRefProvider(rowData, sectionId, rowId) {
-        if (this.props.isScrollView) {
-            return (component) => this.setRowRef(component, 's1', rowData.id);
-        }
-
+    getRowRefProvider(sectionId, rowId) {
         return (component) => this.setRowRef(component, sectionId, rowId);
     }
 });

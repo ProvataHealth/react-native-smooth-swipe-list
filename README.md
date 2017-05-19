@@ -74,11 +74,11 @@ const ListParent = React.createClass({
 });
 ```
 
-##API
+## API
 
-###SwipeList Component
+### SwipeList Component
 
-####Props
+#### Props
 * [ListView props...](https://facebook.github.io/react-native/docs/listview.html)
 * `rowData` - Object with the follow properties:
   * `id`(required) - Used to identify the rowData
@@ -100,17 +100,17 @@ const ListParent = React.createClass({
 * `onSwipeStateChange` - callback for receiving updates about swipe state (SWIPE_START, SWIPE_END, OPEN_ROW_START, OPEN_ROW_END, CLOSE_ROW_START, CLOSE_ROW_END)
 * `style` - Style applied to the ListView
 
-###Methods
+### Methods
 * `tryCloseOpenRow()` - Close any open row
 * `calloutRow(rowId, sectionId, amount):Promise` - Open the row at `sectionId` `rowId` by `amount` and then closes it
 
 To be implemented:
 * *`scrollToRow(rowKey, skipAnimation)` - Scrolls to row. *Optionally skip animating*
 
-###SwipeRow Component
+### SwipeRow Component
 See [React Native PanResponder](https://facebook.github.io/react-native/docs/panresponder.html) for information about gesture events.
 
-####Props
+#### Props
 * `id` - id of the rows data
 * `style` - Style to apply to the row container
 * `rowViewStyle` - Style to apply the the inner row view
@@ -137,7 +137,7 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 * `closeOnPropUpdate` - Whether to close the row if new props come in *(default true)*
 * `animateRemoveSpeed` - Speed (ms) at which to animate the row when it is removed *(default: 150ms)*
 
-###Methods
+### Methods
 * `close(skipAnimation)` - Close row. *Optionally skip animating*
 * `open(side, skipAnimation)` - Open row on `side`. *Optionally skip animating*
 
