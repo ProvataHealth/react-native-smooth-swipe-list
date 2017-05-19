@@ -9,8 +9,8 @@ import { TodoCollection } from '../../../models';
 import { color } from '../../../constants';
 import { ListItem, ListItemButton } from '../../../components';
 import TodoSubItem from './TodoSubItem';
-//import SwipeList from 'react-native-smooth-swipe-list';
-import SwipeList from './src/components/SwipeList';
+import SwipeList from 'react-native-smooth-swipe-list';
+//import SwipeList from './src/components/SwipeList';
 
 
 const TodoSwipeList = React.createClass({
@@ -24,6 +24,13 @@ const TodoSwipeList = React.createClass({
 
     componentWillMount() {
         this.rowData = map(this.props.todos, this.constructRowData);
+    },
+
+    componentDidMount() {
+        // open the row on the left, then the right
+        Promise.resolve()
+            .then(() => this.swipeList.calloutRow(3, null, 100))
+            .then(() => this.swipeList.calloutRow(3, null, -100));
     },
 
     componentWillReceiveProps(nextProps) {

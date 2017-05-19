@@ -83,9 +83,9 @@ const SwipeList = React.createClass({
         this.clearCloseTimeout();
     },
 
-    openAndCloseRow(rowId, sectionId, amount) {
+    calloutRow(rowId, sectionId, amount) {
         let row = this.getRowRef(rowId, sectionId);
-        return row.openAndCloseRow(amount);
+        return row.calloutRow(amount);
     },
 
     checkAnimateRemoveRow(nextRowData = []) {

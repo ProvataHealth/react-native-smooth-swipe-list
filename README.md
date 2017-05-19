@@ -102,11 +102,10 @@ const ListParent = React.createClass({
 
 ###Methods
 * `tryCloseOpenRow()` - Close any open row
-* `openAndCloseRow(rowId, sectionId, amount)` - Open the row at `sectionId` `rowId` by `amount`
+* `calloutRow(rowId, sectionId, amount):Promise` - Open the row at `sectionId` `rowId` by `amount` and then closes it
 
 To be implemented:
 * *`scrollToRow(rowKey, skipAnimation)` - Scrolls to row. *Optionally skip animating*
-* *`calloutRow(rowKey)` - Performs a shake animation on row*
 
 ###SwipeRow Component
 See [React Native PanResponder](https://facebook.github.io/react-native/docs/panresponder.html) for information about gesture events.

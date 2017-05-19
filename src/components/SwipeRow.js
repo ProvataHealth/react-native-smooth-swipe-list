@@ -139,9 +139,13 @@ const SwipeRow = React.createClass({
         this.clearCloseTimeout();
     },
 
-    openAndCloseRow(openPosition) {
-        return new Promise((resolve, reject) => {
+    calloutRow(openPosition) {
+        return new Promise((resolve) => {
             this.resolveCallout = resolve;
+            if (this.gestureActive) {
+                // user interaction takes precedence
+                return resolve(false);
+            }
             this.onSwipeStart();
             this.runOpenAndClose(0, openPosition, openPosition / 25);
         })
@@ -149,20 +153,27 @@ const SwipeRow = React.createClass({
 
     runOpenAndClose(currentPosition, endPosition, speed) {
         requestAnimationFrame((timestamp) => {
+            if (this.gestureActive) {
+                // end if the user has started a gesture
+                return this.resolveCallout(false);
+            }
+
             currentPosition += speed;
             let absCurrent = Math.abs(currentPosition);
             let absEnd = Math.abs(endPosition);
 
+            // close once we are past the delay
             if (absCurrent >= (absEnd + 75)) {
-                this.onSwipeEnd(null, { dx: 0, vx: 1 });
-                return this.resolveCallout && this.resolveCallout();
+                return this.onSwipeEnd(null, { dx: 0, vx: 1 }).then(() => this.resolveCallout(true));
             }
 
+            // only animate the row while we are less than the end position
             if (absCurrent < absEnd) {
                 this.onSwipeUpdate(null, { dx: currentPosition });
             }
 
-            this.runOpenAndClose(currentPosition, endPosition, speed);
+            // keep looping until we reach the threshold past the end, this gives the open state a little delay
+            return this.runOpenAndClose(currentPosition, endPosition, speed);
         })
     },
 
@@ -198,9 +209,8 @@ const SwipeRow = React.createClass({
     },
 
     onSwipeStart(e, g) {
-        this.gestureActive = true;
+        this.gestureActive = !!e;
         e && this.props.onSwipeStart(this, e, g); // support this being called manually for the callouts
-        this.state.pan.stopAnimation();
         let offsetX = this.state.pan.x._value || 0;
         this.state.pan.setOffset({ x: offsetX, y: 0 });
         this.state.pan.setValue({ x: 0, y: 0 });
@@ -216,14 +226,14 @@ const SwipeRow = React.createClass({
     onSwipeEnd(e, g) {
         this.gestureActive = false;
         let { dx, vx } = g;
-        this.props.onSwipeEnd(this, e, g);
+        e && this.props.onSwipeEnd(this, e, g);
         this.state.pan.flattenOffset();
 
         if (this.state.open) {
-            this.checkAnimateOpenOrClose(dx, vx);
+            return this.checkAnimateOpenOrClose(dx, vx);
         }
         else if (this.state.activeSide === 'left' && dx > 0 || this.state.activeSide === 'right' && dx < 0) {
-            this.checkAnimateOpenOrClose(dx, vx);
+            return this.checkAnimateOpenOrClose(dx, vx);
         }
         else {
             return this.checkAnimateOpenOrClose(0, vx);
@@ -300,10 +310,10 @@ const SwipeRow = React.createClass({
 
     checkAnimateOpenOrClose(dx, vx) {
         if ((Math.abs(dx) <= GESTURE_DISTANCE_THRESHOLD) && this.state.open) {
-            this.animateOpenOrClose(0, vx);
+            return this.animateOpenOrClose(0, vx);
         }
         else {
-            this.checkOpenOrClose(dx, vx);
+            return this.checkOpenOrClose(dx, vx);
         }
     },
 
@@ -328,7 +338,7 @@ const SwipeRow = React.createClass({
             isOpen = pastOpenThreshold;
             toValue = pastOpenThreshold ? openPosition : 0;
         }
-        this.animateOpenOrClose(toValue, vx);
+        return this.animateOpenOrClose(toValue, vx);
     },
 
     isPastOpenThreshold(dx, vx) {
@@ -387,24 +397,29 @@ const SwipeRow = React.createClass({
 
     animateOpenOrClose(toValue, vx, noBounce) {
         if (!this.mounted) {
-            return;
+            return Promise.resolve();
         }
         let isOpen = toValue !== 0;
-
-        Animated.spring(
-            this.state.pan,
-            {
-                toValue: { x: toValue, y: 0 },
-                velocity: vx,
-                friction: noBounce ? 10 : 5,
-                tension: 22 * Math.abs(vx)
-            }
-        ).start(({ finished }) => this.onAnimateFinish(finished, isOpen));
 
         // don't wait for the animation to change the open state
         isOpen ? this.props.onOpenStart(this) : this.props.onCloseStart();
         this.setState({
             open: isOpen
+        });
+
+        return new Promise((resolve) => {
+            Animated.spring(
+                this.state.pan,
+                {
+                    toValue: { x: toValue, y: 0 },
+                    velocity: vx,
+                    friction: noBounce ? 10 : 5,
+                    tension: 22 * Math.abs(vx)
+                }
+            ).start(({ finished }) => {
+                resolve();
+                this.onAnimateFinish(finished, isOpen);
+            });
         });
     },
 
