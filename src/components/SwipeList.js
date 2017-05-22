@@ -83,41 +83,54 @@ const SwipeList = React.createClass({
         this.clearCloseTimeout();
     },
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState);
+    },
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.rowData !== nextProps.rowData) {
+            let nextRowData = nextProps.rowData;
+
+            if (this.props.rowData && (nextRowData.length < this.props.rowData.length)) {
+                // on remove we don't update the row data until after the animation ends
+                return this.checkAnimateRemoveRow(nextRowData);
+            }
+
+            this.checkAnimateAddRow(nextRowData);
+            this.updateDataSource(nextRowData);
+        }
+    },
+
     calloutRow(rowId, sectionId, amount) {
         let row = this.getRowRef(rowId, sectionId);
         return row && row.calloutRow(amount);
     },
 
     checkAnimateRemoveRow(nextRowData = []) {
-        if (this.props.rowData && (nextRowData.length < this.props.rowData.length)) {
-            let numRemoved = 0;
-            let indexesToRemove = reduce(this.props.rowData, (result, data, i) => {
-                let nextData = nextRowData[i - numRemoved];
-                let shouldRemove = !nextData || nextData.id !== data.id;
-                if (shouldRemove) {
-                    numRemoved += 1;
-                    return result.concat([i]);
-                }
-                return result;
-            }, []);
-            let rowRefs = map(indexesToRemove, (index) => {
-                if (this.props.isScrollView) {
-                    let rowData = this.state.dataSource[index];
-                    return getRefKeyForRow('s1', rowData.id);
-                }
-                let secId = this.state.dataSource.getSectionIDForFlatIndex(index);
-                let rowId = this.state.dataSource.getRowIDForFlatIndex(index);
-                return getRefKeyForRow(secId, rowId);
-            });
-            if (rowRefs.length) {
-                rowRefs.forEach(ref => {
-                    let component = this.rowRefs[ref];
-                    component && component.animateOut(() => this.updateDataSource(nextRowData));
-                });
+        let numRemoved = 0;
+        let indexesToRemove = reduce(this.props.rowData, (result, data, i) => {
+            let nextData = nextRowData[i - numRemoved];
+            let shouldRemove = !nextData || nextData.id !== data.id;
+            if (shouldRemove) {
+                numRemoved += 1;
+                return result.concat([i]);
             }
-        }
-        else {
-            this.updateDataSource(nextRowData);
+            return result;
+        }, []);
+        let rowRefs = map(indexesToRemove, (index) => {
+            if (this.props.isScrollView) {
+                let rowData = this.state.dataSource[index];
+                return getRefKeyForRow('s1', rowData.id);
+            }
+            let secId = this.state.dataSource.getSectionIDForFlatIndex(index);
+            let rowId = this.state.dataSource.getRowIDForFlatIndex(index);
+            return getRefKeyForRow(secId, rowId);
+        });
+        if (rowRefs.length) {
+            rowRefs.forEach(ref => {
+                let component = this.rowRefs[ref];
+                component && component.animateOut(() => this.updateDataSource(nextRowData));
+            });
         }
     },
 
