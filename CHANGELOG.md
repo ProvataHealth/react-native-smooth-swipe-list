@@ -1,5 +1,9 @@
 # Change log
 
+## v1.3.0
+> 2017-05-23
+- Fixed incorrect refs for `ScrollView` type lists. This fixes an issue where the rows would not animate out
+
 ## v1.2.5
 > 2017-05-19
 
