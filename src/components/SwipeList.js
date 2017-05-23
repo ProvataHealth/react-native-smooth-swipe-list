@@ -77,6 +77,7 @@ const SwipeList = React.createClass({
     componentWillMount() {
         this.closeTimeout = null;
         this.rowRefs = {};
+        this.rowIds = [];
     },
 
     componentWillUnmount() {
@@ -89,48 +90,47 @@ const SwipeList = React.createClass({
 
     componentWillReceiveProps(nextProps) {
         if (this.props.rowData !== nextProps.rowData) {
-            let nextRowData = nextProps.rowData;
-
-            if (this.props.rowData && (nextRowData.length < this.props.rowData.length)) {
-                // on remove we don't update the row data until after the animation ends
-                return this.checkAnimateRemoveRow(nextRowData);
-            }
-
-            this.checkAnimateAddRow(nextRowData);
-            this.updateDataSource(nextRowData);
+            this.checkAnimateRemoveRow(nextProps.rowData);
+            this.checkAnimateAddRow(nextProps.rowData);
         }
     },
 
-    calloutRow(rowId, sectionId, amount) {
+    calloutRow(rowNumber, sectionId, amount) {
+        let rowId = this.rowIds[rowNumber - 1];
         let row = this.getRowRef(rowId, sectionId);
         return row && row.calloutRow(amount);
     },
 
     checkAnimateRemoveRow(nextRowData = []) {
-        let numRemoved = 0;
-        let indexesToRemove = reduce(this.props.rowData, (result, data, i) => {
-            let nextData = nextRowData[i - numRemoved];
-            let shouldRemove = !nextData || nextData.id !== data.id;
-            if (shouldRemove) {
-                numRemoved += 1;
-                return result.concat([i]);
-            }
-            return result;
-        }, []);
-        let rowRefs = map(indexesToRemove, (index) => {
-            if (this.props.isScrollView) {
-                let rowData = this.state.dataSource[index];
-                return getRefKeyForRow('s1', rowData.id);
-            }
-            let secId = this.state.dataSource.getSectionIDForFlatIndex(index);
-            let rowId = this.state.dataSource.getRowIDForFlatIndex(index);
-            return getRefKeyForRow(secId, rowId);
-        });
-        if (rowRefs.length) {
-            rowRefs.forEach(ref => {
-                let component = this.rowRefs[ref];
-                component && component.animateOut(() => this.updateDataSource(nextRowData));
+        if (this.props.rowData && (nextRowData.length < this.props.rowData.length)) {
+            let numRemoved = 0;
+            let indexesToRemove = reduce(this.props.rowData, (result, data, i) => {
+                let nextData = nextRowData[i - numRemoved];
+                let shouldRemove = !nextData || nextData.id !== data.id;
+                if (shouldRemove) {
+                    numRemoved += 1;
+                    return result.concat([i]);
+                }
+                return result;
+            }, []);
+            let rowRefs = map(indexesToRemove, (index) => {
+                if (this.props.isScrollView) {
+                    let rowData = this.state.dataSource[index];
+                    return getRefKeyForRow('s1', rowData.id);
+                }
+                let secId = this.state.dataSource.getSectionIDForFlatIndex(index);
+                let rowId = this.state.dataSource.getRowIDForFlatIndex(index);
+                return getRefKeyForRow(secId, rowId);
             });
+            if (rowRefs.length) {
+                rowRefs.forEach(ref => {
+                    let component = this.rowRefs[ref];
+                    component && component.animateOut(() => this.updateDataSource(nextRowData));
+                });
+            }
+        }
+        else {
+            this.updateDataSource(nextRowData);
         }
     },
 
@@ -237,7 +237,7 @@ const SwipeList = React.createClass({
                                 ref={this.setListViewRef}
                                 style={[styles.listView, this.props.style]}
                                 scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}>
-                        {map(this.state.dataSource, (data, i) => this.renderSwipeListItem(data, 's1', i + 1))}
+                        {this.renderScrollViewRows()}
                     </ScrollView>
                 </View>
             );
@@ -256,7 +256,13 @@ const SwipeList = React.createClass({
     },
 
     renderScrollViewRows() {
-        return map(this.state.dataSource, data => this.renderSwipeListItem);
+        return map(this.state.dataSource, (rowData, i) => {
+            let rowId = rowData.id || i + 1;
+            // save of the rowId in the order it was mapped
+            this.rowIds[i] = rowId;
+
+            return this.renderSwipeListItem(rowData, 's1', rowId);
+        });
     },
 
     renderSwipeListItem(rowData, sectionId, rowId) {
