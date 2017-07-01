@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { PanResponder, Animated } from 'react-native';
 import shallowCompare from 'react-addons-shallow-compare';
 
