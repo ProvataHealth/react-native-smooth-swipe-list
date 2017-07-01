@@ -27,6 +27,7 @@
     "native swipe list"
   ],
   "dependencies": {
+    "create-react-class": "^15.6.0",
     "lodash": "^4.17.2",
     "prop-types": "^15.5.10",
     "react-addons-shallow-compare": "^15.4.1"
