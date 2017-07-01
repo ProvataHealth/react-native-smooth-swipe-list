@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, View, ListView, ScrollView } from 'react-native';
 import shallowCompare from 'react-addons-shallow-compare';
 import reduce from 'lodash/reduce';
