@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, ListView, ScrollView } from 'react-native';
+import createReactClass from 'create-react-class';
 import shallowCompare from 'react-addons-shallow-compare';
 import reduce from 'lodash/reduce';
 import every from 'lodash/every';
@@ -19,7 +20,7 @@ const SWIPE_STATE = {
 };
 
 
-const SwipeList = React.createClass({
+const SwipeList = createReactClass({
 
     propTypes: {
         rowData: (props, propName, componentName) => {

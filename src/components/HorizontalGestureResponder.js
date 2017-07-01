@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { PanResponder, Animated } from 'react-native';
 import shallowCompare from 'react-addons-shallow-compare';
+import createReactClass from 'create-react-class';
 
 import {
     isValidHorizontalGesture,
 } from '../util/gesture';
 
 
-const HorizontalGestureResponder = React.createClass({
+const HorizontalGestureResponder = createReactClass({
 
     propTypes: {
         enabled: PropTypes.bool, // should we respond to gestures

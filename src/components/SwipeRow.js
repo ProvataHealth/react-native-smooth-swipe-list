@@ -7,6 +7,8 @@ import {
     Easing
 } from 'react-native';
 
+import createReactClass from 'create-react-class';
+
 import {
     applySimpleTension
 } from '../util/gesture';
@@ -37,7 +39,7 @@ const defaultSubViewOptions = {
     closeOnPress: true
 };
 
-const SwipeRow = React.createClass({
+const SwipeRow = createReactClass({
 
     propTypes: {
         style: View.propTypes.style,
