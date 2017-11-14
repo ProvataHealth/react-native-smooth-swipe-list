@@ -4,7 +4,8 @@ import {
     StyleSheet,
     View,
     Animated,
-    Easing
+    Easing,
+    ViewPropTypes
 } from 'react-native';
 
 import createReactClass from 'create-react-class';
@@ -42,12 +43,12 @@ const defaultSubViewOptions = {
 const SwipeRow = createReactClass({
 
     propTypes: {
-        style: View.propTypes.style,
+        style: ViewPropTypes.style,
         id: PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.string
         ]).isRequired,
-        rowViewStyle: View.propTypes.style,
+        rowViewStyle: ViewPropTypes.style,
         gestureTensionParams: PropTypes.shape({
             threshold: PropTypes.number,
             stretch: PropTypes.number,
