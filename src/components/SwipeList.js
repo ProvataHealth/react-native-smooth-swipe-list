@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ListView, ScrollView } from 'react-native';
+import { StyleSheet, View, ListView, ScrollView, ViewPropTypes } from 'react-native';
 import createReactClass from 'create-react-class';
 import shallowCompare from 'react-addons-shallow-compare';
 import reduce from 'lodash/reduce';
@@ -38,8 +38,8 @@ const SwipeList = createReactClass({
                 }
             }
         },
-        style: View.propTypes.style,
-        rowStyle: View.propTypes.style,
+        style: ViewPropTypes.style,
+        rowStyle: ViewPropTypes.style,
         scrollEnabled: PropTypes.bool,
         onScrollStateChange: PropTypes.func,
         gestureTensionParams: PropTypes.shape({
