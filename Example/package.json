@@ -8,8 +8,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "create-react-class": "^15.6.3",
     "immutable": "3.8.1",
     "lodash": "^4.17.2",
+    "prop-types": "^15.6.0",
     "react": "15.4.1",
     "react-addons-shallow-compare": "15.4.1",
     "react-native": "0.39.1",

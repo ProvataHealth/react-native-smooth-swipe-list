@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import Emoji from 'react-native-emoji';
@@ -14,7 +15,7 @@ import SwipeList from 'react-native-smooth-swipe-list';
 //import SwipeList from './src/components/SwipeList';
 
 
-const TodoSwipeList = React.createClass({
+const TodoSwipeList = createReactClass({
 
     propTypes: {
         todos: PropTypes.instanceOf(TodoCollection).isRequired,
