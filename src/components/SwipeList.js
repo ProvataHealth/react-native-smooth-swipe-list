@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ListView, ScrollView, ViewPropTypes } from 'react-native';
+import { StyleSheet, View, ListView, ScrollView, ViewPropTypes, FlatList } from 'react-native';
 import createReactClass from 'create-react-class';
 import shallowCompare from 'react-addons-shallow-compare';
 import reduce from 'lodash/reduce';
@@ -56,30 +56,21 @@ const SwipeList = createReactClass({
         return {
             scrollEnabled: true,
             onSwipeStateChange: () => {},
-            onScrollStateChange: () => {}
+            onScrollStateChange: () => {},
+            keyExtractor: (item, index) => (item.key || item.id || index)
         };
     },
 
     getInitialState() {
-        let ds;
-        if (!this.props.isScrollView) {
-            ds = new ListView.DataSource({ rowHasChanged: (prevData, nextData) => prevData !== nextData });
-            ds = this.props.rowData ? ds.cloneWithRows(this.props.rowData) : ds;
-        }
-        else {
-            ds = this.props.rowData;
-        }
-
         return {
             scrollEnabled: this.props.scrollEnabled,
-            dataSource: ds
+            dataSource: this.props.rowData || []
         };
     },
 
     componentWillMount() {
         this.closeTimeout = null;
         this.rowRefs = {};
-        this.rowIds = [];
     },
 
     componentWillUnmount() {
@@ -97,9 +88,10 @@ const SwipeList = createReactClass({
         }
     },
 
-    calloutRow(rowNumber, sectionId, amount) {
-        let rowId = this.rowIds[rowNumber - 1];
-        let row = this.getRowRef(rowId, sectionId);
+    calloutRow(rowNumber, amount) {
+        let rowData = this.state.dataSource[rowNumber - 1];
+        let rowId = rowData && rowData.id;
+        let row = this.getRowRef(rowId);
         return row && row.calloutRow(amount);
     },
 
@@ -115,14 +107,10 @@ const SwipeList = createReactClass({
                 }
                 return result;
             }, []);
+            //FIXME update this, probably isn't need with the FlatList
             let rowRefs = map(indexesToRemove, (index) => {
-                if (this.props.isScrollView) {
-                    let rowData = this.state.dataSource[index];
-                    return getRefKeyForRow('s1', rowData.id);
-                }
-                let secId = this.state.dataSource.getSectionIDForFlatIndex(index);
-                let rowId = this.state.dataSource.getRowIDForFlatIndex(index);
-                return getRefKeyForRow(secId, rowId);
+                let rowData = this.state.dataSource[index];
+                return getRefKeyForRow(rowData.id);
             });
             if (rowRefs.length) {
                 rowRefs.forEach(ref => {
@@ -152,9 +140,8 @@ const SwipeList = createReactClass({
     },
 
     updateDataSource(nextRowData) {
-        let ds = this.props.isScrollView ? nextRowData : this.state.dataSource.cloneWithRows(nextRowData);
         this.setState({
-            dataSource: ds
+            dataSource: nextRowData
         });
     },
 
@@ -222,13 +209,12 @@ const SwipeList = createReactClass({
         }
     },
 
-    getRowRef(rowId, sectionId) {
-        sectionId = sectionId || 's1';
-        return this.rowRefs[getRefKeyForRow(sectionId, rowId)]
+    getRowRef(rowId) {
+        return this.rowRefs[getRefKeyForRow(rowId)]
     },
 
-    setRowRef(component, sectionId, rowId) {
-        this.rowRefs[getRefKeyForRow(sectionId, rowId)] = component;
+    setRowRef(component, rowId) {
+        this.rowRefs[getRefKeyForRow(rowId)] = component;
     },
 
     render() {
@@ -246,43 +232,38 @@ const SwipeList = createReactClass({
         }
         return (
             <View style={[styles.listView, this.props.style]}>
-                <ListView {...this.props}
+                <FlatList {...this.props}
+                          keyExtractor={this.props.keyExtractor}
                           ref={this.setListViewRef}
                           style={[styles.listView, this.props.style]}
                           scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}
-                          enableEmptySections
-                          dataSource={this.state.dataSource}
-                          renderRow={this.renderSwipeListItem} />
+                          data={this.state.dataSource}
+                          renderItem={this.renderSwipeListItem} />
             </View>
         );
     },
 
     renderScrollViewRows() {
         return map(this.state.dataSource, (rowData, i) => {
-            let rowId = rowData.id || i + 1;
-            // save of the rowId in the order it was mapped
-            this.rowIds[i] = rowId;
-
-            return this.renderSwipeListItem(rowData, 's1', rowId);
+            return this.renderSwipeListItem({ index: i, item: rowData });
         });
     },
 
-    renderSwipeListItem(rowData, sectionId, rowId) {
-        let ref = this.getRowRefProvider(sectionId, rowId);
+    renderSwipeListItem({ item, index }) {
+        let ref = this.getRowRefProvider(item.id);
         return (
             <SwipeRow ref={ref}
-                      id={rowData.id}
-                      key={rowData.id}
-                      animateAdd={rowData.isNew}
-                      leftSubView={rowData.leftSubView}
-                      rightSubView={rowData.rightSubView}
-                      leftSubViewOptions={rowData.leftSubViewOptions}
-                      rightSubViewOptions={rowData.rightSubViewOptions}
+                      id={item.id}
+                      animateAdd={item.isNew}
+                      leftSubView={item.leftSubView}
+                      rightSubView={item.rightSubView}
+                      leftSubViewOptions={item.leftSubViewOptions}
+                      rightSubViewOptions={item.rightSubViewOptions}
                       gestureTensionParams={this.props.gestureTensionParams}
-                      blockChildEventsWhenOpen={rowData.blockChildEventsWhenOpen}
+                      blockChildEventsWhenOpen={item.blockChildEventsWhenOpen}
                       isAnotherRowOpen={this.isAnotherRowOpen}
                       tryCloseOpenRow={this.tryCloseOpenRow}
-                      style={[this.props.rowStyle, rowData.style]}
+                      style={[this.props.rowStyle, item.style]}
                       startCloseTimeout={this.onRowPressCheckSetCloseTimeout}
                       clearCloseTimeout={this.clearCloseTimeout}
                       onSwipeStart={this.handleSwipeStart}
@@ -292,19 +273,19 @@ const SwipeList = createReactClass({
                       onCloseStart={this.handleRowCloseStart}
                       onCloseEnd={this.handleRowCloseEnd}
                       {...this.props.swipeRowProps}
-                      {...rowData.props}>
-                {rowData.rowView}
+                      {...item.props}>
+                {item.rowView}
             </SwipeRow>
         );
     },
 
-    getRowRefProvider(sectionId, rowId) {
-        return (component) => this.setRowRef(component, sectionId, rowId);
+    getRowRefProvider(rowId) {
+        return (component) => this.setRowRef(component, rowId);
     }
 });
 
-function getRefKeyForRow(sectionId, rowId) {
-    return `${sectionId}:${rowId}`;
+function getRefKeyForRow(rowId) {
+    return `${rowId}`;
 }
 
 

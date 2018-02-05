@@ -1,5 +1,12 @@
 # Change log
 
+## v1.4.0
+> 2018-02-01
+
+**Breaking changes - requires RN >= 0.47.0**
+- Switched from `ListView` to `FlatList`
+- `calloutRow` no longer takes a sectionId, it now has the signature `calloutRow(rowNumber, amountToMove)`
+
 ## v1.3.0
 > 2017-05-23
 - Fixed incorrect refs for `ScrollView` type lists. This fixes an issue where the rows would not animate out

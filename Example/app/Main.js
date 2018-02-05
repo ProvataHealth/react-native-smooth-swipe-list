@@ -5,7 +5,7 @@ import { TodoScene } from './scenes';
 
 const Main = () => (
     <View style={styles.container}>
-        <TodoScene />
+        <TodoScene/>
     </View>
 );
 

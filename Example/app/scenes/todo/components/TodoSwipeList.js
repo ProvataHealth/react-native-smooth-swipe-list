@@ -2,7 +2,7 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
-import Emoji from 'react-native-emoji';
+
 import map from 'lodash/map';
 import find from 'lodash/find';
 import reduce from 'lodash/reduce';
@@ -10,9 +10,9 @@ import reduce from 'lodash/reduce';
 import { TodoCollection } from '../../../models';
 import { color } from '../../../constants';
 import { ListItem, ListItemButton } from '../../../components';
-import TodoSubItem from './TodoSubItem';
+//import TodoSubItem from './TodoSubItem';
 import SwipeList from 'react-native-smooth-swipe-list';
-//import SwipeList from './src/components/SwipeList';
+import ProgressListItem from '../../../components/list/ProgressListItem';
 
 
 const TodoSwipeList = createReactClass({
@@ -31,8 +31,8 @@ const TodoSwipeList = createReactClass({
     componentDidMount() {
         // open the row on the left, then the right
         Promise.resolve()
-            .then(() => this.swipeList.calloutRow(3, null, 100))
-            .then(() => this.swipeList.calloutRow(3, null, -100));
+            .then(() => this.swipeList.calloutRow(3, 100))
+            .then(() => this.swipeList.calloutRow(3, -100));
     },
 
     componentWillReceiveProps(nextProps) {
@@ -96,8 +96,8 @@ const TodoSwipeList = createReactClass({
     },
 
     getRowView(todo) {
-        let title = todo.isComplete() ? <Text><Emoji name="thumbsup" /> {todo.getTitle()}</Text> : todo.getTitle();
-        return <ListItem title={title} onPress={this.onRowPress} />;
+        let title = todo.getTitle();
+        return <ProgressListItem title={title} onPress={this.onRowPress} progress={todo.getProgress()} />;
     },
 
     getToggleButton(todo) {

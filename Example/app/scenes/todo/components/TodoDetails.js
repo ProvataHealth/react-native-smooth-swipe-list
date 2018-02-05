@@ -1,9 +1,10 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 
 
-const TodoDetails = React.createClass({
+const TodoDetails = createReactClass({
 
     propTypes: {},
 

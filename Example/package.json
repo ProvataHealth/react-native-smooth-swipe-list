@@ -1,28 +1,27 @@
 {
-  "name": "SmoothSwipeList",
-  "version": "1.2.3",
+  "name": "Example",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean",
     "test": "jest"
   },
   "dependencies": {
     "create-react-class": "^15.6.3",
-    "immutable": "3.8.1",
-    "lodash": "^4.17.2",
+    "immutable": "^3.8.2",
+    "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
-    "react": "15.4.1",
-    "react-addons-shallow-compare": "15.4.1",
-    "react-native": "0.39.1",
+    "react": "16.2.0",
+    "react-addons-shallow-compare": "^15.6.2",
+    "react-native": "0.52.2",
     "react-native-emoji": "^1.2.0",
-    "react-native-smooth-swipe-list": "1.2.0"
+    "react-native-smooth-swipe-list": "1.4.0"
   },
   "devDependencies": {
-    "babel-jest": "17.0.2",
-    "babel-preset-react-native": "1.9.0",
-    "jest": "17.0.3",
-    "react-test-renderer": "15.4.1"
+    "babel-jest": "22.1.0",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "22.1.4",
+    "react-test-renderer": "16.2.0"
   },
   "jest": {
     "preset": "react-native"

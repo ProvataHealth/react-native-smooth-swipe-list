@@ -1,10 +1,11 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import { FullWidthSubItem } from '../../../components';
 
-const TodoSubItem = React.createClass({
+const TodoSubItem = createReactClass({
 
     onItemPress() {
         console.log('item pressed');
