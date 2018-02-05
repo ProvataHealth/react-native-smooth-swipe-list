@@ -13,6 +13,7 @@ const ListItem = (props) => (
             <Text style={[styles.text, props.textStyle]}>
                 {props.title}
             </Text>
+            {props.children}
         </View>
     </TouchableHighlight>
 );

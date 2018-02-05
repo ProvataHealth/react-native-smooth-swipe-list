@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewPropTypes } from 'react-native';
 
 
 const FullWidthSubItem = ({ style, children }) => (
@@ -9,7 +9,7 @@ const FullWidthSubItem = ({ style, children }) => (
     </View>
 );
 
-FullWidthSubItem.propTypes = { style: View.propTypes.style };
+FullWidthSubItem.propTypes = { style: ViewPropTypes.style };
 
 FullWidthSubItem.displayName = "FullWidthSubItem";
 

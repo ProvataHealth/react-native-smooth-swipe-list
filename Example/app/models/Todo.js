@@ -34,6 +34,10 @@ class Todo {
     setArchived(archived) {
         return new Todo(this.data.set('archived', archived));
     }
+
+    getProgress() {
+        return this.isComplete() ? 1 : this.data.get('progress');
+    }
 }
 
 

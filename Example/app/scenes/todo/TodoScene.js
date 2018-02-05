@@ -1,22 +1,24 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import times from 'lodash/times';
 
 import { Todo, TodoCollection } from '../../models';
 import { TodoSwipeList, TodoDetails } from './components'
 
-const INITIAL_TODO_COUNT = 12;
+const INITIAL_TODO_COUNT = 50;
 const TITLES = ['Sleep', 'Write Code', 'Eat'];
 const INITIAL_TODOS = times(INITIAL_TODO_COUNT, (i) => {
     return {
         id: i + 1,
         title: TITLES[(i + 1) % 3],
         completed: false,
-        archived: false
+        archived: false,
+        progress: Math.random()
     };
 });
 
-const TodoScene = React.createClass({
+const TodoScene = createReactClass({
 
     getInitialState() {
         // using this component's state as a store for simplicity sake

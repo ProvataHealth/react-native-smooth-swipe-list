@@ -2,6 +2,10 @@
 
 #### A swipe-able ListView component modeled after the list view in the iOS Mail app.
 
+- React Native >= 0.47.0 use 1.4.0
+
+- React Native < 0.47.0 use 1.3.2
+
 ## Example
 ![example gif](https://github.com/ProvataHealth/react-native-smooth-swipe-list/blob/master/Example/assets/capture.gif)
 
@@ -66,7 +70,7 @@ const ListParent = React.createClass({
     
     getArchiveButton() {
         ...
-    }
+    },
     
     render() {
         return <SwipeList rowData={this.rowData} />;
@@ -79,7 +83,7 @@ const ListParent = React.createClass({
 ### SwipeList Component
 
 #### Props
-* [ListView props...](https://facebook.github.io/react-native/docs/listview.html)
+* [FlatList props...](https://facebook.github.io/react-native/docs/flatlist.html)
 * `rowData` - Object with the follow properties:
   * `id`(required) - Used to identify the rowData
   * `rowView`(required) - View to use as the row face
@@ -102,10 +106,8 @@ const ListParent = React.createClass({
 
 ### Methods
 * `tryCloseOpenRow()` - Close any open row
-* `calloutRow(rowId, sectionId, amount):Promise` - Open the row at `sectionId` `rowId` by `amount` and then closes it
+* `calloutRow(rowNumber, amount):Promise` - Open the row by `amount` and then closes it
 
-To be implemented:
-* *`scrollToRow(rowKey, skipAnimation)` - Scrolls to row. *Optionally skip animating*
 
 ### SwipeRow Component
 See [React Native PanResponder](https://facebook.github.io/react-native/docs/panresponder.html) for information about gesture events.
@@ -136,6 +138,7 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 * `blockChildEventsWhenOpen` - If true will capture gesture events before they reach the rowView *(default: true)*
 * `closeOnPropUpdate` - Whether to close the row if new props come in *(default true)*
 * `animateRemoveSpeed` - Speed (ms) at which to animate the row when it is removed *(default: 150ms)*
+* `animateAddSpeed` - Speed (ms) at which to animate the row when it is removed *(default: 150ms)*
 
 ### Methods
 * `close(skipAnimation)` - Close row. *Optionally skip animating*
@@ -150,4 +153,3 @@ See [React Native PanResponder](https://facebook.github.io/react-native/docs/pan
 - [ ] Passing left/right button props instead of views for ease of use
 - [ ] Multi sub view staggered position translation
 - [ ] Passing pan information to sub views (e.g. for animating icons, bg color, etc)
-- [ ] Improve gesture inertia

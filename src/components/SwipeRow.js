@@ -73,8 +73,10 @@ const SwipeRow = createReactClass({
         isAnotherRowOpen: PropTypes.func,
         closeOnPropUpdate: PropTypes.bool,
         animateRemoveSpeed: PropTypes.number,
+        animateAddSpeed: PropTypes.number,
         startCloseTimeout: PropTypes.func.isRequired,
-        clearCloseTimeout: PropTypes.func.isRequired
+        clearCloseTimeout: PropTypes.func.isRequired,
+        animateAdd: PropTypes.bool
     },
 
     getDefaultProps() {
@@ -86,6 +88,7 @@ const SwipeRow = createReactClass({
             closeOnPropUpdate: false,
             gestureTensionParams: {},
             animateRemoveSpeed: 150,
+            animateAddSpeed: 150,
             isAnotherRowOpen: () => false,
             onGestureStart: () => {},
             onSwipeStart: () => {},
@@ -114,18 +117,7 @@ const SwipeRow = createReactClass({
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.animateAdd && nextProps.animateAdd) {
-            this.setState({
-                heightAnimating: true
-            });
-            this.state.heightAnim.setValue(0);
-            Animated.timing(
-                this.state.heightAnim,
-                {
-                    toValue: this.state.rowHeight,
-                    duration: this.props.animateRemoveSpeed,
-                    easing: Easing.in(Easing.cubic)
-                }
-            ).start(this.resetState);
+            this.animateIn();
         }
         else if (this.props.id !== nextProps.id) {
             this.clearCloseTimeout();
@@ -181,9 +173,12 @@ const SwipeRow = createReactClass({
         })
     },
 
-    resetState() {
+    resetState(additionalState) {
         if (this.mounted) {
-            this.setState(this.getInitialState());
+            this.setState({
+                ...this.getInitialState(),
+                ...additionalState
+            });
         }
     },
 
@@ -197,19 +192,42 @@ const SwipeRow = createReactClass({
         }
     },
 
+    animateIn() {
+        this.state.heightAnim.setValue(0);
+        this.setState({
+            heightAnimating: true
+        }, () => {
+            if (!this.mounted) {
+                return;
+            }
+            Animated.timing(
+                this.state.heightAnim,
+                {
+                    toValue: this.state.rowHeight,
+                    duration: this.props.animateAddSpeed,
+                    easing: Easing.in(Easing.cubic)
+                }
+            ).start(() => this.resetState({ animateInComplete: true }));
+        });
+    },
+
     animateOut(onComplete) {
         this.state.heightAnim.setValue(this.state.rowHeight);
         this.setState({
             heightAnimating: true
-        });
-        Animated.timing(
-            this.state.heightAnim,
-            {
-                toValue: 0,
-                duration: this.props.animateRemoveSpeed,
-                easing: Easing.in(Easing.cubic)
+        }, () => {
+            if (!this.mounted) {
+                return;
             }
-        ).start(onComplete);
+            Animated.timing(
+                this.state.heightAnim,
+                {
+                    toValue: 0,
+                    duration: this.props.animateRemoveSpeed,
+                    easing: Easing.in(Easing.cubic)
+                }
+            ).start(onComplete);
+        });
     },
 
     onSwipeStart(e, g) {
@@ -455,8 +473,16 @@ const SwipeRow = createReactClass({
     },
 
     setRowHeight(e) {
+        let height = getHeight(e);
+        if (height === this.state.rowHeight || this.state.heightAnimating) {
+            return;
+        }
         this.setState({
-            rowHeight: getHeight(e)
+            rowHeight: height
+        }, () => {
+            if (this.props.animateAdd && !this.state.animateInComplete) {
+                this.animateIn();
+            }
         });
     },
 
