@@ -436,7 +436,8 @@ const SwipeRow = createReactClass({
                     toValue: { x: toValue, y: 0 },
                     velocity: vx,
                     friction: noBounce ? 10 : 5,
-                    tension: 22 * Math.abs(vx)
+                    tension: 22 * Math.abs(vx),
+                    useNativeDriver: true
                 }
             ).start(({ finished }) => {
                 resolve();
@@ -532,13 +533,19 @@ const SwipeRow = createReactClass({
                                             onResponderEnd={this.onSwipeEnd}
                                             onResponderUpdate={this.onSwipeUpdate}>
                     {this.renderSubView()}
-                    <Animated.View style={[styles.containerInner, this.props.rowViewStyle, this.state.pan.getLayout()]}
+                    <Animated.View style={[styles.containerInner, this.props.rowViewStyle, this.getTransform()]}
                                    pointerEvents={this.getRowPointerEvents()}>
                         {React.cloneElement(React.Children.only(this.props.children), { open: this.state.open })}
                     </Animated.View>
                 </HorizontalGestureResponder>
             </Animated.View>
         );
+    },
+
+    getTransform() {
+        return {
+            transform: this.state.pan.getTranslateTransform()
+        };
     },
 
     getHeightStyle() {
