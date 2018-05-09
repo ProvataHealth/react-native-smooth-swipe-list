@@ -30,13 +30,16 @@
     "create-react-class": "^15.6.3",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
-    "react-addons-shallow-compare": "^15.6.2"
+    "react": "16.2.0",
+    "react-addons-shallow-compare": "^15.6.2",
+    "react-native": "0.52.2"
   },
   "peerDependencies": {
     "react": "16.2.0",
     "react-native": "0.47.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "babel-jest": "^22.1.0",
     "babel-preset-react-native": "^4.0.0",
     "jest": "^22.1.4",
