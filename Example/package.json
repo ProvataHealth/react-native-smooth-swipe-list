@@ -15,7 +15,7 @@
     "react-addons-shallow-compare": "^15.6.2",
     "react-native": "0.52.2",
     "react-native-emoji": "^1.2.0",
-    "react-native-smooth-swipe-list": "1.4.0"
+    "react-native-smooth-swipe-list": "1.4.6"
   },
   "devDependencies": {
     "babel-jest": "22.1.0",

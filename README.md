@@ -115,6 +115,10 @@ const ListParent = React.createClass({
 
 See [React Native PanResponder](https://facebook.github.io/react-native/docs/panresponder.html) for information about gesture events.
 
+### Props passed into row rendered
+* `open` - whether the row is open or not
+* `openRow` - opens the row
+
 #### Props
 * `id` - id of the rows data
 * `style` - Style to apply to the row container

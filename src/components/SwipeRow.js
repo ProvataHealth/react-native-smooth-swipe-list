@@ -560,7 +560,12 @@ const SwipeRow = createReactClass({
                     {this.renderSubView()}
                     <Animated.View style={[styles.containerInner, this.props.rowViewStyle, this.state.pan.getLayout()]}
                                    pointerEvents={this.getRowPointerEvents()}>
-                        {React.cloneElement(React.Children.only(this.props.children), { open: this.state.open })}
+                        {React.cloneElement(React.Children.only(this.props.children),
+                            {
+                                open: this.state.open,
+                                openRow: this.open,
+                                closeRow: this.close
+                            })}
                     </Animated.View>
                 </HorizontalGestureResponder>
             </Animated.View>

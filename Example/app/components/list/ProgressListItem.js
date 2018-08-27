@@ -30,7 +30,8 @@ const ProgressListItem = createReactClass({
 
     getDefaultProps() {
         return {
-            progress: 0
+            progress: 0,
+            openRow: PropTypes.func.isRequired
         };
     },
 
@@ -63,10 +64,14 @@ const ProgressListItem = createReactClass({
         ).start();
     },
 
+    openRow() {
+        this.props.openRow('right');
+    },
+
     render() {
         let { progress, ...listItemProps } = this.props;
         return (
-            <ListItem {...listItemProps}>
+            <ListItem {...listItemProps} onPress={this.openRow}>
                 <View style={styles.progressContainer}>
                     {this.renderProgressBar()}
                 </View>
