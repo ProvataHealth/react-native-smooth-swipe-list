@@ -4,7 +4,7 @@ import getGestureAngle from '../getGestureAngle';
 import {
     LEFT_GESTURE_ANGLE_RANGE,
     RIGHT_GESTURE_ANGLE_RANGE
-} from '../../../constants';
+} from '../../../constants/index';
 
 jest.unmock('../isValidHorizontalGestureAngle');
 

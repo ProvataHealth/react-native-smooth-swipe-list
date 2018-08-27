@@ -6,7 +6,7 @@ import createReactClass from 'create-react-class';
 
 import {
     isValidHorizontalGesture,
-} from '../util/gesture';
+} from '../util/gesture/index';
 
 
 const HorizontalGestureResponder = createReactClass({

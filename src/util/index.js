@@ -1,3 +1,3 @@
 
-export { default as gesture } from './gesture';
-export { default as layout } from './layout';
+export { default as gesture } from './gesture/index';
+export { default as layout } from './layout/index';

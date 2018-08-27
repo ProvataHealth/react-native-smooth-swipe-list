@@ -6,7 +6,7 @@ import times from 'lodash/times';
 import { Todo, TodoCollection } from '../../models';
 import { TodoSwipeList, TodoDetails } from './components'
 
-const INITIAL_TODO_COUNT = 50;
+const INITIAL_TODO_COUNT = 10;
 const TITLES = ['Sleep', 'Write Code', 'Eat'];
 const INITIAL_TODOS = times(INITIAL_TODO_COUNT, (i) => {
     return {

@@ -6,7 +6,7 @@ import {
     QUICK_GESTURE_VELOCITY_THRESHOLD,
     VELOCITY_THRESHOLD_ANGLE_SLOP,
     VELOCITY_THRESHOLD_SLOP_MOD
-} from '../../../constants';
+} from '../../../constants/index';
 
 jest.unmock('../isValidHorizontalGestureSpeed');
 jest.mock('../getGestureAngle');

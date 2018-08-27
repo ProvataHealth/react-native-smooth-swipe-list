@@ -1,3 +1,1848 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders Main correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "bottom": 0,
+      "flexDirection": "column",
+      "justifyContent": "flex-start",
+      "left": 0,
+      "marginTop": 25,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "bottom": 0,
+        "flexDirection": "column",
+        "justifyContent": "flex-start",
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Object {
+          "fontSize": 18,
+          "fontWeight": "bold",
+          "marginBottom": 15,
+        }
+      }
+    >
+      Swipe List Example
+    </Text>
+    <View
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "flex": 1,
+        }
+      }
+    >
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={null}
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignSelf": "stretch",
+                "backgroundColor": "#fff",
+                "borderBottomColor": "#eee",
+                "borderBottomWidth": 1,
+                "height": 55,
+                "justifyContent": "center",
+                "paddingHorizontal": 25,
+              },
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "white",
+                "padding": 15,
+              },
+            ]
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "color": "#444",
+                },
+                Object {},
+              ]
+            }
+          >
+            Add Todo
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "alignSelf": "stretch",
+              "backgroundColor": "rgb(111, 111, 111)",
+            },
+            Object {
+              "backgroundColor": "rgb(247, 247, 247)",
+            },
+          ]
+        }
+      >
+        <RCTScrollView
+          data={
+            Array [
+              Object {
+                "id": 1,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.884728923587262}
+                  title="Write Code"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 2,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.36169135015448384}
+                  title="Eat"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 3,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.6395651472254538}
+                  title="Sleep"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 4,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.6301785863956626}
+                  title="Write Code"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 5,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.7278853348782308}
+                  title="Eat"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 6,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.6564015057868255}
+                  title="Sleep"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 7,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.5812958213787136}
+                  title="Write Code"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 8,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.0425298377566099}
+                  title="Eat"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 9,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.19115635513461537}
+                  title="Sleep"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 10,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.02969969790557303}
+                  title="Write Code"
+                />,
+                "setRef": [Function],
+              },
+            ]
+          }
+          disableVirtualization={false}
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          maxToRenderPerBatch={10}
+          numColumns={1}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          onScrollStateChange={[Function]}
+          onSwipeStateChange={[Function]}
+          renderItem={[Function]}
+          rowData={
+            Array [
+              Object {
+                "id": 1,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.884728923587262}
+                  title="Write Code"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 2,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.36169135015448384}
+                  title="Eat"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 3,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.6395651472254538}
+                  title="Sleep"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 4,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.6301785863956626}
+                  title="Write Code"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 5,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.7278853348782308}
+                  title="Eat"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 6,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.6564015057868255}
+                  title="Sleep"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 7,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.5812958213787136}
+                  title="Write Code"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 8,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.0425298377566099}
+                  title="Eat"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 9,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.19115635513461537}
+                  title="Sleep"
+                />,
+                "setRef": [Function],
+              },
+              Object {
+                "id": 10,
+                "leftSubView": <ListItemButton
+                  color="RED"
+                  onPress={[Function]}
+                  text="Archive"
+                />,
+                "leftSubViewOptions": Object {
+                  "closeOnPress": false,
+                },
+                "rightSubView": <ListItemButton
+                  color="PRIMARY"
+                  onPress={[Function]}
+                  text="Complete"
+                />,
+                "rowView": <ProgressListItem
+                  onPress={[Function]}
+                  progress={0.02969969790557303}
+                  title="Write Code"
+                />,
+                "setRef": [Function],
+              },
+            ]
+          }
+          rowStyle={
+            Object {
+              "alignSelf": "stretch",
+              "backgroundColor": "#eee",
+              "height": 55,
+            }
+          }
+          scrollEnabled={true}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          style={
+            Array [
+              Object {
+                "alignSelf": "stretch",
+                "backgroundColor": "rgb(111, 111, 111)",
+              },
+              Object {
+                "backgroundColor": "rgb(247, 247, 247)",
+              },
+            ]
+          }
+          updateCellsBatchingPeriod={50}
+          viewabilityConfigCallbackPairs={Array []}
+          windowSize={21}
+        >
+          <View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Write Code
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Eat
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Sleep
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Write Code
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Eat
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Sleep
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Write Code
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Eat
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Sleep
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View
+              onLayout={[Function]}
+              style={null}
+            >
+              <View
+                collapsable={undefined}
+                onLayout={[Function]}
+                style={
+                  Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#eee",
+                    "height": 55,
+                  }
+                }
+              >
+                <View
+                  collapsable={undefined}
+                  onMoveShouldSetResponder={[Function]}
+                  onMoveShouldSetResponderCapture={[Function]}
+                  onResponderEnd={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderReject={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderStart={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  onStartShouldSetResponderCapture={[Function]}
+                  style={
+                    Object {
+                      "alignSelf": "stretch",
+                    }
+                  }
+                >
+                  <View
+                    collapsable={undefined}
+                    pointerEvents="box-none"
+                    style={
+                      Object {
+                        "alignSelf": "stretch",
+                        "left": 0,
+                        "top": 0,
+                      }
+                    }
+                  >
+                    <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
+                      accessible={true}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
+                      isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={null}
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
+                    >
+                      <View
+                        style={
+                          Array [
+                            Object {
+                              "alignSelf": "stretch",
+                              "backgroundColor": "#fff",
+                              "borderBottomColor": "#eee",
+                              "borderBottomWidth": 1,
+                              "height": 55,
+                              "justifyContent": "center",
+                              "paddingHorizontal": 25,
+                            },
+                            undefined,
+                          ]
+                        }
+                      >
+                        <Text
+                          accessible={true}
+                          allowFontScaling={true}
+                          ellipsizeMode="tail"
+                          style={
+                            Array [
+                              Object {
+                                "color": "#444",
+                              },
+                              undefined,
+                            ]
+                          }
+                        >
+                          Write Code
+                        </Text>
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#c2c3cc",
+                              "marginTop": 5,
+                            }
+                          }
+                        >
+                          <View
+                            collapsable={undefined}
+                            style={
+                              Object {
+                                "backgroundColor": "#62c1ff",
+                                "height": 8,
+                                "width": "0%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </RCTScrollView>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
 exports[`test renders Main correctly 1`] = `
 <View
   style={

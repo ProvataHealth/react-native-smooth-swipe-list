@@ -24,12 +24,18 @@ const TodoSwipeList = createReactClass({
         addTodo: PropTypes.func.isRequired
     },
 
+    rowRefs: {},
+
     componentWillMount() {
         this.rowData = map(this.props.todos, this.constructRowData);
     },
 
     componentDidMount() {
         // open the row on the left, then the right
+        this.callOutRowSwipe();
+    },
+
+    callOutRowSwipe() {
         Promise.resolve()
             .then(() => this.swipeList.calloutRow(3, 100))
             .then(() => this.swipeList.calloutRow(3, -100));
@@ -55,6 +61,7 @@ const TodoSwipeList = createReactClass({
             rowView: this.getRowView(todo),
             rightSubView: this.getToggleButton(todo),
             leftSubView: this.getArchiveButton(todo),
+            setRef: (component, item) => this.rowRefs[item.id] = component,
             leftSubViewOptions: {
                 closeOnPress: false
             }
@@ -62,8 +69,8 @@ const TodoSwipeList = createReactClass({
         };
     },
 
-    onRowPress() {
-        console.log('row pressed...');
+    onRowPress(todoId) {
+        this.rowRefs[todoId] && this.rowRefs[todoId].open('right');
     },
 
     tryCloseOpenRow() {
@@ -97,7 +104,7 @@ const TodoSwipeList = createReactClass({
 
     getRowView(todo) {
         let title = todo.getTitle();
-        return <ProgressListItem title={title} onPress={this.onRowPress} progress={todo.getProgress()} />;
+        return <ProgressListItem title={title} onPress={() => this.onRowPress(todo.getId())} progress={todo.getProgress()} />;
     },
 
     getToggleButton(todo) {

@@ -12,18 +12,18 @@ import createReactClass from 'create-react-class';
 
 import {
     applySimpleTension
-} from '../util/gesture';
+} from '../util/gesture/index';
 import {
     getWidth,
     getHeight
-} from '../util/layout';
+} from '../util/layout/index';
 import {
     GESTURE_DISTANCE_THRESHOLD,
     OPEN_POSITION_THRESHOLD_FACTOR,
     CLOSE_POSITION_THRESHOLD_FACTOR,
     MAX_OPEN_THRESHOLD,
     OPEN_TENSION_THRESHOLD
-} from '../constants';
+} from '../constants/index';
 import HorizontalGestureResponder from './HorizontalGestureResponder';
 import isFinite from 'lodash/isFinite';
 function isDefined(value) {
@@ -130,6 +130,10 @@ const SwipeRow = createReactClass({
         this.checkHandleSubViewWidthUpdate(nextState);
     },
 
+    componentDidUpdate(prevProps, prevState) {
+        this.checkOpenOnUpdate();
+    },
+
     componentWillUnmount() {
         this.mounted = false;
         this.clearCloseTimeout();
@@ -170,7 +174,7 @@ const SwipeRow = createReactClass({
 
             // keep looping until we reach the threshold past the end, this gives the open state a little delay
             return this.runOpenAndClose(currentPosition, endPosition, speed);
-        })
+        });
     },
 
     resetState(additionalState) {
@@ -179,6 +183,25 @@ const SwipeRow = createReactClass({
                 ...this.getInitialState(),
                 ...additionalState
             });
+        }
+    },
+
+    checkOpenOnUpdate() {
+        if (this.state.openOnNextUpdate) {
+            const switchOffOpenFlag = (isLeft) => {
+                this.setState({
+                    openOnNextUpdate: false
+                }, () => {
+                    let openPosition = isLeft ? this.state.leftSubViewWidth : -this.state.rightSubViewWidth;
+                    this.mounted && this.animateOpenOrClose(openPosition, 0.75, true);
+                });
+            };
+            if (this.state.activeSide === 'left' && this.state.leftSubViewWidth) {
+                switchOffOpenFlag(true);
+            }
+            else if (this.state.activeSide === 'right' && this.state.rightSubViewWidth) {
+                switchOffOpenFlag();
+            }
         }
     },
 
@@ -401,7 +424,7 @@ const SwipeRow = createReactClass({
     open(side, skipAnimation) {
         if (!this.state.open) {
             this.clearCloseTimeout();
-            let openPosition = side === 'left' ? this.state.leftSubViewWidth : this.state.rightSubViewWidth;
+            let openPosition = side === 'left' ? this.state.leftSubViewWidth : -this.state.rightSubViewWidth;
             if (skipAnimation) {
                 this.setState({
                     pan: new Animated.ValueXY({ x: openPosition, y: 0 }),
@@ -412,7 +435,10 @@ const SwipeRow = createReactClass({
                 this.props.onOpenEnd(true);
             }
             else {
-                this.animateOpenOrClose(openPosition, 0.75, true);
+                this.setState({
+                    activeSide: side,
+                    openOnNextUpdate: true,
+                });
             }
         }
     },

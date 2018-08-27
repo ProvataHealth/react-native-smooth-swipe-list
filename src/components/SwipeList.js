@@ -250,7 +250,7 @@ const SwipeList = createReactClass({
     },
 
     renderSwipeListItem({ item, index }) {
-        let ref = this.getRowRefProvider(item.id);
+        let ref = this.getRowRefProvider(item.id, item, index);
         return (
             <SwipeRow ref={ref}
                       id={item.id}
@@ -279,8 +279,13 @@ const SwipeList = createReactClass({
         );
     },
 
-    getRowRefProvider(rowId) {
-        return (component) => this.setRowRef(component, rowId);
+    getRowRefProvider(rowId, item, index) {
+        return (component) => {
+            if (item.setRef) {
+                item.setRef(component, item, index);
+            }
+            this.setRowRef(component, rowId);
+        };
     }
 });
 

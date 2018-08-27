@@ -4,7 +4,7 @@ import {
     VELOCITY_THRESHOLD_ANGLE_SLOP,
     VELOCITY_THRESHOLD_SLOP_MOD,
     QUICK_GESTURE_VELOCITY_THRESHOLD
-} from '../../constants';
+} from '../../constants/index';
 import getGestureAngle from './getGestureAngle';
 import isValidVelocity from './isValidVelocity';
 

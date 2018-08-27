@@ -86,6 +86,7 @@ const ListParent = React.createClass({
 * [FlatList props...](https://facebook.github.io/react-native/docs/flatlist.html)
 * `rowData` - Object with the follow properties:
   * `id`(required) - Used to identify the rowData
+  * `setRef` - get a reference to the component for this row, receives `component, rowData, index`
   * `rowView`(required) - View to use as the row face
   * `[left/right]SubView` - View to show when swiping left or right
   * `[left/right]leftSubViewOptions` - Options to customize left and right subviews
@@ -110,6 +111,8 @@ const ListParent = React.createClass({
 
 
 ### SwipeRow Component
+**Note: In most cases you will want to use the `SwipeList` and not directly render a `SwipeRow`**
+
 See [React Native PanResponder](https://facebook.github.io/react-native/docs/panresponder.html) for information about gesture events.
 
 #### Props
