@@ -87,8 +87,8 @@ const ListParent = React.createClass({
 * `rowData` - Object with the follow properties:
   * `id`(required) - Used to identify the rowData
   * `setRef` - get a reference to the component for this row, receives `component, rowData, index`
-  * `rowView`(required) - View to use as the row face
-  * `[left/right]SubView` - View to show when swiping left or right
+  * `rowView`(required) - View to use as the row face, rendered inside a `SwipeRow`
+  * `[left/right]SubView` - View to show when swiping left or right rendered inside a `SwipeRow` below the `rowView`
   * `[left/right]leftSubViewOptions` - Options to customize left and right subviews
     * `fullWidth` - Will the view span the full width of the row *(default false)*
     * `closeOnPress` - Whether the row should close on a press if not followed by a valid gesture *(default true)*
@@ -111,7 +111,8 @@ const ListParent = React.createClass({
 
 
 ### SwipeRow Component
-**Note: In most cases you will want to use the `SwipeList` and not directly render a `SwipeRow`**
+**Note: In most cases you will want to use the `SwipeList` and not directly render a `SwipeRow`. The `SwipeList` will handle
+wrapping the various rendered views from your `rowData`**
 
 See [React Native PanResponder](https://facebook.github.io/react-native/docs/panresponder.html) for information about gesture events.
 
