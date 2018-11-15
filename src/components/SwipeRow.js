@@ -593,7 +593,7 @@ const SwipeRow = createReactClass({
         let activeSideStyle = this.getActiveSideStyle(isLeft);
         let panStyle = this.getSubViewPanStyle(isLeft);
         let wrapperStyle = this.getSubViewWrapperStyle(isLeft);
-        if (activeSide) {
+        if (activeSide && subView) {
             return (
                 <Animated.View style={[styles.subViewContainer, activeSideStyle, panStyle]} {...this.checkGetBlockCloseTimeout(isLeft)}>
                     <View style={[styles.subViewWrapper, wrapperStyle]} onLayout={onLayout}>
