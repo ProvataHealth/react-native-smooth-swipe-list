@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import isFinite from 'lodash/isFinite';
 import {
     StyleSheet,
     View,
@@ -8,15 +9,8 @@ import {
     ViewPropTypes
 } from 'react-native';
 
-import createReactClass from 'create-react-class';
-
-import {
-    applySimpleTension
-} from '../util/gesture/index';
-import {
-    getWidth,
-    getHeight
-} from '../util/layout/index';
+import { applySimpleTension } from '../util/gesture/index';
+import { getWidth, getHeight } from '../util/layout/index';
 import {
     GESTURE_DISTANCE_THRESHOLD,
     OPEN_POSITION_THRESHOLD_FACTOR,
@@ -25,7 +19,7 @@ import {
     OPEN_TENSION_THRESHOLD
 } from '../constants/index';
 import HorizontalGestureResponder from './HorizontalGestureResponder';
-import isFinite from 'lodash/isFinite';
+
 function isDefined(value) {
     return (value !== null || value !== undefined);
 }
@@ -40,104 +34,47 @@ const defaultSubViewOptions = {
     closeOnPress: true
 };
 
-const SwipeRow = createReactClass({
+class SwipeRow extends React.Component {
+    
+    // MARK: Constructor
 
-    propTypes: {
-        style: ViewPropTypes.style,
-        id: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.string
-        ]).isRequired,
-        rowViewStyle: ViewPropTypes.style,
-        gestureTensionParams: PropTypes.shape({
-            threshold: PropTypes.number,
-            stretch: PropTypes.number,
-            resistanceStrength: PropTypes.number
-        }),
-        onGestureStart: PropTypes.func,
-        swipeEnabled: PropTypes.bool,
-        onSwipeStart: PropTypes.func,
-        onSwipeUpdate: PropTypes.func,
-        onSwipeEnd: PropTypes.func,
-        onOpenStart: PropTypes.func,
-        onOpenEnd: PropTypes.func,
-        onCloseStart: PropTypes.func,
-        onCloseEnd: PropTypes.func,
-        onCapture: PropTypes.func,
-        leftSubView: PropTypes.element,
-        rightSubView: PropTypes.element,
-        leftSubViewOptions: PropTypes.shape(SubViewOptionsShape),
-        rightSubViewOptions: PropTypes.shape(SubViewOptionsShape),
-        startOpen: PropTypes.bool,
-        blockChildEventsWhenOpen: PropTypes.bool,
-        isAnotherRowOpen: PropTypes.func,
-        closeOnPropUpdate: PropTypes.bool,
-        animateRemoveSpeed: PropTypes.number,
-        animateAddSpeed: PropTypes.number,
-        startCloseTimeout: PropTypes.func.isRequired,
-        clearCloseTimeout: PropTypes.func.isRequired,
-        animateAdd: PropTypes.bool
-    },
-
-    getDefaultProps() {
-        return {
-            swipeEnabled: true,
-            blockChildEventsWhenOpen: true,
-            leftSubViewOptions: defaultSubViewOptions,
-            rightSubViewOptions: defaultSubViewOptions,
-            closeOnPropUpdate: false,
-            gestureTensionParams: {},
-            animateRemoveSpeed: 150,
-            animateAddSpeed: 150,
-            isAnotherRowOpen: () => false,
-            onGestureStart: () => {},
-            onSwipeStart: () => {},
-            onSwipeUpdate: () => {},
-            onSwipeEnd: () => {},
-            onOpenStart: () => {},
-            onOpenEnd: () => {},
-            onCloseStart: () => {},
-            onCloseEnd: () => {}
-        };
-    },
-
-    getInitialState() {
-        return {
+    constructor(props) {
+        super(props)
+        this.state = {
             pan: new Animated.ValueXY(),
             heightAnim: new Animated.Value(0),
             heightAnimating: false,
             activeSide: null,
             open: false
-        };
-    },
+        }
+    }
+
+    // MARK: Lifecycle
 
     componentDidMount() {
         this.mounted = true;
-    },
-
-    componentWillReceiveProps(nextProps) {
-        if (!this.props.animateAdd && nextProps.animateAdd) {
-            this.animateIn();
-        }
-        else if (this.props.id !== nextProps.id) {
-            this.clearCloseTimeout();
-            this.resetState();
-        }
-        this.props.closeOnPropUpdate && this.close();
-    },
-
-    componentWillUpdate(nextProps, nextState) {
-        this.checkHandleSubViewWidthUpdate(nextState);
-    },
-
-    componentDidUpdate(prevProps, prevState) {
-        this.checkOpenOnUpdate();
-    },
+    }
 
     componentWillUnmount() {
         this.mounted = false;
         this.clearCloseTimeout();
-    },
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (!prevProps.animateAdd && this.props.animateAdd) {
+            this.animateIn();
+        }
+        else if (prevProps.id !== this.props.id) {
+            this.clearCloseTimeout();
+            this.resetState();
+        }
+        prevProps.closeOnPropUpdate && this.close();
+
+        this.checkOpenOnUpdate();
+        this.checkHandleSubViewWidthUpdate();
+    }
+
+    // MARK: Methods
 
     calloutRow(openPosition) {
         return new Promise((resolve) => {
@@ -149,7 +86,17 @@ const SwipeRow = createReactClass({
             this.onSwipeStart();
             this.runOpenAndClose(0, openPosition, openPosition / 25);
         })
-    },
+    }
+
+    checkHandleSubViewWidthUpdate(prevState) {
+        let updateLeft = prevState.leftSubViewWidth !== this.state.leftSubViewWidth && this.state.leftSubViewWidth >= 0;
+        let updateRight = prevState.rightSubViewWidth !== this.state.rightSubViewWidth && this.state.rightSubViewWidth >= 0;
+        if (this.state.open && !this.state.heightAnimating && (updateLeft || updateRight)) {
+            let activeSide = this.state.activeSide;
+            let position = activeSide === 'left' ? this.state.leftSubViewWidth : this.state.rightSubViewWidth;
+            this.animateOpenOrClose(position, 15, true);
+        }
+    }
 
     runOpenAndClose(currentPosition, endPosition, speed) {
         requestAnimationFrame((timestamp) => {
@@ -175,7 +122,7 @@ const SwipeRow = createReactClass({
             // keep looping until we reach the threshold past the end, this gives the open state a little delay
             return this.runOpenAndClose(currentPosition, endPosition, speed);
         });
-    },
+    }
 
     resetState(additionalState) {
         if (this.mounted) {
@@ -184,7 +131,7 @@ const SwipeRow = createReactClass({
                 ...additionalState
             });
         }
-    },
+    }
 
     checkOpenOnUpdate() {
         if (this.state.openOnNextUpdate) {
@@ -203,17 +150,7 @@ const SwipeRow = createReactClass({
                 switchOffOpenFlag();
             }
         }
-    },
-
-    checkHandleSubViewWidthUpdate(nextState) {
-        let updateLeft = this.state.leftSubViewWidth !== nextState.leftSubViewWidth && nextState.leftSubViewWidth >= 0;
-        let updateRight = this.state.rightSubViewWidth !== nextState.rightSubViewWidth && nextState.rightSubViewWidth >= 0;
-        if (nextState.open && !nextState.heightAnimating && (updateLeft || updateRight)) {
-            let activeSide = nextState.activeSide;
-            let position = activeSide === 'left' ? nextState.leftSubViewWidth : nextState.rightSubViewWidth;
-            this.animateOpenOrClose(position, 15, true);
-        }
-    },
+    }
 
     animateIn() {
         this.state.heightAnim.setValue(0);
@@ -232,7 +169,7 @@ const SwipeRow = createReactClass({
                 }
             ).start(() => this.resetState({ animateInComplete: true }));
         });
-    },
+    }
 
     animateOut(onComplete) {
         this.state.heightAnim.setValue(this.state.rowHeight);
@@ -251,7 +188,7 @@ const SwipeRow = createReactClass({
                 }
             ).start(onComplete);
         });
-    },
+    }
 
     onSwipeStart(e, g) {
         this.gestureActive = !!e;
@@ -260,13 +197,13 @@ const SwipeRow = createReactClass({
         this.state.pan.setOffset({ x: offsetX, y: 0 });
         this.state.pan.setValue({ x: 0, y: 0 });
         this.clearCloseTimeout();
-    },
+    }
 
     onSwipeUpdate(e, g) {
         let { dx } = g;
         e && this.props.onSwipeUpdate(this, e, g);
         this.state.open ? this.updatePanPosition(dx) : this.handleSwipeWhenClosed(dx);
-    },
+    }
 
     onSwipeEnd(e, g) {
         this.gestureActive = false;
@@ -283,7 +220,7 @@ const SwipeRow = createReactClass({
         else {
             return this.checkAnimateOpenOrClose(0, vx);
         }
-    },
+    }
 
     handleSwipeWhenClosed(dx) {
         if (dx >= 0) {
@@ -302,7 +239,7 @@ const SwipeRow = createReactClass({
             }
             this.updatePanPosition(dx);
         }
-    },
+    }
 
     updatePanPosition(dx) {
         let relativeDX = this.getRelativeDX(dx);
@@ -323,7 +260,7 @@ const SwipeRow = createReactClass({
             }
             this.setPanPosition(dx);
         }
-    },
+    }
 
     getRelativeDX(dx) {
         if (this.state.activeSide === 'left') {
@@ -332,13 +269,13 @@ const SwipeRow = createReactClass({
         else if (this.state.activeSide === 'right') {
             return this.state.rightSubViewWidth - dx;
         }
-    },
+    }
 
     setPanPosition(dx) {
         if (isFinite(dx)) {
             this.state.pan.setValue({ x: dx, y: 0 });
         }
-    },
+    }
 
     applyTensionToGesture(dx) {
         let tensionParams = this.props.gestureTensionParams;
@@ -351,7 +288,7 @@ const SwipeRow = createReactClass({
             tensionParams.stretch,
             tensionParams.resistanceStrength
         );
-    },
+    }
 
     checkAnimateOpenOrClose(dx, vx) {
         if ((Math.abs(dx) <= GESTURE_DISTANCE_THRESHOLD) && this.state.open) {
@@ -360,7 +297,7 @@ const SwipeRow = createReactClass({
         else {
             return this.checkOpenOrClose(dx, vx);
         }
-    },
+    }
 
     checkOpenOrClose(dx, vx) {
         let isLeft = this.state.activeSide === 'left';
@@ -384,7 +321,7 @@ const SwipeRow = createReactClass({
             toValue = pastOpenThreshold ? openPosition : 0;
         }
         return this.animateOpenOrClose(toValue, vx);
-    },
+    }
 
     isPastOpenThreshold(dx, vx) {
         if (dx > 0 && this.props.leftSubView || dx < 0 && this.props.rightSubView) {
@@ -396,7 +333,7 @@ const SwipeRow = createReactClass({
         }
 
         return false;
-    },
+    }
 
     isPastCloseThreshold(dx, vx) {
         let thresholdBase = this.getActiveSubViewWidth() * CLOSE_POSITION_THRESHOLD_FACTOR;
@@ -404,7 +341,7 @@ const SwipeRow = createReactClass({
         let velocityMod = (absVX * (thresholdBase * 2));
         let threshold = thresholdBase - velocityMod;
         return Math.abs(dx) >= threshold;
-    },
+    }
 
     close(skipAnimation) {
         // don't allow a manual close if the gesture is active
@@ -419,7 +356,7 @@ const SwipeRow = createReactClass({
                 this.animateOpenOrClose(0, 1.75, true);
             }
         }
-    },
+    }
 
     open(side, skipAnimation) {
         if (!this.state.open) {
@@ -441,7 +378,7 @@ const SwipeRow = createReactClass({
                 });
             }
         }
-    },
+    }
 
     animateOpenOrClose(toValue, vx, noBounce) {
         if (!this.mounted) {
@@ -469,7 +406,7 @@ const SwipeRow = createReactClass({
                 this.onAnimateFinish(finished, isOpen);
             });
         });
-    },
+    }
 
     onAnimateFinish(finished, isOpen) {
         if (this.mounted) {
@@ -480,23 +417,23 @@ const SwipeRow = createReactClass({
                 });
             }
         }
-    },
+    }
 
     isOpen() {
         return this.state.open;
-    },
+    }
 
     getActiveSubViewOpenPosition() {
         return this.state.activeSide === 'left'
             ? this.state.leftSubViewWidth
             : -this.state.rightSubViewWidth;
-    },
+    }
 
     getActiveSubViewWidth() {
         return this.state.activeSide === 'left'
             ? this.state.leftSubViewWidth
             : this.state.rightSubViewWidth;
-    },
+    }
 
     setRowHeight(e) {
         let height = getHeight(e);
@@ -510,41 +447,41 @@ const SwipeRow = createReactClass({
                 this.animateIn();
             }
         });
-    },
+    }
 
     setLeftSubViewWidth(e) {
         let width = getWidth(e);
         if (width !== this.state.leftSubViewWidth) {
             this.setState({ leftSubViewWidth: width });
         }
-    },
+    }
 
     setRightSubViewWidth(e) {
         let width = getWidth(e);
         if (width !== this.state.rightSubViewWidth) {
             this.setState({ rightSubViewWidth: width });
         }
-    },
+    }
 
     isSwipeable() {
         return !!(this.props.leftSubView || this.props.rightSubView) && this.props.swipeEnabled;
-    },
+    }
 
     checkSetCloseTimeout(e, g) {
         this.props.onGestureStart(this, e, g);
         this.props.startCloseTimeout();
         return this.props.isAnotherRowOpen(this);
-    },
+    }
 
     clearCloseTimeout() {
         this.props.clearCloseTimeout();
-    },
+    }
 
     shouldCloseOnClick() {
         let options = this.state.activeSide === 'left' ? this.props.leftSubViewOptions : this.props.rightSubViewOptions;
         let closeOnPress = options.fullWidth ? false : options.closeOnPress;
         return isDefined(closeOnPress) ? closeOnPress : defaultSubViewOptions.closeOnPress;
-    },
+    }
 
     render() {
         return (
@@ -570,7 +507,7 @@ const SwipeRow = createReactClass({
                 </HorizontalGestureResponder>
             </Animated.View>
         );
-    },
+    }
 
     getHeightStyle() {
         if (this.state.heightAnimating) {
@@ -579,11 +516,11 @@ const SwipeRow = createReactClass({
                 overflow: 'hidden'
             };
         }
-    },
+    }
 
     getRowPointerEvents() {
         return (this.state.open && this.props.blockChildEventsWhenOpen) ? 'none' : 'box-none';
-    },
+    }
 
     renderSubView() {
         let activeSide = this.state.activeSide;
@@ -602,7 +539,7 @@ const SwipeRow = createReactClass({
                 </Animated.View>
             );
         }
-    },
+    }
 
     checkGetBlockCloseTimeout(isLeft) {
         let opts = isLeft ? this.props.leftSubViewOptions : this.props.rightSubViewOptions;
@@ -610,15 +547,15 @@ const SwipeRow = createReactClass({
             return;
         }
         return { onStartShouldSetResponderCapture: this.props.clearCloseTimeout };
-    },
+    }
 
     getActiveSubView(isLeft) {
         return isLeft ? this.props.leftSubView : this.props.rightSubView;
-    },
+    }
 
     getActiveSubViewOnLayout(isLeft) {
         return isLeft ? this.setLeftSubViewWidth : this.setRightSubViewWidth;
-    },
+    }
 
     getSubViewWrapperStyle(isLeft) {
         let widthKnown = isLeft ? this.state.leftSubViewWidth : this.state.rightSubViewWidth;
@@ -631,11 +568,11 @@ const SwipeRow = createReactClass({
             opacity: widthKnown ? 1 : 0,
             flex: fullWidth ? 1 : 0
         };
-    },
+    }
 
     getActiveSideStyle(isLeft) {
         return isLeft ? styles.leftSubView : styles.rightSubView;
-    },
+    }
 
     getSubViewPanStyle() {
         if (this.state.activeSide === 'left' && this.state.leftSubViewWidth) {
@@ -659,7 +596,64 @@ const SwipeRow = createReactClass({
             };
         }
     }
-});
+}
+
+SwipeRow.propTypes = {
+    style: ViewPropTypes.style,
+    id: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string
+    ]).isRequired,
+    rowViewStyle: ViewPropTypes.style,
+    gestureTensionParams: PropTypes.shape({
+        threshold: PropTypes.number,
+        stretch: PropTypes.number,
+        resistanceStrength: PropTypes.number
+    }),
+    onGestureStart: PropTypes.func,
+    swipeEnabled: PropTypes.bool,
+    onSwipeStart: PropTypes.func,
+    onSwipeUpdate: PropTypes.func,
+    onSwipeEnd: PropTypes.func,
+    onOpenStart: PropTypes.func,
+    onOpenEnd: PropTypes.func,
+    onCloseStart: PropTypes.func,
+    onCloseEnd: PropTypes.func,
+    onCapture: PropTypes.func,
+    leftSubView: PropTypes.element,
+    rightSubView: PropTypes.element,
+    leftSubViewOptions: PropTypes.shape(SubViewOptionsShape),
+    rightSubViewOptions: PropTypes.shape(SubViewOptionsShape),
+    startOpen: PropTypes.bool,
+    blockChildEventsWhenOpen: PropTypes.bool,
+    isAnotherRowOpen: PropTypes.func,
+    closeOnPropUpdate: PropTypes.bool,
+    animateRemoveSpeed: PropTypes.number,
+    animateAddSpeed: PropTypes.number,
+    startCloseTimeout: PropTypes.func.isRequired,
+    clearCloseTimeout: PropTypes.func.isRequired,
+    animateAdd: PropTypes.bool
+}
+
+SwipeRow.defaultProps = {
+    swipeEnabled: true,
+    blockChildEventsWhenOpen: true,
+    leftSubViewOptions: defaultSubViewOptions,
+    rightSubViewOptions: defaultSubViewOptions,
+    closeOnPropUpdate: false,
+    gestureTensionParams: {},
+    animateRemoveSpeed: 150,
+    animateAddSpeed: 150,
+    isAnotherRowOpen: () => false,
+    onGestureStart: () => {},
+    onSwipeStart: () => {},
+    onSwipeUpdate: () => {},
+    onSwipeEnd: () => {},
+    onOpenStart: () => {},
+    onOpenEnd: () => {},
+    onCloseStart: () => {},
+    onCloseEnd: () => {}
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -692,6 +686,5 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end'
     }
 });
-
 
 export default SwipeRow;

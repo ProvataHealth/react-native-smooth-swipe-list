@@ -24,10 +24,10 @@
     "swipeable list",
     "ios",
     "android",
-    "native swipe list"
+    "native swipe list",
+    "swipeout"
   ],
   "dependencies": {
-    "create-react-class": "^15.6.3",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react-addons-shallow-compare": "^15.6.2"

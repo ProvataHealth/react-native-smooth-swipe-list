@@ -1,5 +1,10 @@
 # Change log
 
+## v1.5.0
+> 2020-06-11
+- Updates React lifecycle usage to avoid using UNSAFE methods.
+- Updates to use ES6 formatting.
+
 ## v1.4.0
 > 2018-02-01
 
