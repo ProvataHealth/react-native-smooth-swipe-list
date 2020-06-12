@@ -71,7 +71,7 @@ class SwipeRow extends React.Component {
         prevProps.closeOnPropUpdate && this.close();
 
         this.checkOpenOnUpdate();
-        this.checkHandleSubViewWidthUpdate();
+        this.checkHandleSubViewWidthUpdate(prevState);
     }
 
     // MARK: Methods

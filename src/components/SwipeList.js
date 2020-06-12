@@ -28,14 +28,11 @@ class SwipeList extends React.Component {
             scrollEnabled: this.props.scrollEnabled,
             dataSource: this.props.rowData || []
         }
-    }
-
-    // MARK: Lifecycle
-
-    componentDidMount = () => {
         this.closeTimeout = null;
         this.rowRefs = {};
     }
+
+    // MARK: Lifecycle
 
     componentWillUnmount = () => {
         this.clearCloseTimeout();
@@ -231,8 +228,6 @@ class SwipeList extends React.Component {
     }
 
     renderSwipeListItem = ({ item, index }) => {
-        console.log('here A')
-        console.log(this)
         let ref = this.getRowRefProvider(item.id, item, index);
         return (
             <SwipeRow ref={ref}

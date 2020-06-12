@@ -9,7 +9,8 @@ class HorizontalGestureResponder extends React.Component {
 
     // MARK: Lifecycle
 
-    componentDidMount = () => {
+    constructor(props) {
+        super(props)
         this.panResponder = PanResponder.create({
             onStartShouldSetPanResponderCapture: this.handleOnStartShouldSetPanResponderCapture,
             onStartShouldSetPanResponder: this.handleOnStartShouldSetPanResponder,
