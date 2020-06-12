@@ -9,7 +9,7 @@ class HorizontalGestureResponder extends React.Component {
 
     // MARK: Lifecycle
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.panResponder = PanResponder.create({
             onStartShouldSetPanResponderCapture: this.handleOnStartShouldSetPanResponderCapture,
             onStartShouldSetPanResponder: this.handleOnStartShouldSetPanResponder,
@@ -22,22 +22,22 @@ class HorizontalGestureResponder extends React.Component {
         });
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate = (nextProps, nextState) => {
         return shallowCompare(this, nextProps, nextState);
     }
 
     // MARK: Handlers
 
-    handleOnStartShouldSetPanResponderCapture(e, g) {
+    handleOnStartShouldSetPanResponderCapture = (e, g) => {
         this.props.onGestureStart(e, g);
         return this.props.enabled && this.props.shouldSetResponderCapture(e, g);
     }
 
-    handleOnStartShouldSetPanResponder(e, g) {
+    handleOnStartShouldSetPanResponder = (e, g) => {
         return this.props.enabled && this.props.shouldSetResponderOnStart(e, g);
     }
 
-    handleOnMoveShouldSetPanResponder(e, g) {
+    handleOnMoveShouldSetPanResponder = (e, g) => {
         if (this.props.enabled && this.props.shouldSetResponderOnMove(e, g)) {
             if (isValidHorizontalGesture(g)) {
                 return true;
@@ -50,21 +50,21 @@ class HorizontalGestureResponder extends React.Component {
         return false;
     }
 
-    handleResponderStart(e, g) {
+    handleResponderStart = (e, g) => {
         return this.props.onResponderStart(e, g);
     }
 
-    handlePanResponderMove(e, g) {
+    handlePanResponderMove = (e, g) => {
         return this.props.onResponderUpdate(e, g);
     }
 
-    handlePanResponderEnd(e, g) {
+    handlePanResponderEnd = (e, g) => {
         return this.props.onResponderEnd(e, g);
     }
 
     // MARK: Render
 
-    render() {
+    render = () => {
         let panHandlers = this.props.enabled ? this.panResponder.panHandlers : {};
         return (
             <Animated.View {...panHandlers} style={this.props.style}>

@@ -32,21 +32,20 @@ class SwipeList extends React.Component {
 
     // MARK: Lifecycle
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.closeTimeout = null;
         this.rowRefs = {};
     }
 
-    componentWillUnmount() {
+    componentWillUnmount = () => {
         this.clearCloseTimeout();
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate = (nextProps, nextState) => {
         return shallowCompare(this, nextProps, nextState);
     }
 
-    componentDidUpdate(prevProps) {
-        // componentWillReceiveProps(nextProps)
+    componentDidUpdate = (prevProps) => {
         if (prevProps.rowData !== this.props.rowData) {
             this.checkAnimateRemoveRow(this.props.rowData);
             this.checkAnimateAddRow(this.props.rowData);
@@ -55,14 +54,14 @@ class SwipeList extends React.Component {
 
     // MARK: Methods
 
-    calloutRow(rowNumber, amount) {
+    calloutRow = (rowNumber, amount) => {
         let rowData = this.state.dataSource[rowNumber - 1];
         let rowId = rowData && rowData.id;
         let row = this.getRowRef(rowId);
         return row && row.calloutRow(amount);
     }
 
-    checkAnimateRemoveRow(nextRowData = []) {
+    checkAnimateRemoveRow = (nextRowData = []) => {
         if (this.props.rowData && (nextRowData.length < this.props.rowData.length)) {
             let numRemoved = 0;
             let indexesToRemove = reduce(this.props.rowData, (result, data, i) => {
@@ -91,7 +90,7 @@ class SwipeList extends React.Component {
         }
     }
 
-    checkAnimateAddRow(nextRowData = []) {
+    checkAnimateAddRow = (nextRowData = []) => {
         let rowsAdded = this.props.rowData ? nextRowData.length - this.props.rowData.length : nextRowData.length;
         if (rowsAdded > 0) {
             nextRowData.forEach((nextData) => {
@@ -106,89 +105,89 @@ class SwipeList extends React.Component {
         }
     }
 
-    updateDataSource(nextRowData) {
+    updateDataSource = (nextRowData) => {
         this.setState({
             dataSource: nextRowData
         });
     }
 
-    handleSwipeStart(row, e, g) {
+    handleSwipeStart = (row, e, g) => {
         this.tryCloseOpenRow(row);
         this.listView && this.listView.setNativeProps({ scrollEnabled: false });
         this.props.onScrollStateChange(false);
         this.props.onSwipeStateChange(SWIPE_STATE.SWIPE_START);
     }
 
-    handleSwipeEnd(row, e, g) {
+    handleSwipeEnd = (row, e, g) => {
         this.listView && this.listView.setNativeProps({ scrollEnabled: true });
         this.props.onScrollStateChange(true);
         this.props.onSwipeStateChange(SWIPE_STATE.SWIPE_END);
     }
 
-    handleRowOpenStart(row) {
+    handleRowOpenStart = (row) => {
         this.openRowRef = row;
         this.props.onSwipeStateChange(SWIPE_STATE.ROW_OPEN_START);
     }
 
-    handleRowOpenEnd(finished) {
+    handleRowOpenEnd = (finished) => {
         this.props.onSwipeStateChange(SWIPE_STATE.ROW_OPEN_END, finished);
     }
 
-    handleRowCloseStart() {
+    handleRowCloseStart = () => {
         this.openRowRef = null;
         this.props.onSwipeStateChange(SWIPE_STATE.ROW_CLOSE_START);
     }
 
-    handleRowCloseEnd(finished) {
+    handleRowCloseEnd = (finished) => {
         this.props.onSwipeStateChange(SWIPE_STATE.ROW_CLOSE_END, finished);
     }
 
-    tryCloseOpenRow(row) {
+    tryCloseOpenRow = (row) => {
         if (this.openRowRef && this.openRowRef !== row) {
             this.closeOpenRow();
         }
     }
 
-    closeOpenRow() {
+    closeOpenRow = () => {
         if (this.openRowRef && this.openRowRef.isOpen()) {
             this.openRowRef.close();
             this.openRowRef = null;
         }
     }
 
-    onRowPressCheckSetCloseTimeout() {
+    onRowPressCheckSetCloseTimeout = () => {
         clearTimeout(this.closeTimeout);
         this.closeTimeout = setTimeout( this.closeOpenRow, 250);
     }
 
-    clearCloseTimeout() {
+    clearCloseTimeout = () => {
         clearTimeout(this.closeTimeout);
         this.closeTimeout = null;
     }
 
-    isAnotherRowOpen(row) {
+    isAnotherRowOpen = (row) => {
         return !!(this.openRowRef && this.openRowRef !== row);
     }
 
-    setListViewRef(component) {
+    setListViewRef = (component) => {
         if (component) {
             this.listView = component;
         }
     }
 
-    getRowRef(rowId) {
+    getRowRef = (rowId) => {
         return this.rowRefs[this.getRefKeyForRow(rowId)]
     }
 
-    setRowRef(component, rowId) {
+    setRowRef = (component, rowId) => {
         this.rowRefs[this.getRefKeyForRow(rowId)] = component;
     }
 
-    getRefKeyForRow(rowId) {
+    getRefKeyForRow = (rowId) => {
         return `${rowId}`;
     }
 
-    getRowRefProvider(rowId, item, index) {
+    getRowRefProvider = (rowId, item, index) => {
         return (component) => {
             if (item.setRef) {
                 item.setRef(component, item, index);
@@ -199,7 +198,7 @@ class SwipeList extends React.Component {
 
     // MARK: Render
 
-    render() {
+    render = () => {
         if (this.props.isScrollView) {
             return (
                 <View style={[styles.listView, this.props.style]}>
@@ -225,13 +224,15 @@ class SwipeList extends React.Component {
         );
     }
 
-    renderScrollViewRows() {
+    renderScrollViewRows = () => {
         return map(this.state.dataSource, (rowData, i) => {
             return this.renderSwipeListItem({ index: i, item: rowData });
         });
     }
 
-    renderSwipeListItem({ item, index }) {
+    renderSwipeListItem = ({ item, index }) => {
+        console.log('here A')
+        console.log(this)
         let ref = this.getRowRefProvider(item.id, item, index);
         return (
             <SwipeRow ref={ref}
