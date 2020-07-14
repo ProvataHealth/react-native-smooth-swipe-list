@@ -59,7 +59,8 @@ const ProgressListItem = createReactClass({
             {
                 toValue,
                 duration: 2000,
-                easing: ANIMATION_EASING_DEFAULT
+                easing: ANIMATION_EASING_DEFAULT,
+                useNativeDriver: false
             }
         ).start();
     },

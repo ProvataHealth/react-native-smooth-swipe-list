@@ -165,7 +165,8 @@ class SwipeRow extends React.Component {
                 {
                     toValue: this.state.rowHeight,
                     duration: this.props.animateAddSpeed,
-                    easing: Easing.in(Easing.cubic)
+                    easing: Easing.in(Easing.cubic),
+                    useNativeDriver: false
                 }
             ).start(() => this.resetState({ animateInComplete: true }));
         });
@@ -184,7 +185,8 @@ class SwipeRow extends React.Component {
                 {
                     toValue: 0,
                     duration: this.props.animateRemoveSpeed,
-                    easing: Easing.in(Easing.cubic)
+                    easing: Easing.in(Easing.cubic),
+                    useNativeDriver: false
                 }
             ).start(onComplete);
         });
@@ -399,7 +401,8 @@ class SwipeRow extends React.Component {
                     toValue: { x: toValue, y: 0 },
                     velocity: vx,
                     friction: noBounce ? 10 : 5,
-                    tension: 22 * Math.abs(vx)
+                    tension: 22 * Math.abs(vx),
+                    useNativeDriver: false
                 }
             ).start(({ finished }) => {
                 resolve();
