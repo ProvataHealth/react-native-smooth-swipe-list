@@ -1,5 +1,10 @@
 # Change log
 
+## v2.0.0
+> 2020-07-15
+- Resolve a lot of animation bugs introduced in 1.5.0
+- Remove scroll view support
+
 ## v1.5.0
 > 2020-06-11
 - Updates React lifecycle usage to avoid using UNSAFE methods.
