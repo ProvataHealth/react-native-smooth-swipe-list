@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ScrollView, ViewPropTypes, FlatList } from 'react-native';
+import { StyleSheet, View, ViewPropTypes, FlatList } from 'react-native';
 import shallowCompare from 'react-addons-shallow-compare';
 import reduce from 'lodash/reduce';
 import every from 'lodash/every';
@@ -44,8 +44,8 @@ class SwipeList extends React.Component {
 
     componentDidUpdate = (prevProps) => {
         if (prevProps.rowData !== this.props.rowData) {
-            this.checkAnimateRemoveRow(this.props.rowData);
-            this.checkAnimateAddRow(this.props.rowData);
+            this.checkAnimateRemoveRow(prevProps.rowData);
+            this.checkAnimateAddRow(prevProps.rowData);
         }
     }
 
@@ -58,45 +58,47 @@ class SwipeList extends React.Component {
         return row && row.calloutRow(amount);
     }
 
-    checkAnimateRemoveRow = (nextRowData = []) => {
-        if (this.props.rowData && (nextRowData.length < this.props.rowData.length)) {
+    checkAnimateRemoveRow = (prevRowData = []) => {
+        if (this.props.rowData && (this.props.rowData.length < prevRowData.length)) {
             let numRemoved = 0;
-            let indexesToRemove = reduce(this.props.rowData, (result, data, i) => {
-                let nextData = nextRowData[i - numRemoved];
-                let shouldRemove = !nextData || nextData.id !== data.id;
+            let indexesToRemove = reduce(prevRowData, (result, prevData, i) => {
+                let data = this.props.rowData[i - numRemoved];
+                let shouldRemove = !data || data.id !== prevData.id
                 if (shouldRemove) {
                     numRemoved += 1;
-                    return result.concat([i]);
+                    return result.concat([i])
                 }
+
                 return result;
             }, []);
+
             //FIXME update this, probably isn't need with the FlatList
             let rowRefs = map(indexesToRemove, (index) => {
                 let rowData = this.state.dataSource[index];
                 return this.getRefKeyForRow(rowData.id);
             });
+
             if (rowRefs.length) {
                 rowRefs.forEach(ref => {
                     let component = this.rowRefs[ref];
-                    component && component.animateOut(() => this.updateDataSource(nextRowData));
+                    component && component.animateOut(() => this.updateDataSource(this.props.rowData));
                 });
             }
-        }
-        else {
-            this.updateDataSource(nextRowData);
+        } else {
+            this.updateDataSource(this.props.rowData)
         }
     }
 
-    checkAnimateAddRow = (nextRowData = []) => {
-        let rowsAdded = this.props.rowData ? nextRowData.length - this.props.rowData.length : nextRowData.length;
+    checkAnimateAddRow = (prevRowData = []) => {
+        let rowsAdded = this.props.rowData ? this.props.rowData.length - prevRowData.length : 0;
         if (rowsAdded > 0) {
-            nextRowData.forEach((nextData) => {
-                let existing = some(this.props.rowData, (prevData) => {
-                    return prevData.id === nextData.id;
+            this.props.rowData.forEach((data) => {
+                let existing = some(prevRowData, (prevData) => {
+                    return prevData.id === data.id;
                 });
 
                 if (!existing) {
-                    nextData.isNew = true;
+                    data.isNew = true;
                 }
             });
         }
@@ -196,18 +198,6 @@ class SwipeList extends React.Component {
     // MARK: Render
 
     render = () => {
-        if (this.props.isScrollView) {
-            return (
-                <View style={[styles.listView, this.props.style]}>
-                    <ScrollView {...this.props}
-                                ref={this.setListViewRef}
-                                style={[styles.listView, this.props.style]}
-                                scrollEnabled={this.state.scrollEnabled && this.props.scrollEnabled}>
-                        {this.renderScrollViewRows()}
-                    </ScrollView>
-                </View>
-            );
-        }
         return (
             <View style={[styles.listView, this.props.style]}>
                 <FlatList {...this.props}
@@ -219,12 +209,6 @@ class SwipeList extends React.Component {
                           renderItem={this.renderSwipeListItem} />
             </View>
         );
-    }
-
-    renderScrollViewRows = () => {
-        return map(this.state.dataSource, (rowData, i) => {
-            return this.renderSwipeListItem({ index: i, item: rowData });
-        });
     }
 
     renderSwipeListItem = ({ item, index }) => {
@@ -283,7 +267,6 @@ SwipeList.propTypes = {
         stretch: PropTypes.number,
         resistanceStrength: PropTypes.number
     }),
-    isScrollView: PropTypes.bool,
     swipeRowProps: PropTypes.object,
     onSwipeStateChange: PropTypes.func
 }

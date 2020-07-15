@@ -127,7 +127,11 @@ class SwipeRow extends React.Component {
     resetState = (additionalState) => {
         if (this.mounted) {
             this.setState({
-                ...this.getInitialState(),
+                pan: new Animated.ValueXY(),
+                heightAnim: new Animated.Value(0),
+                heightAnimating: false,
+                activeSide: null,
+                open: false,
                 ...additionalState
             });
         }
